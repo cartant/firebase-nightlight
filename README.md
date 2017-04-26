@@ -49,6 +49,7 @@ describe("something", () => {
     it("should do something with the mock", () => {
 
         return mockApp
+            .auth()
             .signInWithEmailAndPassword("alice@apple.com", "wonderland")
             .then((user) => {
 
@@ -117,3 +118,22 @@ console.log(mock);
 ```
 
 ## API
+
+Once a `Mock` instance is created, the mock API is equivalent to the Firebase Web API.
+
+The `Mock` constructor accepts an `options` object with the following optional properties:
+
+| Property | Description |
+| --- | --- |
+| `database` | An object containing the initial database `content`. |
+| `identities` | An array of identities to use use when authenticating users. |
+| `apps` | An object containing `database` and `identities` configurations by app name. |
+
+If `identities` are specified, they can have the following optional properties:
+
+| Property | Description |
+| --- | --- |
+| `credential` | The `firebase.auth.AuthCredential` to match if `signInWithCredential` is called. |
+| `email` | The user's email. |
+| `password` | The password to match if `signInWithEmailAndPassword` is called. |
+| `token` | The token to match if `signInWithCustomToken` is called. |
