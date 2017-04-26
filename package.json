@@ -71,5 +71,5 @@
   },
   "typings": "./dist/index.d.ts",
   "unpkg": "./bundles/firebase-nightlight.min.umd.js",
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
