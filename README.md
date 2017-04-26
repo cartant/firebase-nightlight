@@ -65,7 +65,7 @@ describe("something", () => {
             })
             .then((snapshot) => {
 
-                expect(snapshot.val()).to.deep.equal({ lorem: "ispum" });
+                expect(snapshot.val()).to.deep.equal({ lorem: "ipsum" });
 
                 return mockApp
                     .database()
