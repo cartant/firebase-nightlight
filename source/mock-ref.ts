@@ -850,7 +850,11 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
             }
         }
 
-        this.refEmitter_.emit(eventType, snapshot, previousKey);
+        this.refEmitter_.emit(
+            eventType,
+            (eventType === "child_removed") ? previousSnapshot : snapshot,
+            previousKey
+        );
 
         if (childEvent && limitQuery && ((eventType === "child_changed") || (eventType === "child_removed"))) {
 

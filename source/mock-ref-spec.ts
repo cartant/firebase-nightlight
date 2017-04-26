@@ -445,10 +445,30 @@ describe("mock-ref", () => {
             // the previous sibling child by priority order (or null if it is
             // the first child).
 
-            it.skip("should listen to set", (callback) => {
+            it("should listen to set", (callback) => {
+
+                mockRef.on("child_changed", (snapshot) => {
+
+                    expect(snapshot).to.be.an("object");
+                    expect(snapshot.key).to.equal("question");
+                    expect(snapshot.val()).to.equal("why?");
+                    callback();
+                });
+
+                mockRef.child("question").set("why?");
             });
 
-            it.skip("should listen to update", (callback) => {
+            it("should listen to update", (callback) => {
+
+                mockRef.on("child_changed", (snapshot) => {
+
+                    expect(snapshot).to.be.an("object");
+                    expect(snapshot.key).to.equal("question");
+                    expect(snapshot.val()).to.equal("why?");
+                    callback();
+                });
+
+                mockRef.update({ question: "why?" });
             });
         });
 
@@ -476,10 +496,43 @@ describe("mock-ref", () => {
             // - there is a query in effect which now filters out the child
             //   (because it's priority changed or the max limit was hit)
 
-            it.skip("should listen to remove", (callback) => {
+            it("should listen to remove", (callback) => {
+
+                mockRef.on("child_removed", (snapshot) => {
+
+                    expect(snapshot).to.be.an("object");
+                    expect(snapshot.key).to.equal("answer");
+                    expect(snapshot.val()).to.equal(42);
+                    callback();
+                });
+
+                mockRef.child("answer").remove();
             });
 
-            it.skip("should listen to set", (callback) => {
+            it("should listen to set", (callback) => {
+
+                mockRef.on("child_removed", (snapshot) => {
+
+                    expect(snapshot).to.be.an("object");
+                    expect(snapshot.key).to.equal("answer");
+                    expect(snapshot.val()).to.equal(42);
+                    callback();
+                });
+
+                mockRef.set({ question: "why?" });
+            });
+
+            it("should listen to update", (callback) => {
+
+                mockRef.on("child_removed", (snapshot) => {
+
+                    expect(snapshot).to.be.an("object");
+                    expect(snapshot.key).to.equal("answer");
+                    expect(snapshot.val()).to.equal(42);
+                    callback();
+                });
+
+                mockRef.update({ answer: null });
             });
         });
     });
