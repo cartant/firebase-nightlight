@@ -44,7 +44,7 @@
     "stub",
     "test"
   ],
-  "license": "GPLv3",
+  "license": "GPL-3.0",
   "main": "./dist/index.js",
   "name": "firebase-nightlight",
   "optionalDependencies": {},
