@@ -28,7 +28,7 @@ export class Mock {
     private apps_: { [key: string]: firebase.app.App };
     private options_: MockOptions;
 
-    constructor(options: MockOptions) {
+    constructor(options?: MockOptions) {
 
         this.apps_ = {};
         this.options_ = options || {};
