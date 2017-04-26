@@ -10,6 +10,7 @@ const chai = require("chai");
 chai.use(require("chai-as-promised"));
 
 import "./json-spec";
+import "./mock-app-spec";
 import "./mock-auth-spec";
 import "./mock-data-snapshot-spec";
 import "./mock-database-spec";
