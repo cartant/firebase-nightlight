@@ -26,7 +26,7 @@ describe("mock", () => {
 
     describe("apps", () => {
 
-        it("should return the intialized app", () => {
+        it("should return the intialized apps", () => {
 
             const mock = new Mock({});
 
@@ -86,7 +86,7 @@ describe("mock", () => {
 
     describe("initializeApp", () => {
 
-        it("should intialize the app mock", () => {
+        it("should intialize an app mock", () => {
 
             const mock = new Mock({});
             const mockApp = mock.initializeApp(initializeOptions);
