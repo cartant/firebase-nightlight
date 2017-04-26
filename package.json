@@ -38,7 +38,12 @@
     "uglifyjs": "^2.4.10"
   },
   "homepage": "https://github.com/cartant/firebase-nightlight",
-  "keywords": ["firebase", "mock", "stub", "test"],
+  "keywords": [
+    "firebase",
+    "mock",
+    "stub",
+    "test"
+  ],
   "license": "",
   "main": "./dist/index.js",
   "name": "firebase-nightlight",
@@ -47,10 +52,6 @@
     "firebase": "^3.0.0"
   },
   "private": false,
-  "repository": {
-    "type" : "git",
-    "url" : "https://github.com/cartant/firebase-nightlight.git"
-  },
   "repository": {},
   "scripts": {
     "dist": "npm run dist:build && npm run dist:uglify && node ./scripts/banner.js",
@@ -67,5 +68,5 @@
   },
   "typings": "./dist/index.d.ts",
   "unpkg": "./bundles/firebase-nightlight.min.umd.js",
-  "version": "0.0.0"
+  "version": "1.0.0"
 }
