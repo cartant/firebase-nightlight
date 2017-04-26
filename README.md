@@ -9,6 +9,7 @@ Each `Mock` instance mocks the properties and methods of the [`firebase`](https:
 * Most of the `database` API is mocked:
     * References can be used to read, write and query data.
     * Events are mocked and will be emitted between references.
+    * Security rules are not mocked.
     * Priorities are not mocked.
     * `onDisconnect` is not mocked.
     * The sometimes-synchronous nature of `child_added` events is not mimicked; mocked events are *always* asynchronous.
