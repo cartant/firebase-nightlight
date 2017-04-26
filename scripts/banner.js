@@ -6,7 +6,7 @@
 
 "use strict";
 
-const banner = "/*GPLv3 license https://github.com/cartant/firebase-nightlight/blob/master/LICENSE*/\n";
+const banner = "/*GPL-3.0 license https://github.com/cartant/firebase-nightlight/blob/master/LICENSE*/\n";
 const fs = require("fs");
 
 fs.readdirSync("./bundles").forEach((bundle) => {
