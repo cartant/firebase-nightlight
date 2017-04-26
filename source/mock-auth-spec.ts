@@ -19,7 +19,7 @@ describe("mock-auth", () => {
     beforeEach(() => {
 
         identities = [{
-            email: "alice@apple.com",
+            email: "alice@firebase.com",
             password: "wonderland"
         }];
 
@@ -33,10 +33,10 @@ describe("mock-auth", () => {
         it("should create the user", () => {
 
             return mockAuth
-                .createUserWithEmailAndPassword("bob@gmail.com", "builder")
+                .createUserWithEmailAndPassword("bob@firebase.com", "builder")
                 .then(() => {
 
-                    const identity = identities.find((identity) => identity.email === "bob@gmail.com");
+                    const identity = identities.find((identity) => identity.email === "bob@firebase.com");
                     expect(identity).to.exist;
                     expect(identity).to.have.property("password", "builder");
                 });
@@ -45,17 +45,17 @@ describe("mock-auth", () => {
         it("should sign in the user", () => {
 
             return mockAuth
-                .createUserWithEmailAndPassword("bob@gmail.com", "builder")
+                .createUserWithEmailAndPassword("bob@firebase.com", "builder")
                 .then(() => {
 
                     expect(mockAuth.currentUser).to.not.be.null;
-                    expect(mockAuth.currentUser).to.have.property("email", "bob@gmail.com");
+                    expect(mockAuth.currentUser).to.have.property("email", "bob@firebase.com");
                 });
         });
 
         it("should throw an error if the email is already in use", () => {
 
-            const promise = mockAuth.createUserWithEmailAndPassword("alice@apple.com", "cooper");
+            const promise = mockAuth.createUserWithEmailAndPassword("alice@firebase.com", "cooper");
 
             return expect(promise).to.be.rejectedWith(/already in use/i);
         });
@@ -71,11 +71,11 @@ describe("mock-auth", () => {
         it("should be non-null if signed in", () => {
 
             return mockAuth
-                .signInWithEmailAndPassword("alice@apple.com", "wonderland")
+                .signInWithEmailAndPassword("alice@firebase.com", "wonderland")
                 .then(() => {
 
                     expect(mockAuth.currentUser).to.not.be.null;
-                    expect(mockAuth.currentUser).to.have.property("email", "alice@apple.com");
+                    expect(mockAuth.currentUser).to.have.property("email", "alice@firebase.com");
                 });
         });
     });
@@ -110,7 +110,7 @@ describe("mock-auth", () => {
             expect(unsubscribe).to.be.a("function");
 
             return mockAuth
-                .signInWithEmailAndPassword("alice@apple.com", "wonderland")
+                .signInWithEmailAndPassword("alice@firebase.com", "wonderland")
                 .then(() => {
 
                     expect(mockAuth.currentUser).to.not.be.null;
@@ -137,7 +137,7 @@ describe("mock-auth", () => {
             expect(unsubscribe).to.be.a("function");
 
             return mockAuth
-                .signInWithEmailAndPassword("alice@apple.com", "wonderland")
+                .signInWithEmailAndPassword("alice@firebase.com", "wonderland")
                 .then(() => {
 
                     expect(mockAuth.currentUser).to.not.be.null;
@@ -179,7 +179,7 @@ describe("mock-auth", () => {
 
             identities = [{
                 credential: credentials.alice,
-                email: "alice@apple.com"
+                email: "alice@firebase.com"
             }];
 
             const mock = new Mock({ identities });
@@ -217,7 +217,7 @@ describe("mock-auth", () => {
             };
 
             identities = [{
-                email: "alice@apple.com",
+                email: "alice@firebase.com",
                 token: tokens.alice
             }];
 
@@ -249,7 +249,7 @@ describe("mock-auth", () => {
         it("should sign in the user", () => {
 
             return mockAuth
-                .signInWithEmailAndPassword("alice@apple.com", "wonderland")
+                .signInWithEmailAndPassword("alice@firebase.com", "wonderland")
                 .then(() => {
 
                     expect(mockAuth.currentUser).to.not.be.null;
@@ -258,14 +258,14 @@ describe("mock-auth", () => {
 
         it("should throw an error for an unknown user", () => {
 
-            const promise = mockAuth.signInWithEmailAndPassword("bob@gmail.com", "builder");
+            const promise = mockAuth.signInWithEmailAndPassword("bob@firebase.com", "builder");
 
             return expect(promise).to.be.rejectedWith(/user not found/i);
         });
 
         it("should throw an error for an incorrect password", () => {
 
-            const promise = mockAuth.signInWithEmailAndPassword("alice@apple.com", "cooper");
+            const promise = mockAuth.signInWithEmailAndPassword("alice@firebase.com", "cooper");
 
             return expect(promise).to.be.rejectedWith(/wrong password/i);
         });
@@ -276,7 +276,7 @@ describe("mock-auth", () => {
         it("should sign out the signed in user", () => {
 
             return mockAuth
-                .signInWithEmailAndPassword("alice@apple.com", "wonderland")
+                .signInWithEmailAndPassword("alice@firebase.com", "wonderland")
                 .then(() => {
 
                     expect(mockAuth.currentUser).to.not.be.null;

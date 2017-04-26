@@ -40,7 +40,7 @@ describe("something", () => {
         const mock = new Mock({
             database: mockDatabase,
             identities: [{
-                email: "alice@apple.com",
+                email: "alice@firebase.com",
                 password: "wonderland"
             }]
         });
@@ -51,11 +51,11 @@ describe("something", () => {
 
         return mockApp
             .auth()
-            .signInWithEmailAndPassword("alice@apple.com", "wonderland")
+            .signInWithEmailAndPassword("alice@firebase.com", "wonderland")
             .then((user) => {
 
                 expect(user).to.exist;
-                expect(user).to.have.property("email", "alice@apple.com");
+                expect(user).to.have.property("email", "alice@firebase.com");
                 expect(user).to.have.property("uid");
 
                 return mockApp

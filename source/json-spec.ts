@@ -19,14 +19,14 @@ describe("json", () => {
             people: {
                 alice: {
                     age: 32,
-                    email: "alice@gmail.com",
+                    email: "alice@firebase.com",
                     friends: {
                         bob: true
                     }
                 },
                 bob: {
                     age: 33,
-                    email: "bob@gmail.com",
+                    email: "bob@firebase.com",
                     friends: {
                         alice: true
                     }
