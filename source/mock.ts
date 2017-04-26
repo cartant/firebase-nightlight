@@ -5,179 +5,107 @@
  */
 
 import * as firebase from "firebase/app";
-import * as json from "./json";
-import * as lodash from "./lodash";
 
-import { EventEmitter2 } from "eventemitter2";
-import { MockAuth } from "./mock-auth";
-import { MockDatabase } from "./mock-database";
-import { MockDataSnapshot } from "./mock-data-snapshot";
-import { MockRef } from "./mock-ref";
-import { MockEmitters, MockIdentity, MockValue } from "./mock-types";
+import { MockApp } from "./mock-app";
+import { error } from "./mock-error";
+import { MockIdentity, MockValue } from "./mock-types";
+
+const defaultAppName = "[DEFAULT]";
 
 export interface MockOptions {
+    apps?: {
+        [key: string]: {
+            database?: { content: MockValue | null };
+            identities?: MockIdentity[];
+        }
+    };
     database?: { content: MockValue | null };
     identities?: MockIdentity[];
 }
 
 export class Mock {
 
-    private app_: firebase.app.App;
-    private auth_: firebase.auth.Auth;
-    private database_: firebase.database.Database;
-    private emitters_: MockEmitters;
-    private identities_: MockIdentity[];
-    private messaging_: firebase.messaging.Messaging;
-    private storage_: firebase.storage.Storage;
+    private apps_: { [key: string]: firebase.app.App };
+    private options_: MockOptions;
 
     constructor(options: MockOptions) {
 
-        options = options || {};
-
-        this.app_ = {} as any;
-        this.app_.auth = () => this.auth_;
-        this.app_.database = () => this.database_;
-        this.app_.delete = () => Promise.resolve();
-        this.app_.messaging = () => this.messaging_;
-        this.app_.storage = () => this.storage_;
-        this.emitters_ = {
-            root: new EventEmitter2({ wildcard: true }),
-            shared: {}
-        };
-        this.identities_ = options.identities || [];
-        this.messaging_ = null;
-        this.storage_ = null;
-
-        this.auth_ = new MockAuth({
-            app: this.app_,
-            identities: this.identities_
-        });
-
-        this.database_ = new MockDatabase({
-            app: this.app_,
-            database: options.database,
-            emitters: this.emitters_
-        });
-
-        this.emitters_.root.onAny(this.rootListener_.bind(this));
+        this.apps_ = {};
+        this.options_ = options || {};
     }
 
-    app(): firebase.app.App {
+    get apps(): (firebase.app.App | null)[] {
 
-        return this.app_;
+        return Object.keys(this.apps_).reduce((acc, key) => {
+            acc.push(this.apps_[key]);
+            return acc;
+        }, []);
     }
 
-    auth(): firebase.auth.Auth {
+    get SDK_VERSION(): string {
 
-        return this.auth_;
+        return "mock";
     }
 
-    database(): firebase.database.Database {
+    app(name?: string): firebase.app.App {
 
-        return this.database_;
+        const app = this.apps_[name || defaultAppName];
+        if (app) {
+            return app;
+        }
+        throw error("app/invalid-name", "App not found.");
+    }
+
+    auth(app?: firebase.app.App): firebase.auth.Auth {
+
+        return app ? app.auth() : this.app().auth();
+    }
+
+    database(app?: firebase.app.App): firebase.database.Database {
+
+        return app ? app.database() : this.app().database();
     }
 
     initializeApp(options: Object, name?: string): firebase.app.App {
 
-        this.app_.options = options || {};
-        this.app_.name = name || "[DEFAULT]";
-        return this.app_;
+        name = name || defaultAppName;
+
+        let app = this.apps_[name];
+        if (app) {
+            throw error("app/name-already-in-use", "App name already exists.");
+        }
+
+        const deleter = () => { delete this.apps_[name]; return Promise.resolve(); };
+
+        let mockApp: MockApp;
+        if (this.options_.apps && this.options_.apps[name]) {
+            mockApp = new MockApp({
+                database: this.options_.apps[name].database || { content: {} },
+                deleter,
+                identities: this.options_.apps[name].identities || [],
+                initializeOptions: options,
+                name
+            });
+        } else {
+            mockApp = new MockApp({
+                database: this.options_.database || { content: {} },
+                deleter,
+                identities: this.options_.identities || [],
+                initializeOptions: options,
+                name
+            });
+        }
+        this.apps_[name] = mockApp;
+        return mockApp;
     }
 
-    private rootListener_(
-        eventType: string,
-        { content, previousContent }: { content: MockValue, previousContent: MockValue }
-    ): void {
+    messaging(app?: firebase.app.App): firebase.messaging.Messaging {
 
-        lodash.each(this.emitters_.shared, (sharedEmitter, sharedEmitterJsonPath) => {
+        return app ? app.messaging() : this.app().messaging();
+    }
 
-            const sharedEmitterRef = this.database().ref(lodash.trim(sharedEmitterJsonPath, "/")) as any as MockRef;
+    storage(app?: firebase.app.App): firebase.storage.Storage {
 
-            let value: MockValue = null;
-            if (json.has(content, sharedEmitterJsonPath)) {
-                value = json.get(content, sharedEmitterJsonPath);
-            }
-
-            let previousValue: MockValue = null;
-            if (json.has(previousContent, sharedEmitterJsonPath)) {
-                previousValue = json.get(previousContent, sharedEmitterJsonPath);
-            }
-
-            if (value !== previousValue) {
-                sharedEmitter.emit("value", {
-                    previousSnapshot: null,
-                    snapshot: new MockDataSnapshot({
-                        content,
-                        ref: sharedEmitterRef
-                    })
-                });
-            }
-
-            if (value === null) {
-                value = {};
-            }
-            if (previousValue === null) {
-                previousValue = {};
-            }
-
-            if ((typeof value === "object") && (typeof previousValue === "object")) {
-
-                const childKeys = Object.keys(value);
-                const previousChildKeys = Object.keys(previousValue);
-
-                lodash.each(lodash.differenceWith(
-                    previousChildKeys,
-                    childKeys
-                ), (removedKey) => {
-
-                    sharedEmitter.emit("child_removed", {
-                        previousSnapshot: new MockDataSnapshot({
-                            content: previousContent,
-                            ref: sharedEmitterRef.child(removedKey)
-                        }),
-                        snapshot: new MockDataSnapshot({
-                            content,
-                            ref: sharedEmitterRef.child(removedKey)
-                        })
-                    });
-                });
-
-                lodash.each(lodash.differenceWith(
-                    childKeys,
-                    previousChildKeys
-                ), (addedKey) => {
-
-                    sharedEmitter.emit("child_added", {
-                        previousSnapshot: new MockDataSnapshot({
-                            content: previousContent,
-                            ref: sharedEmitterRef.child(addedKey)
-                        }),
-                        snapshot: new MockDataSnapshot({
-                            content,
-                            ref: sharedEmitterRef.child(addedKey)
-                        })
-                    });
-                });
-
-                lodash.each(lodash.intersectionWith(
-                    previousChildKeys,
-                    childKeys
-                ), (changedKey) => {
-
-                    if (value[changedKey] !== previousValue[changedKey]) {
-                        sharedEmitter.emit("child_changed", {
-                            previousSnapshot: new MockDataSnapshot({
-                                content: previousContent,
-                                ref: sharedEmitterRef.child(changedKey)
-                            }),
-                            snapshot: new MockDataSnapshot({
-                                content,
-                                ref: sharedEmitterRef.child(changedKey)
-                            })
-                        });
-                    }
-                });
-            }
-        });
+        return app ? app.storage() : this.app().storage();
     }
 }

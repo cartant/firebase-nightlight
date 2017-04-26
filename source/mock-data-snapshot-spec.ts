@@ -36,6 +36,8 @@ describe("mock-data-snapshot", () => {
         const path = "path/to/data";
 
         mock = new Mock({ database });
+        const mockApp = mock.initializeApp({});
+        const mockDatabase = mockApp.database();
         mockRef = mock.database().ref(path);
         mockSnapshot = new MockDataSnapshot({ ref: mockRef });
     });

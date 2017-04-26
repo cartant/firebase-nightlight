@@ -22,7 +22,10 @@ describe("mock-auth", () => {
             email: "alice@apple.com",
             password: "wonderland"
         }];
-        mockAuth = new Mock({ identities }).auth();
+
+        const mock = new Mock({ identities });
+        const mockApp = mock.initializeApp({});
+        mockAuth = mockApp.auth();
     });
 
     describe("createUserWithEmailAndPassword", () => {
@@ -178,7 +181,10 @@ describe("mock-auth", () => {
                 credential: credentials.alice,
                 email: "alice@apple.com"
             }];
-            mockAuth = new Mock({ identities }).auth();
+
+            const mock = new Mock({ identities });
+            const mockApp = mock.initializeApp({});
+            mockAuth = mockApp.auth();
         });
 
         it("should sign in the user", () => {
@@ -214,7 +220,10 @@ describe("mock-auth", () => {
                 email: "alice@apple.com",
                 token: tokens.alice
             }];
-            mockAuth = new Mock({ identities }).auth();
+
+            const mock = new Mock({ identities });
+            const mockApp = mock.initializeApp({});
+            mockAuth = mockApp.auth();
         });
 
         it("should sign in the user", () => {

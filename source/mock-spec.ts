@@ -12,11 +12,60 @@ import { Mock } from "./mock";
 
 describe("mock", () => {
 
-    describe("auth", () => {
+    let initializeOptions: any;
 
-        it("should return a mock auth", () => {
+    beforeEach(() => {
+
+        initializeOptions = {
+            apiKey: "000000000000000000000000000000000000000",
+            authDomain: "nightlight.firebaseapp.com",
+            databaseURL: "https://nightlight.firebaseio.com",
+            storageBucket: "nightlight.appspot.com"
+        };
+    });
+
+    describe("apps", () => {
+
+        it("should return the intialized app", () => {
 
             const mock = new Mock({});
+
+            expect(mock.apps).to.deep.equal([]);
+
+            const mockApp = mock.initializeApp(initializeOptions);
+
+            expect(mock.apps).to.have.length(1);
+        });
+    });
+
+    describe("SDK_VERSION", () => {
+
+        it("should return a version", () => {
+
+            const mock = new Mock({});
+
+            expect(mock.SDK_VERSION).to.equal("mock");
+        });
+    });
+
+    describe("app", () => {
+
+        it("should return an app mock", () => {
+
+            const mock = new Mock({});
+            const mockApp = mock.initializeApp(initializeOptions);
+
+            expect(mock).to.respondTo("auth");
+            expect(mock.auth()).to.exist;
+        });
+    });
+
+    describe("auth", () => {
+
+        it("should return an auth mock", () => {
+
+            const mock = new Mock({});
+            const mockApp = mock.initializeApp(initializeOptions);
 
             expect(mock).to.respondTo("auth");
             expect(mock.auth()).to.exist;
@@ -25,9 +74,10 @@ describe("mock", () => {
 
     describe("database", () => {
 
-        it("should return a mock database", () => {
+        it("should return a database mock", () => {
 
             const mock = new Mock({});
+            const mockApp = mock.initializeApp(initializeOptions);
 
             expect(mock).to.respondTo("database");
             expect(mock.database()).to.exist;
@@ -36,24 +86,41 @@ describe("mock", () => {
 
     describe("initializeApp", () => {
 
-        it("should intialize the mock app", () => {
-
-            const options = {
-                apiKey: "000000000000000000000000000000000000000",
-                authDomain: "nightlight.firebaseapp.com",
-                databaseURL: "https://nightlight.firebaseio.com",
-                storageBucket: "nightlight.appspot.com"
-            };
+        it("should intialize the app mock", () => {
 
             const mock = new Mock({});
-            const mockApp = mock.initializeApp(options);
+            const mockApp = mock.initializeApp(initializeOptions);
 
             expect(mockApp).to.exist;
             expect(mockApp).to.respondTo("auth");
             expect(mockApp).to.respondTo("database");
             expect(mockApp).to.have.property("name");
             expect(mockApp).to.have.property("options");
-            expect(mockApp.options).to.deep.equal(options);
+            expect(mockApp.options).to.deep.equal(initializeOptions);
+        });
+    });
+
+    describe.skip("messaging", () => {
+
+        it("should return a messaging mock", () => {
+
+            const mock = new Mock({});
+            const mockApp = mock.initializeApp(initializeOptions);
+
+            expect(mock).to.respondTo("messaging");
+            expect(mock.messaging()).to.exist;
+        });
+    });
+
+    describe.skip("storage", () => {
+
+        it("should return a storage mock", () => {
+
+            const mock = new Mock({});
+            const mockApp = mock.initializeApp(initializeOptions);
+
+            expect(mock).to.respondTo("storage");
+            expect(mock.storage()).to.exist;
         });
     });
 });
