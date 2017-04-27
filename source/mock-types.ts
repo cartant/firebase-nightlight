@@ -26,7 +26,7 @@ export interface MockIdentity {
 
 export interface MockQuery {
     endAt?: MockPrimitive | null;
-    equalTo?: MockPrimitive;
+    equalTo?: MockPrimitive | null;
     key?: string;
     limitToFirst?: number;
     limitToLast?: number;
