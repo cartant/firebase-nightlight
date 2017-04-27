@@ -104,7 +104,7 @@ describe("json", () => {
 
     describe("remove", () => {
 
-        it("should clone parents on remove", () => {
+        it("should shallow-copy parents on remove", () => {
 
             const result = json.remove(value, "/people/alice/age");
 
@@ -113,7 +113,7 @@ describe("json", () => {
             expect(result.people.alice).to.not.equal(value.people.alice);
         });
 
-        it("should not clone siblings on remove", () => {
+        it("should not shallow-copy siblings on remove", () => {
 
             const result = json.remove(value, "/people/alice/age");
 
@@ -137,7 +137,7 @@ describe("json", () => {
 
     describe("set", () => {
 
-        it("should clone parents on set", () => {
+        it("should shallow-copy parents on set", () => {
 
             const result = json.set(value, "/people/alice/age", 33);
 
@@ -146,7 +146,7 @@ describe("json", () => {
             expect(result.people.alice).to.not.equal(value.people.alice);
         });
 
-        it("should not clone siblings on set", () => {
+        it("should not shallow-copy siblings on set", () => {
 
             const result = json.set(value, "/people/alice/age", 33);
 
