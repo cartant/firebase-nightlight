@@ -138,3 +138,4 @@ If `identities` are specified, they can have the following optional properties:
 | `email` | The user's email. |
 | `password` | The password to match if `signInWithEmailAndPassword` is called. |
 | `token` | The token to match if `signInWithCustomToken` is called. |
+| `uid` | The user's UID. If not specified, a random UID is generated. |
