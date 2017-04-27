@@ -1,5 +1,11 @@
 # firebase-nightlight
 
+[![NPM version](https://img.shields.io/npm/v/firebase-nightlight.svg)](https://www.npmjs.com/package/firebase-nightlight)
+[![Build status](https://img.shields.io/travis/cartant/firebase-nightlight.svg)](http://travis-ci.org/cartant/firebase-nightlight)
+[![dependency status](https://img.shields.io/david/cartant/firebase-nightlight.svg)](https://david-dm.org/cartant/firebase-nightlight)
+[![devDependency Status](https://img.shields.io/david/dev/cartant/firebase-nightlight.svg)](https://david-dm.org/cartant/firebase-nightlight#info=devDependencies)
+[![peerDependency Status](https://img.shields.io/david/peer/cartant/firebase-nightlight.svg)](https://david-dm.org/cartant/firebase-nightlight#info=peerDependencies)
+
 This is an in-memory, JavaScript mock for the Firebase Web API.
 
 Each `Mock` instance mocks the properties and methods of the [`firebase`](https://firebase.google.com/docs/reference/js/firebase) namespace. The options passed when creating a `Mock` allow for the specification of the initial database content and authentication identities.
