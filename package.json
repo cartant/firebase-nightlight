@@ -63,7 +63,7 @@
     "dist:clean": "rimraf dist && rimraf bundles/firebase-nightlight.* && mkdir -p bundles",
     "dist:uglify": "uglifyjs -c -m --screw-ie8 -o bundles/firebase-nightlight.min.umd.js bundles/firebase-nightlight.umd.js",
     "lint": "tslint --project tsconfig.json --type-check source/**/*.ts",
-    "_prepublish": "npm run test && npm run dist",
+    "prepublish": "npm run test && npm run dist",
     "test": "npm run lint && npm run test:build && karma start",
     "test:build": "npm run test:clean && npm run test:copy && tsc -p tsconfig.json && browserify build/index-spec.js -s firebaseNightlightTest -o bundles/firebase-nightlight-test.umd.js",
     "test:copy": "cpy source/lodash.* build/",
