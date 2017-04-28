@@ -903,9 +903,9 @@ describe("mock-ref", () => {
 
                 /*tslint:disable:object-literal-sort-keys*/
                 database.content["path"]["to"]["data"] = {
-                    "-zzzzzzz000000000002": { deep: { value: 2 }, name: "two", value: 2 },
-                    "-zzzzzzz000000000000": { deep: { value: 0 }, name: "zero", value: 0 },
-                    "-zzzzzzz000000000001": { deep: { value: 1 }, name: "one", value: 1 }
+                    "-zzzzzzz000000000002": { deep: { value: "w" }, name: "two", value: "a" },
+                    "-zzzzzzz000000000000": { deep: { value: "x" }, name: "zero", value: "c" },
+                    "-zzzzzzz000000000001": { deep: { value: "y" }, name: "one", value: "b" }
                 };
                 /*tslint:enable:object-literal-sort-keys*/
             });
@@ -926,13 +926,13 @@ describe("mock-ref", () => {
 
                     if (values.length === 3) {
                         expect(values).to.deep.equal([
-                            { deep: { value: 0 }, name: "zero", value: 0 },
-                            { deep: { value: 1 }, name: "one", value: 1 },
-                            { deep: { value: 2 }, name: "two", value: 2 }
+                            { deep: { value: "w" }, name: "two", value: "a" },
+                            { deep: { value: "y" }, name: "one", value: "b" },
+                            { deep: { value: "x" }, name: "zero", value: "c" }
                         ]);
                         expect(previousKeys).to.deep.equal([
                             null,
-                            "-zzzzzzz000000000000",
+                            "-zzzzzzz000000000002",
                             "-zzzzzzz000000000001"
                         ]);
                         callback();
@@ -956,32 +956,32 @@ describe("mock-ref", () => {
 
                     if (values.length === 3) {
                         expect(values).to.deep.equal([
-                            { deep: { value: 0 }, name: "zero", value: 0 },
-                            { deep: { value: 1 }, name: "one", value: 1 },
-                            { deep: { value: 2 }, name: "two", value: 2 }
+                            { deep: { value: "w" }, name: "two", value: "a" },
+                            { deep: { value: "y" }, name: "one", value: "b" },
+                            { deep: { value: "x" }, name: "zero", value: "c" }
                         ]);
                         expect(previousKeys).to.deep.equal([
                             null,
-                            "-zzzzzzz000000000000",
+                            "-zzzzzzz000000000002",
                             "-zzzzzzz000000000001"
                         ]);
                     } else if (values.length === 4) {
                         expect(values).to.deep.equal([
-                            { deep: { value: 0 }, name: "zero", value: 0 },
-                            { deep: { value: 1 }, name: "one", value: 1 },
-                            { deep: { value: 2 }, name: "two", value: 2 },
-                            { deep: { value: 3 }, name: "three", value: 3 }
+                            { deep: { value: "w" }, name: "two", value: "a" },
+                            { deep: { value: "y" }, name: "one", value: "b" },
+                            { deep: { value: "x" }, name: "zero", value: "c" },
+                            { deep: { value: "z" }, name: "three", value: "d" }
                         ]);
                         expect(previousKeys).to.deep.equal([
                             null,
-                            "-zzzzzzz000000000000",
+                            "-zzzzzzz000000000002",
                             "-zzzzzzz000000000001",
-                            "-zzzzzzz000000000002"
+                            "-zzzzzzz000000000000"
                         ]);
                         callback();
                     }
                 });
-                mockRef.push({ deep: { value: 3 }, name: "three", value: 3 }).catch(callback);
+                mockRef.push({ deep: { value: "z" }, name: "three", value: "d" }).catch(callback);
             });
 
             it("should order using 'value' and 'forEach'", (callback) => {
@@ -998,9 +998,9 @@ describe("mock-ref", () => {
                     });
 
                     expect(values).to.deep.equal([
-                        { deep: { value: 0 }, name: "zero", value: 0 },
-                        { deep: { value: 1 }, name: "one", value: 1 },
-                        { deep: { value: 2 }, name: "two", value: 2 }
+                        { deep: { value: "w" }, name: "two", value: "a" },
+                        { deep: { value: "y" }, name: "one", value: "b" },
+                        { deep: { value: "x" }, name: "zero", value: "c" }
                     ]);
                     callback();
                 });
@@ -1024,9 +1024,9 @@ describe("mock-ref", () => {
                     });
 
                     expect(values).to.deep.equal([
-                        { deep: { value: 0 }, name: "zero", value: 0 },
-                        { deep: { value: 1 }, name: "one", value: 1 },
-                        { deep: { value: 2 }, name: "two", value: 2 }
+                        { deep: { value: "w" }, name: "two", value: "a" },
+                        { deep: { value: "x" }, name: "zero", value: "c" },
+                        { deep: { value: "y" }, name: "one", value: "b" }
                     ]);
                     callback();
                 });
