@@ -682,6 +682,19 @@ describe("mock-ref", () => {
                     expect(database.content[pushedRef.key]).to.not.equal(snapshot.val());
                 });
         });
+
+        it("should return a ThenableReference that resolves to a Reference", () => {
+
+            const pushedRef = sequenceRef.push({
+                name: "alice"
+            });
+
+            return pushedRef
+                .then((ref) => {
+
+                    expect(ref.toString()).to.equal(pushedRef.toString());
+                });
+        });
     });
 
     describe("queries", () => {

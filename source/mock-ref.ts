@@ -420,12 +420,14 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         }
 
         const childRef = this.child(getPushedKey()) as any as MockRef;
+        childRef["then"] = null;
+
         return new MockRef({
             app: childRef.app_,
             database: childRef.database_,
             emitters: this.emitters_,
             path: childRef.path_,
-            promise: childRef.set(value)
+            promise: childRef.set(value).then(() => childRef)
         });
     }
 
