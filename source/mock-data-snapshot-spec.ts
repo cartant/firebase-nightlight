@@ -146,4 +146,21 @@ describe("mock-data-snapshot", () => {
             expect(result).to.deep.equal(content.path.to.data);
         });
     });
+
+    describe("valueComparer", () => {
+
+        it("should compare non-null values", () => {
+
+            expect(MockDataSnapshot.valueComparer(1, 2)).to.equal(-1);
+            expect(MockDataSnapshot.valueComparer(1, 1)).to.equal(0);
+            expect(MockDataSnapshot.valueComparer(2, 1)).to.equal(1);
+        });
+
+        it("should compare null values", () => {
+
+            expect(MockDataSnapshot.valueComparer(null, -1)).to.equal(-1);
+            expect(MockDataSnapshot.valueComparer(null, null)).to.equal(0);
+            expect(MockDataSnapshot.valueComparer(-1, null)).to.equal(1);
+        });
+    });
 });

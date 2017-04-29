@@ -40,6 +40,17 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
         return a.key === b.key;
     }
 
+    static valueComparer(a: any, b: any): number {
+
+        if (a === null) {
+            return (b === null) ? 0 : -1;
+        }
+        if (b === null) {
+            return 1;
+        }
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+    }
+
     constructor(options: MockDataSnapshotOptions) {
 
         this.ref_ = options.ref;
@@ -181,9 +192,7 @@ function pairChildComparer(path: string): (a: MockPair, b: MockPair) => number {
 
     return (a: MockPair, b: MockPair) => {
 
-        const av = json.get(a.value, path);
-        const bv = json.get(b.value, path);
-        return (av < bv) ? -1 : (av > bv) ? 1 : 0;
+        return MockDataSnapshot.valueComparer(json.get(a.value, path), json.get(b.value, path));
     };
 }
 
@@ -198,10 +207,10 @@ function pairChildPredicate(path: string, query: MockQuery): (pair: MockPair) =>
         if (query.equalTo !== undefined) {
             return value === query.equalTo;
         }
-        if ((query.startAt !== undefined) && (value < query.startAt)) {
+        if ((query.startAt !== undefined) && (MockDataSnapshot.valueComparer(value, query.startAt) < 0)) {
             return false;
         }
-        if ((query.endAt !== undefined) && (value > query.endAt)) {
+        if ((query.endAt !== undefined) && (MockDataSnapshot.valueComparer(value, query.endAt) > 0)) {
             return false;
         }
         return true;
@@ -227,9 +236,7 @@ function pairKeyPredicate(query: MockQuery): (pair: MockPair) => boolean {
 
 function pairValueComparer(a: MockPair, b: MockPair): number {
 
-    const av = a.value;
-    const bv = b.value;
-    return (av < bv) ? -1 : (av > bv) ? 1 : 0;
+    return MockDataSnapshot.valueComparer(a.value, b.value);
 }
 
 function pairValuePredicate(query: MockQuery): (pair: MockPair) => boolean {
