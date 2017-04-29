@@ -87,6 +87,18 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
             this.key_ = this.path_.substring(index + 1);
             this.parentPath_ = this.path_.substring(0, index);
         }
+
+        if (!this.promise_) {
+            this["catch"] = null;
+            this["then"] = null;
+        }
+
+        if (this.isQuery_()) {
+            this["push"] = null;
+            this["remove"] = null;
+            this["set"] = null;
+            this["update"] = null;
+        }
     }
 
     get key(): string {
@@ -420,8 +432,6 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         }
 
         const childRef = this.child(getPushedKey()) as any as MockRef;
-        childRef["then"] = null;
-
         return new MockRef({
             app: childRef.app_,
             database: childRef.database_,
