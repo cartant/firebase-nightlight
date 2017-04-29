@@ -1759,4 +1759,23 @@ describe("mock-ref", () => {
                 });
         });
     });
+
+    describe(".info", () => {
+
+        it("should mock .info", () => {
+
+            const childRef = mockRef.root.child(".info");
+
+            return childRef
+                .once("value")
+                .then((snapshot) => {
+
+                    expect(snapshot.exists()).to.be.true;
+                    expect(snapshot.val()).to.deep.equal({
+                        connected: true,
+                        serverTimeOffset: 0
+                    });
+                });
+        });
+    });
 });

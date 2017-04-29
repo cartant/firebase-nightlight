@@ -62,7 +62,13 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         this.query_ = options.query || {};
         this.queue_ = [];
 
-        if (/[\.\$\[\]#]/.test(this.path_)) {
+        if (this.path_ === ".info") {
+            this.database_.content = this.database_.content || {};
+            this.database_.content[".info"] = this.database_.content[".info"] || {
+                connected: true,
+                serverTimeOffset: 0
+            };
+        } else if (/[\.\$\[\]#]/.test(this.path_)) {
             throw new Error("Illegal characters in path.");
         }
 
