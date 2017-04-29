@@ -728,6 +728,29 @@ describe("mock-ref", () => {
                     callback();
                 });
             });
+
+            it("should query by child and support the optional key parameter", (callback) => {
+
+                /*tslint:disable:object-literal-sort-keys*/
+                database.content["path"]["to"]["data"] = {
+                    "-zzzzzzz000000000002": { name: "onetwo", value: 1 },
+                    "-zzzzzzz000000000000": { name: "zero", value: 0 },
+                    "-zzzzzzz000000000001": { name: "one", value: 1 }
+                };
+                /*tslint:enable:object-literal-sort-keys*/
+
+                const queryRef = mockRef.orderByChild("value").endAt(1, "-zzzzzzz000000000001");
+                queryRef.on("value", (snapshot) => {
+
+                    expect(snapshot).to.be.an("object");
+                    expect(snapshot).to.respondTo("val");
+                    expect(snapshot.val()).to.deep.equal({
+                        "-zzzzzzz000000000000": database.content["path"]["to"]["data"]["-zzzzzzz000000000000"],
+                        "-zzzzzzz000000000001": database.content["path"]["to"]["data"]["-zzzzzzz000000000001"]
+                    });
+                    callback();
+                });
+            });
         });
 
         describe("equalTo", () => {
@@ -755,6 +778,28 @@ describe("mock-ref", () => {
                     expect(snapshot).to.respondTo("val");
                     expect(snapshot.val()).to.deep.equal({
                         "-zzzzzzz000000000000": database.content["path"]["to"]["data"]["-zzzzzzz000000000000"]
+                    });
+                    callback();
+                });
+            });
+
+            it("should query by child and support the optional key parameter", (callback) => {
+
+                /*tslint:disable:object-literal-sort-keys*/
+                database.content["path"]["to"]["data"] = {
+                    "-zzzzzzz000000000002": { name: "onetwo", value: 1 },
+                    "-zzzzzzz000000000000": { name: "zero", value: 0 },
+                    "-zzzzzzz000000000001": { name: "one", value: 1 }
+                };
+                /*tslint:enable:object-literal-sort-keys*/
+
+                const queryRef = mockRef.orderByChild("value").equalTo(1, "-zzzzzzz000000000002");
+                queryRef.on("value", (snapshot) => {
+
+                    expect(snapshot).to.be.an("object");
+                    expect(snapshot).to.respondTo("val");
+                    expect(snapshot.val()).to.deep.equal({
+                        "-zzzzzzz000000000002": database.content["path"]["to"]["data"]["-zzzzzzz000000000002"]
                     });
                     callback();
                 });
@@ -1260,7 +1305,26 @@ describe("mock-ref", () => {
                 });
             });
 
-            it.skip("should query by child and support the optional key parameter", (callback) => {
+            it("should query by child and support the optional key parameter", (callback) => {
+
+                /*tslint:disable:object-literal-sort-keys*/
+                database.content["path"]["to"]["data"] = {
+                    "-zzzzzzz000000000002": { name: "onetwo", value: 1 },
+                    "-zzzzzzz000000000000": { name: "zero", value: 0 },
+                    "-zzzzzzz000000000001": { name: "one", value: 1 }
+                };
+                /*tslint:enable:object-literal-sort-keys*/
+
+                const queryRef = mockRef.orderByChild("value").startAt(1, "-zzzzzzz000000000002");
+                queryRef.on("value", (snapshot) => {
+
+                    expect(snapshot).to.be.an("object");
+                    expect(snapshot).to.respondTo("val");
+                    expect(snapshot.val()).to.deep.equal({
+                        "-zzzzzzz000000000002": database.content["path"]["to"]["data"]["-zzzzzzz000000000002"]
+                    });
+                    callback();
+                });
             });
         });
     });

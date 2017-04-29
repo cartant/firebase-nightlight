@@ -9,7 +9,7 @@ import * as json from "./json";
 import * as lodash from "./lodash";
 
 import { unsupported } from "./mock-error";
-import { MockQuery, MockRefInternals, MockValue } from "./mock-types";
+import { MockPrimitive, MockQuery, MockRefInternals, MockValue } from "./mock-types";
 
 export interface MockPair {
     key: string;
@@ -186,6 +186,38 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
     }
 }
 
+function endAtPredicate(
+    value: MockValue,
+    key: string,
+    endAtValue: MockPrimitive | null,
+    endAtKey: string | null
+): boolean {
+
+    if (MockDataSnapshot.valueComparer(value, endAtValue) > 0) {
+        return false;
+    }
+    if (endAtKey && (key > endAtKey)) {
+        return false;
+    }
+    return true;
+}
+
+function equalToPredicate(
+    value: MockValue,
+    key: string,
+    equalToValue: MockPrimitive | null,
+    equalToKey: string | null
+): boolean {
+
+    if (MockDataSnapshot.valueComparer(value, equalToValue) !== 0) {
+        return false;
+    }
+    if (equalToKey && (key !== equalToKey)) {
+        return false;
+    }
+    return true;
+}
+
 function pairChildComparer(path: string): (a: MockPair, b: MockPair) => number {
 
     path = json.slash(path);
@@ -204,13 +236,13 @@ function pairChildPredicate(path: string, query: MockQuery): (pair: MockPair) =>
 
         const value = json.get(pair.value, path);
 
-        if (query.equalTo !== undefined) {
-            return value === query.equalTo;
-        }
-        if ((query.startAt !== undefined) && (MockDataSnapshot.valueComparer(value, query.startAt) < 0)) {
+        if ((query.equalTo !== undefined) && !equalToPredicate(value, pair.key, query.equalTo, query.key)) {
             return false;
         }
-        if ((query.endAt !== undefined) && (MockDataSnapshot.valueComparer(value, query.endAt) > 0)) {
+        if ((query.startAt !== undefined) && !startAtPredicate(value, pair.key, query.startAt, query.key)) {
+            return false;
+        }
+        if ((query.endAt !== undefined) && !endAtPredicate(value, pair.key, query.endAt, query.key)) {
             return false;
         }
         return true;
@@ -221,8 +253,8 @@ function pairKeyPredicate(query: MockQuery): (pair: MockPair) => boolean {
 
     return (pair) => {
 
-        if (query.equalTo !== undefined) {
-            return pair.key === query.equalTo;
+        if ((query.equalTo !== undefined) && (pair.key !== query.equalTo)) {
+            return false;
         }
         if ((query.startAt !== undefined) && (pair.key < query.startAt)) {
             return false;
@@ -243,17 +275,33 @@ function pairValuePredicate(query: MockQuery): (pair: MockPair) => boolean {
 
     return (pair) => {
 
-        if (query.equalTo !== undefined) {
-            return pair.value === query.equalTo;
-        }
-        if ((query.startAt !== undefined) && (pair.value < query.startAt)) {
+        if ((query.equalTo !== undefined) && !equalToPredicate(pair.value, pair.key, query.equalTo, query.key)) {
             return false;
         }
-        if ((query.endAt !== undefined) && (pair.value > query.endAt)) {
+        if ((query.startAt !== undefined) && !startAtPredicate(pair.value, pair.key, query.startAt, query.key)) {
+            return false;
+        }
+        if ((query.endAt !== undefined) && !endAtPredicate(pair.value, pair.key, query.endAt, query.key)) {
             return false;
         }
         return true;
     };
+}
+
+function startAtPredicate(
+    value: MockValue,
+    key: string,
+    startAtValue: MockPrimitive | null,
+    startAtKey: string | null
+): boolean {
+
+    if (MockDataSnapshot.valueComparer(value, startAtValue) < 0) {
+        return false;
+    }
+    if (startAtKey && (key < startAtKey)) {
+        return false;
+    }
+    return true;
 }
 
 function toPair(value: MockValue, key: string): MockPair {
