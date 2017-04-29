@@ -835,8 +835,10 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         const limitQuery = this.query_.limitToFirst || this.query_.limitToLast;
 
         let pairs: MockPair[];
+        let pairsIndex: number;
         let previousKey: string;
         let previousPairs: MockPair[];
+        let previousPairsIndex: number;
 
         if (childEvent) {
 
@@ -844,16 +846,16 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
                 ref: this,
                 snapshot
             }).pairs_();
+            pairsIndex = lodash.findIndex(pairs, (pair) => pair.key === snapshot.ref.key);
+            previousKey = (pairsIndex <= 0) ? null : pairs[pairsIndex - 1].key;
 
-            const index = lodash.findIndex(pairs, (pair) => pair.key === snapshot.ref.key);
-            previousKey = (index <= 0) ? null : pairs[index - 1].key;
+            previousPairs = new MockDataSnapshot({
+                ref: this,
+                snapshot: previousSnapshot
+            }).pairs_();
+            previousPairsIndex = lodash.findIndex(previousPairs, (pair) => pair.key === previousSnapshot.ref.key);
 
             if (limitQuery) {
-
-                previousPairs = new MockDataSnapshot({
-                    ref: this,
-                    snapshot: previousSnapshot
-                }).pairs_();
 
                 if ((eventType === "child_added") || (eventType === "child_changed")) {
 
@@ -872,11 +874,14 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
             }
         }
 
-        this.refEmitter_.emit(
-            eventType,
-            (eventType === "child_removed") ? previousSnapshot : snapshot,
-            previousKey
-        );
+        if (!childEvent || (pairsIndex !== -1) || (previousPairsIndex !== -1)) {
+
+            this.refEmitter_.emit(
+                eventType,
+                (eventType === "child_removed") ? previousSnapshot : snapshot,
+                previousKey
+            );
+        }
 
         if (childEvent && limitQuery && ((eventType === "child_changed") || (eventType === "child_removed"))) {
 

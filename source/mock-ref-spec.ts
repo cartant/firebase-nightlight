@@ -13,6 +13,8 @@ import { Mock } from "./mock";
 import { MockRef } from "./mock-ref";
 import { MockValue } from "./mock-types";
 
+const waitMilliseconds = 40;
+
 describe("mock-ref", () => {
 
     let database: { content: MockValue };
@@ -91,7 +93,7 @@ describe("mock-ref", () => {
             }, callback);
             mockRef.off("value", listener);
 
-            setTimeout(callback, 20);
+            setTimeout(callback, waitMilliseconds);
         });
 
         it("should remove all listeners", (callback) => {
@@ -102,7 +104,7 @@ describe("mock-ref", () => {
             }, callback);
             mockRef.off();
 
-            setTimeout(callback, 20);
+            setTimeout(callback, waitMilliseconds);
         });
     });
 
@@ -432,6 +434,28 @@ describe("mock-ref", () => {
 
                 expect(called).to.be.true;
             });
+
+            it("should not fire for non-matching queries", () => {
+
+                let queryRef: firebase.database.Query;
+                let listener: (snapshot: firebase.database.DataSnapshot, prevKey?: string) => any;
+
+                return mockRef
+                    .set({ a: 1, b: 2, c: 3 })
+                    .then(() => {
+
+                        queryRef = mockRef.orderByKey().startAt("e");
+                        listener = queryRef.on("child_added", () => {
+
+                            throw new Error("Should not be called.");
+                        });
+                        return mockRef.update({ d: 4 });
+                    })
+                    .then(() => {
+
+                        queryRef.off("child_added", listener);
+                    });
+            });
         });
 
         describe("child_changed", () => {
@@ -469,6 +493,28 @@ describe("mock-ref", () => {
                 });
 
                 mockRef.update({ question: "why?" });
+            });
+
+            it("should not fire for non-matching queries", () => {
+
+                let queryRef: firebase.database.Query;
+                let listener: (snapshot: firebase.database.DataSnapshot, prevKey?: string) => any;
+
+                return mockRef
+                    .set({ a: 1, b: 2, c: 3 })
+                    .then(() => {
+
+                        queryRef = mockRef.orderByKey().startAt("e");
+                        listener = queryRef.on("child_changed", () => {
+
+                            throw new Error("Should not be called.");
+                        });
+                        return mockRef.update({ b: 0 });
+                    })
+                    .then(() => {
+
+                        queryRef.off("child_changed", listener);
+                    });
             });
         });
 
@@ -533,6 +579,28 @@ describe("mock-ref", () => {
                 });
 
                 mockRef.update({ answer: null });
+            });
+
+            it("should not fire for non-matching queries", () => {
+
+                let queryRef: firebase.database.Query;
+                let listener: (snapshot: firebase.database.DataSnapshot, prevKey?: string) => any;
+
+                return mockRef
+                    .set({ a: 1, b: 2, c: 3 })
+                    .then(() => {
+
+                        queryRef = mockRef.orderByKey().startAt("e");
+                        listener = queryRef.on("child_removed", () => {
+
+                            throw new Error("Should not be called.");
+                        });
+                        return mockRef.update({ b: null });
+                    })
+                    .then(() => {
+
+                        queryRef.off("child_removed", listener);
+                    });
             });
         });
     });
