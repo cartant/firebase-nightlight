@@ -1,3 +1,10 @@
+<a name="1.0.6"></a>
+## [1.0.6](https://github.com/cartant/firebase-nightlight/compare/v1.0.5...v1.0.6) (2017-04-29)
+
+### Bug Fixes
+
+* **query:** Support optional key ([150573f](https://github.com/cartant/firebase-nightlight/commit/150573f))
+
 <a name="1.0.5"></a>
 ## [1.0.5](https://github.com/cartant/firebase-nightlight/compare/v1.0.4...v1.0.5) (2017-04-29)
 
