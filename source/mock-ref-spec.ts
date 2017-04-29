@@ -734,7 +734,7 @@ describe("mock-ref", () => {
                 /*tslint:disable:object-literal-sort-keys*/
                 database.content["path"]["to"]["data"] = {
                     "-zzzzzzz000000000002": { name: "onetwo", value: 1 },
-                    "-zzzzzzz000000000000": { name: "zero", value: 0 },
+                    "-zzzzzzz000000000003": { name: "zerothree", value: 0 },
                     "-zzzzzzz000000000001": { name: "one", value: 1 }
                 };
                 /*tslint:enable:object-literal-sort-keys*/
@@ -745,8 +745,8 @@ describe("mock-ref", () => {
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
                     expect(snapshot.val()).to.deep.equal({
-                        "-zzzzzzz000000000000": database.content["path"]["to"]["data"]["-zzzzzzz000000000000"],
-                        "-zzzzzzz000000000001": database.content["path"]["to"]["data"]["-zzzzzzz000000000001"]
+                        "-zzzzzzz000000000001": database.content["path"]["to"]["data"]["-zzzzzzz000000000001"],
+                        "-zzzzzzz000000000003": database.content["path"]["to"]["data"]["-zzzzzzz000000000003"]
                     });
                     callback();
                 });
@@ -1310,7 +1310,7 @@ describe("mock-ref", () => {
                 /*tslint:disable:object-literal-sort-keys*/
                 database.content["path"]["to"]["data"] = {
                     "-zzzzzzz000000000002": { name: "onetwo", value: 1 },
-                    "-zzzzzzz000000000000": { name: "zero", value: 0 },
+                    "-zzzzzzz000000000000": { name: "threezero", value: 3 },
                     "-zzzzzzz000000000001": { name: "one", value: 1 }
                 };
                 /*tslint:enable:object-literal-sort-keys*/
@@ -1321,6 +1321,7 @@ describe("mock-ref", () => {
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
                     expect(snapshot.val()).to.deep.equal({
+                        "-zzzzzzz000000000000": database.content["path"]["to"]["data"]["-zzzzzzz000000000000"],
                         "-zzzzzzz000000000002": database.content["path"]["to"]["data"]["-zzzzzzz000000000002"]
                     });
                     callback();

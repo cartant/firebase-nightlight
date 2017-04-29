@@ -193,10 +193,11 @@ function endAtPredicate(
     endAtKey: string | null
 ): boolean {
 
-    if (MockDataSnapshot.valueComparer(value, endAtValue) > 0) {
+    const comparison = MockDataSnapshot.valueComparer(value, endAtValue);
+    if (comparison > 0) {
         return false;
     }
-    if (endAtKey && (key > endAtKey)) {
+    if ((comparison === 0) && endAtKey && (key > endAtKey)) {
         return false;
     }
     return true;
@@ -295,10 +296,11 @@ function startAtPredicate(
     startAtKey: string | null
 ): boolean {
 
-    if (MockDataSnapshot.valueComparer(value, startAtValue) < 0) {
+    const comparison = MockDataSnapshot.valueComparer(value, startAtValue);
+    if (comparison < 0) {
         return false;
     }
-    if (startAtKey && (key < startAtKey)) {
+    if ((comparison === 0) && startAtKey && (key < startAtKey)) {
         return false;
     }
     return true;
