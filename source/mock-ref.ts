@@ -827,6 +827,10 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         { snapshot, previousSnapshot }: { snapshot: MockDataSnapshot, previousSnapshot: MockDataSnapshot }
     ): void {
 
+        if (this.refEmitterBindings_.length === 0) {
+            return;
+        }
+
         const childEvent = /^child_/.test(eventType);
         const limitQuery = this.query_.limitToFirst || this.query_.limitToLast;
 
