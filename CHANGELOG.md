@@ -1,3 +1,15 @@
+<a name="1.0.8"></a>
+## [1.0.8](https://github.com/cartant/firebase-nightlight/compare/v1.0.7...v1.0.8) (2017-04-29)
+
+### Bug Fixes
+
+* **ref:** Resolve `ThenableReference` returned by `push` ([934d876](https://github.com/cartant/firebase-nightlight/commit/934d876))
+* **auth:** Emit the current auth state from `onAuthStateChanged` ([f1e761a](https://github.com/cartant/firebase-nightlight/commit/f1e761a))
+* **ref:** Hide invalid methods ([da2d6c9](https://github.com/cartant/firebase-nightlight/commit/da2d6c9))
+* **ref:** Mock `.info` ([5197ccd](https://github.com/cartant/firebase-nightlight/commit/5197ccd))
+* **ref:** Skip shared event listener when possible ([eba0e07](https://github.com/cartant/firebase-nightlight/commit/eba0e07))
+* **query:** Prevent non-matching events ([6d35552](https://github.com/cartant/firebase-nightlight/commit/6d35552))
+
 <a name="1.0.7"></a>
 ## [1.0.7](https://github.com/cartant/firebase-nightlight/compare/v1.0.6...v1.0.7) (2017-04-29)
 
