@@ -225,7 +225,10 @@ function pairChildComparer(path: string): (a: MockPair, b: MockPair) => number {
 
     return (a: MockPair, b: MockPair) => {
 
-        return MockDataSnapshot.valueComparer(json.get(a.value, path), json.get(b.value, path));
+        return MockDataSnapshot.valueComparer(
+            toChildValue(a.value, path),
+            toChildValue(b.value, path)
+        );
     };
 }
 
@@ -235,7 +238,7 @@ function pairChildPredicate(path: string, query: MockQuery): (pair: MockPair) =>
 
     return (pair) => {
 
-        const value = json.get(pair.value, path);
+        const value = toChildValue(pair.value, path);
 
         if ((query.equalTo !== undefined) && !equalToPredicate(value, pair.key, query.equalTo, query.key)) {
             return false;
@@ -304,6 +307,11 @@ function startAtPredicate(
         return false;
     }
     return true;
+}
+
+function toChildValue(value: MockValue, path: string): MockPrimitive | null {
+
+    return json.has(value, path) ? json.get(value, path) : null;
 }
 
 function toPair(value: MockValue, key: string): MockPair {

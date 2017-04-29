@@ -885,6 +885,22 @@ describe("mock-ref", () => {
                     callback();
                 });
             });
+
+            it("should support missing children", (callback) => {
+
+                const queryRef = mockRef.orderByChild("missing").equalTo(null);
+                queryRef.on("value", (snapshot) => {
+
+                    expect(snapshot).to.be.an("object");
+                    expect(snapshot).to.respondTo("val");
+                    expect(snapshot.val()).to.deep.equal({
+                        "-zzzzzzz000000000000": database.content["path"]["to"]["data"]["-zzzzzzz000000000000"],
+                        "-zzzzzzz000000000001": database.content["path"]["to"]["data"]["-zzzzzzz000000000001"],
+                        "-zzzzzzz000000000002": database.content["path"]["to"]["data"]["-zzzzzzz000000000002"]
+                    });
+                    callback();
+                });
+            });
         });
 
         describe("limitToFirst", () => {
