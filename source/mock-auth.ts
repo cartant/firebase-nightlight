@@ -109,6 +109,8 @@ export class MockAuth implements firebase.auth.Auth {
         this.emitter_.on("auth", nextCallback);
         this.emitter_.on("error", errorCallback);
 
+        setTimeout(() => this.emitter_.emit("auth", this.currentUser_), 0);
+
         return () => {
             this.emitter_.off("auth", nextCallback);
             this.emitter_.off("error", errorCallback);

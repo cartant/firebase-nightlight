@@ -151,6 +151,20 @@ describe("mock-auth", () => {
                     unsubscribe();
                 });
         });
+
+        it("should emit the current state", (callback) => {
+
+            const unsubscribe = mockAuth.onAuthStateChanged({
+                completed(): void {},
+                error(error: any): void { throw error; },
+                next(value: firebase.User): void {
+
+                    expect(value).to.be.null;
+                    unsubscribe();
+                    callback();}
+            });
+            expect(unsubscribe).to.be.a("function");
+        });
     });
 
     describe("signInAnonymously", () => {
