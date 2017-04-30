@@ -145,3 +145,22 @@ If `identities` are specified, they can have the following optional properties:
 | `password` | The password to match if `signInWithEmailAndPassword` is called. |
 | `token` | The token to match if `signInWithCustomToken` is called. |
 | `uid` | The user's UID. If not specified, a random UID is generated. |
+
+### Additions to the Firebase Web API
+
+The mock's implementation of `firebase.database.Reference` includes a `stats_` function that will return the current listener counts for each event type. For example:
+
+```js
+mockRef.on("child_added", () => {});
+mockRef.on("child_removed", () => {});
+
+const stats = mockRef.stats_();
+expect(stats.listeners).to.deep.equal({
+    child_added: 1,
+    child_changed: 0,
+    child_moved: 0,
+    child_removed: 1,
+    total: 2,
+    value: 0
+});
+```

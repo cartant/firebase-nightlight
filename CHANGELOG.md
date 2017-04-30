@@ -1,3 +1,10 @@
+<a name="1.1.0"></a>
+## [1.1.0](https://github.com/cartant/firebase-nightlight/compare/v1.0.9...v1.1.0) (2017-05-01)
+
+### Features
+
+* **ref:** Add `stats_` function for counting listeners ([80dfc59](https://github.com/cartant/firebase-nightlight/commit/80dfc59))
+
 <a name="1.0.9"></a>
 ## [1.0.9](https://github.com/cartant/firebase-nightlight/compare/v1.0.8...v1.0.9) (2017-04-30)
 
