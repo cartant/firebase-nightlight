@@ -11,7 +11,7 @@ import * as lodash from "./lodash";
 import { EventEmitter2 } from "eventemitter2";
 import { key } from "firebase-key";
 import { MockDataSnapshot, MockPair } from "./mock-data-snapshot";
-import { error, unsupported } from "./mock-error";
+import { error_, unsupported_ } from "./mock-error";
 
 import {
     MockEmitters,
@@ -168,7 +168,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     child(path: string): firebase.database.Reference {
 
         if (this.queried_) {
-            throw unsupported("Queries do not support 'child'.");
+            throw unsupported_("Queries do not support 'child'.");
         }
 
         return new MockRef({
@@ -207,7 +207,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
     isEqual(other: firebase.database.Query | null): boolean {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     limitToFirst(limit: number): firebase.database.Reference {
@@ -362,7 +362,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
     onDisconnect(): firebase.database.OnDisconnect {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     orderByChild(path: string): firebase.database.Reference {
@@ -395,7 +395,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
         this.assertOrder_();
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     orderByValue(): firebase.database.Reference {
@@ -417,7 +417,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     ): firebase.database.ThenableReference {
 
         if (this.queried_) {
-            throw unsupported("Queries do not support 'push'.");
+            throw unsupported_("Queries do not support 'push'.");
         }
 
         const childRef = this.child(getPushedKey()) as any as MockRef;
@@ -435,7 +435,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     ): firebase.database.ThenableReference {
 
         if (this.queried_) {
-            throw unsupported("Queries do not support 'remove'.");
+            throw unsupported_("Queries do not support 'remove'.");
         }
 
         const previousContent = this.database_.content;
@@ -494,7 +494,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     ): firebase.Promise<any> {
 
         if (this.queried_) {
-            throw unsupported("Queries do not support 'set'.");
+            throw unsupported_("Queries do not support 'set'.");
         }
 
         if (value === null) {
@@ -551,7 +551,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         callback?: (error: Error | null) => any
     ): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     setWithPriority(
@@ -560,7 +560,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         callback?: (error: Error | null) => any
     ): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     startAt(value: MockPrimitive | null, key?: string): firebase.database.Reference {
@@ -607,7 +607,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
     toJSON(): Object {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     toString(): string {
@@ -623,7 +623,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     ): firebase.Promise<any> {
 
         if (this.queried_) {
-            throw unsupported("Queries do not support 'transaction'.");
+            throw unsupported_("Queries do not support 'transaction'.");
         }
 
         const previousContent = this.database_.content;
@@ -688,7 +688,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     ): firebase.Promise<any> {
 
         if (this.queried_) {
-            throw unsupported("Queries do not support 'update'.");
+            throw unsupported_("Queries do not support 'update'.");
         }
 
         const previousContent = this.database_.content;
@@ -743,65 +743,65 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     private assertEndAt_(): void {
 
         if (this.query_.endAt !== undefined) {
-            throw error("database/query", "Already specified end at.");
+            throw error_("database/query", "Already specified end at.");
         }
         if (this.query_.equalTo !== undefined) {
-            throw error("database/query", "Already specified equal to.");
+            throw error_("database/query", "Already specified equal to.");
         }
         if ((this.query_.startAt !== undefined) && (this.query_.limitToFirst || this.query_.limitToLast)) {
-            throw error("database/query", "Already specified start at and limit.");
+            throw error_("database/query", "Already specified start at and limit.");
         }
     }
 
     private assertEqualTo_(): void {
 
         if (this.query_.endAt !== undefined) {
-            throw error("database/query", "Already specified end at.");
+            throw error_("database/query", "Already specified end at.");
         }
         if (this.query_.startAt !== undefined) {
-            throw error("database/query", "Already specified start at.");
+            throw error_("database/query", "Already specified start at.");
         }
     }
 
     private assertLimit_(): void {
 
         if ((this.query_.startAt !== undefined) && (this.query_.endAt !== undefined)) {
-            throw error("database/query", "Already specified start/end at.");
+            throw error_("database/query", "Already specified start/end at.");
         }
         if (this.query_.limitToFirst) {
-            throw error("database/query", "Already limited to first.");
+            throw error_("database/query", "Already limited to first.");
         }
         if (this.query_.limitToLast) {
-            throw error("database/query", "Already limited to last.");
+            throw error_("database/query", "Already limited to last.");
         }
     }
 
     private assertOrder_(): void {
 
         if (this.query_.orderByChild) {
-            throw error("database/query", "Already ordered by child.");
+            throw error_("database/query", "Already ordered by child.");
         }
         if (this.query_.orderByKey) {
-            throw error("database/query", "Already ordered by key.");
+            throw error_("database/query", "Already ordered by key.");
         }
         if (this.query_.orderByPriority) {
-            throw error("database/query", "Already ordered by priority.");
+            throw error_("database/query", "Already ordered by priority.");
         }
         if (this.query_.orderByValue) {
-            throw error("database/query", "Already ordered by value.");
+            throw error_("database/query", "Already ordered by value.");
         }
     }
 
     private assertStartAt_(): void {
 
         if ((this.query_.endAt !== undefined) && (this.query_.limitToFirst || this.query_.limitToLast)) {
-            throw error("database/query", "Already specified end at and limit.");
+            throw error_("database/query", "Already specified end at and limit.");
         }
         if (this.query_.equalTo !== undefined) {
-            throw error("database/query", "Already specified equal to.");
+            throw error_("database/query", "Already specified equal to.");
         }
         if (this.query_.startAt !== undefined) {
-            throw error("database/query", "Already specified start at.");
+            throw error_("database/query", "Already specified start at.");
         }
     }
 

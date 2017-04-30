@@ -8,7 +8,7 @@ import * as firebase from "firebase/app";
 import * as json from "./json";
 import * as lodash from "./lodash";
 
-import { unsupported } from "./mock-error";
+import { unsupported_ } from "./mock-error";
 import { MockPrimitive, MockQuery, MockRefInternals, MockValue } from "./mock-types";
 
 export interface MockPair {
@@ -93,7 +93,7 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
 
     exportVal(): any {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     forEach(action: (snapshot: firebase.database.DataSnapshot) => boolean): boolean {
@@ -104,7 +104,7 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
 
     getPriority(): string | number | null {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     hasChild(path: string): boolean {
@@ -132,7 +132,7 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
             pairs.sort(pairChildComparer(query.orderByChild));
             pairs = lodash.filter(pairs, pairChildPredicate(query.orderByChild, query));
         } else if (query.orderByPriority) {
-            throw unsupported();
+            throw unsupported_();
         } else if (query.orderByValue) {
             pairs.sort(pairValueComparer);
             pairs = lodash.filter(pairs, pairValuePredicate(query));
@@ -154,7 +154,7 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
 
     toJSON(): Object | null {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     val(): MockValue | null {

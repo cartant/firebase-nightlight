@@ -7,7 +7,7 @@
 import * as firebase from "firebase/app";
 
 import { EventEmitter2 } from "eventemitter2";
-import { unsupported } from "./mock-error";
+import { unsupported_ } from "./mock-error";
 import { MockRef } from "./mock-ref";
 import { MockEmitters, MockValue } from "./mock-types";
 
@@ -38,12 +38,12 @@ export class MockDatabase implements firebase.database.Database {
 
     goOffline(): void {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     goOnline(): void {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     ref(path?: string): firebase.database.Reference {

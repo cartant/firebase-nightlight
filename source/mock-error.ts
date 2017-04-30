@@ -4,14 +4,14 @@
  * found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
-export function error(code: string, message: string): Error {
+export function error_(code: string, message: string): Error {
 
     const error = new Error(message || "Unknown error.");
     error["code"] = code;
     return error;
 }
 
-export function unsupported(message?: string): Error {
+export function unsupported_(message?: string): Error {
 
     const error = new Error(message || "Not supported.");
     return error;

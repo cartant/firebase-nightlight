@@ -6,7 +6,7 @@
 
 import * as firebase from "firebase/app";
 
-import { unsupported } from "./mock-error";
+import { unsupported_ } from "./mock-error";
 import { randomString } from "./text-random-string";
 
 export interface MockUserOptions {
@@ -51,88 +51,88 @@ export class MockUser implements firebase.User {
 
     delete(): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     getToken(forceRefresh?: boolean): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     link(credential: firebase.auth.AuthCredential): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     linkWithCredential(credential: firebase.auth.AuthCredential): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     linkWithPopup(provider: firebase.auth.AuthProvider): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     linkWithRedirect(provider: firebase.auth.AuthProvider): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     reauthenticate(credential: firebase.auth.AuthCredential): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     reauthenticateWithCredential(credential: firebase.auth.AuthCredential): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     reauthenticateWithPopup(provider: firebase.auth.AuthProvider): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     reauthenticateWithRedirect(provider: firebase.auth.AuthProvider): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     reload(): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     sendEmailVerification(): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     toJSON(): Object {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     unlink(providerId: string): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     updateEmail(email: string): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     updatePassword(password: string): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     updateProfile(
         profile: { displayName: string | null, photoURL: string | null }
     ): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 }

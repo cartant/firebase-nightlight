@@ -7,7 +7,7 @@
 import * as firebase from "firebase/app";
 
 import { MockApp } from "./mock-app";
-import { error } from "./mock-error";
+import { error_ } from "./mock-error";
 import { MockIdentity, MockValue } from "./mock-types";
 
 const defaultAppName = "[DEFAULT]";
@@ -53,7 +53,7 @@ export class Mock {
         if (app) {
             return app;
         }
-        throw error("app/invalid-name", "App not found.");
+        throw error_("app/invalid-name", "App not found.");
     }
 
     auth(app?: firebase.app.App): firebase.auth.Auth {
@@ -72,7 +72,7 @@ export class Mock {
 
         let app = this.apps_[name];
         if (app) {
-            throw error("app/name-already-in-use", "App name already exists.");
+            throw error_("app/name-already-in-use", "App name already exists.");
         }
 
         const deleter = () => { delete this.apps_[name]; return Promise.resolve(); };

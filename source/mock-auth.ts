@@ -7,7 +7,7 @@
 import * as firebase from "firebase/app";
 
 import { EventEmitter2 } from "eventemitter2";
-import { error, unsupported } from "./mock-error";
+import { error_, unsupported_ } from "./mock-error";
 import { MockIdentity } from "./mock-types";
 import { MockUser } from "./mock-user";
 
@@ -43,29 +43,29 @@ export class MockAuth implements firebase.auth.Auth {
 
     applyActionCode(code: string): firebase.Promise <any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     checkActionCode(code: string): firebase.Promise <any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     confirmPasswordReset(code: string, password: string): firebase.Promise <any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     createCustomToken(uid: string, claims?: Object | null): string {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     createUserWithEmailAndPassword(email: string, password: string): firebase.Promise<any> {
 
         let identity = this.identities_.find((identity) => identity.email === email);
         if (identity) {
-            return Promise.reject(error("auth/email-already-in-use", "Email already in use."));
+            return Promise.reject(error_("auth/email-already-in-use", "Email already in use."));
         }
 
         identity = { email, password };
@@ -79,7 +79,7 @@ export class MockAuth implements firebase.auth.Auth {
 
     fetchProvidersForEmail(email: string): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     getRedirectResult(): firebase.Promise<any> {
@@ -119,7 +119,7 @@ export class MockAuth implements firebase.auth.Auth {
 
     sendPasswordResetEmail(email: string): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     signInAnonymously(): firebase.Promise<any> {
@@ -134,7 +134,7 @@ export class MockAuth implements firebase.auth.Auth {
 
         let identity = this.identities_.find((identity) => identity.credential === credential);
         if (!identity) {
-            return Promise.reject(error("auth/invalid-credential", "Invalid credential."));
+            return Promise.reject(error_("auth/invalid-credential", "Invalid credential."));
         }
 
         this.currentUser_ = new MockUser({
@@ -150,7 +150,7 @@ export class MockAuth implements firebase.auth.Auth {
 
         let identity = this.identities_.find((identity) => identity.token === token);
         if (!identity) {
-            return Promise.reject(error("auth/invalid-custom-token", "Invalid token."));
+            return Promise.reject(error_("auth/invalid-custom-token", "Invalid token."));
         }
 
         this.currentUser_ = new MockUser({
@@ -166,10 +166,10 @@ export class MockAuth implements firebase.auth.Auth {
 
         let identity = this.identities_.find((identity) => identity.email === email);
         if (!identity) {
-            return Promise.reject(error("auth/user-not-found", "User not found."));
+            return Promise.reject(error_("auth/user-not-found", "User not found."));
         }
         if (identity.password !== password) {
-            return Promise.reject(error("auth/wrong-password", "Wrong password."));
+            return Promise.reject(error_("auth/wrong-password", "Wrong password."));
         }
 
         this.currentUser_ = new MockUser({
@@ -183,12 +183,12 @@ export class MockAuth implements firebase.auth.Auth {
 
     signInWithPopup(provider: firebase.auth.AuthProvider): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     signInWithRedirect(provider: firebase.auth.AuthProvider): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     signOut(): firebase.Promise<any> {
@@ -201,11 +201,11 @@ export class MockAuth implements firebase.auth.Auth {
 
     verifyIdToken(idToken: string): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 
     verifyPasswordResetCode(code: string): firebase.Promise<any> {
 
-        throw unsupported();
+        throw unsupported_();
     }
 }
