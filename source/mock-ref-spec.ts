@@ -56,25 +56,6 @@ describe("mock-ref", () => {
         });
     });
 
-    describe("findChild_", () => {
-
-        it("should find any immediate child", () => {
-
-            function ref(path?: string): MockRef {
-
-                return mock.database().ref(path) as any;
-            }
-
-            expect(ref("path").findChild_(ref("nope"))).to.be.null;
-            expect(ref("path").findChild_(ref("path"))).to.be.null;
-            expect(ref("path").findChild_(ref("path/to"))).to.not.be.null;
-            expect(ref("path").findChild_(ref("path/to"))).to.have.property("key", "to");
-            expect(ref("path").findChild_(ref("path/to/data"))).to.not.be.null;
-            expect(ref("path").findChild_(ref("path/to/data"))).to.have.property("key", "to");
-            expect(ref().findChild_(ref("path/to/data"))).to.have.property("key", "path");
-        });
-    });
-
     describe("key", () => {
 
         it("should be the ref's key", () => {
@@ -91,7 +72,10 @@ describe("mock-ref", () => {
 
                 throw new Error("Should not be called.");
             }, callback);
+
+            expect(mockRef.stats_().listeners.value).to.equal(1);
             mockRef.off("value", listener);
+            expect(mockRef.stats_().listeners.value).to.equal(0);
 
             setTimeout(callback, waitMilliseconds);
         });
@@ -102,7 +86,24 @@ describe("mock-ref", () => {
 
                 throw new Error("Should not be called.");
             }, callback);
+
+            expect(mockRef.stats_().listeners.value).to.equal(1);
             mockRef.off();
+            expect(mockRef.stats_().listeners.value).to.equal(0);
+
+            setTimeout(callback, waitMilliseconds);
+        });
+
+        it("should remove all listeners of the specified type", (callback) => {
+
+            mockRef.on("value", (snapshot) => {
+
+                throw new Error("Should not be called.");
+            }, callback);
+
+            expect(mockRef.stats_().listeners.value).to.equal(1);
+            mockRef.off("value");
+            expect(mockRef.stats_().listeners.value).to.equal(0);
 
             setTimeout(callback, waitMilliseconds);
         });
@@ -1442,7 +1443,7 @@ describe("mock-ref", () => {
 
             expect(queryRef).to.be.an("object");
             expect(queryRef).to.not.equal(query);
-            expect(queryRef.isQuery_()).to.be.false;
+            expect(queryRef.queried_).to.be.false;
         });
     });
 
@@ -1572,6 +1573,48 @@ describe("mock-ref", () => {
 
                     expect(error).to.match(/illegal character/i);
                 });
+        });
+    });
+
+    describe("stats_", () => {
+
+        it("should track the number of listeners", () => {
+
+            let stats = mockRef.stats_();
+            expect(stats.listeners).to.deep.equal({
+                child_added: 0,
+                child_changed: 0,
+                child_moved: 0,
+                child_removed: 0,
+                total: 0,
+                value: 0
+            });
+
+            mockRef.on("child_added", () => {});
+            mockRef.on("child_removed", () => {});
+
+            stats = mockRef.stats_();
+            expect(stats.listeners).to.deep.equal({
+                child_added: 1,
+                child_changed: 0,
+                child_moved: 0,
+                child_removed: 1,
+                total: 2,
+                value: 0
+            });
+
+            mockRef.off("child_added");
+            mockRef.off("child_removed");
+
+            stats = mockRef.stats_();
+            expect(stats.listeners).to.deep.equal({
+                child_added: 0,
+                child_changed: 0,
+                child_moved: 0,
+                child_removed: 0,
+                total: 0,
+                value: 0
+            });
         });
     });
 

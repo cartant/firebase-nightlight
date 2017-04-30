@@ -37,9 +37,21 @@ export interface MockQuery {
     startAt?: MockPrimitive | null;
 }
 
+export interface MockRefStats {
+    listeners: {
+        child_added: number;
+        child_changed: number;
+        child_moved: number;
+        child_removed: number;
+        total: number;
+        value: number;
+    };
+}
+
 export interface MockRefInternals {
-    getContent_(): MockValue;
-    getJsonPath_(): string;
-    getQuery_(): MockQuery;
-    isQuery_(): boolean;
+    readonly content_: MockValue | null;
+    readonly jsonPath_: string;
+    readonly queried_: boolean;
+    readonly query_: MockQuery;
+    stats_(): MockRefStats;
 }

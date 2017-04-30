@@ -18,6 +18,7 @@ import {
     MockPrimitive,
     MockQuery,
     MockRefInternals,
+    MockRefStats,
     MockValue
 } from "./mock-types";
 
@@ -34,19 +35,20 @@ export interface MockRefOptions {
 
 export class MockRef implements firebase.database.ThenableReference, MockRefInternals {
 
+    public readonly jsonPath_: string;
+    public readonly query_: MockQuery;
+
     private app_: firebase.app.App;
     private database_: { content: MockValue | null };
     private emitters_: MockEmitters;
     private id_: number;
-    private jsonPath_: string;
     private key_: string;
     private parentPath_: string;
     private path_: string;
     private promise_: firebase.Promise<any>;
-    private query_: MockQuery;
     private queue_: any[];
     private refEmitter_: EventEmitter2;
-    private refEmitterBindings_: { bound: Function, unbound: Function }[];
+    private refEmitterBindings_: { bound: Function, type: string, unbound: Function }[];
     private rootEmitter_: EventEmitter2;
     private sharedEmitter_: EventEmitter2;
 
@@ -99,12 +101,17 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
             this["then"] = null;
         }
 
-        if (this.isQuery_()) {
+        if (this.queried_) {
             this["push"] = null;
             this["remove"] = null;
             this["set"] = null;
             this["update"] = null;
         }
+    }
+
+    get content_(): MockValue {
+
+        return this.database_.content;
     }
 
     get key(): string {
@@ -125,9 +132,14 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         });
     }
 
+    get queried_(): boolean {
+
+        return !lodash.isEmpty(this.query_);
+    }
+
     get ref(): firebase.database.Reference {
 
-        return this.isQuery_() ? new MockRef({
+        return this.queried_ ? new MockRef({
             app: this.app_,
             database: this.database_,
             emitters: this.emitters_,
@@ -155,7 +167,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
     child(path: string): firebase.database.Reference {
 
-        if (this.isQuery_()) {
+        if (this.queried_) {
             throw unsupported("Queries do not support 'child'.");
         }
 
@@ -193,51 +205,9 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         });
     }
 
-    findChild_(ref: firebase.database.Reference): firebase.database.Reference {
-
-        let result = null;
-        let mockRef = ref as any as MockRef;
-
-        if (mockRef.path_) {
-            const root = this.path_ || "";
-            let index = mockRef.path_.indexOf(root);
-            if (index === 0) {
-                let subpath = lodash.trim(mockRef.path_.substring(root.length), "/");
-                if (subpath) {
-                    index = subpath.indexOf("/");
-                    if (index !== -1) {
-                        subpath = subpath.substring(0, index);
-                    }
-                    result = this.child(subpath);
-                }
-            }
-        }
-        return result;
-    }
-
-    getContent_(): MockValue {
-
-        return this.database_.content;
-    }
-
-    getJsonPath_(): string {
-
-        return this.jsonPath_;
-    }
-
-    getQuery_(): MockQuery {
-
-        return this.query_;
-    }
-
     isEqual(other: firebase.database.Query | null): boolean {
 
         throw unsupported();
-    }
-
-    isQuery_(): boolean {
-
-        return !lodash.isEmpty(this.query_);
     }
 
     limitToFirst(limit: number): firebase.database.Reference {
@@ -273,11 +243,23 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     ): any {
 
         if (eventType) {
-            const index = lodash.findIndex(this.refEmitterBindings_, (binding) => binding.unbound === callback);
-            if (index !== -1) {
-                const binding = this.refEmitterBindings_[index];
-                this.refEmitterBindings_.splice(index, 1);
-                this.refEmitter_.off(eventType, binding.bound);
+            if (callback) {
+                const index = lodash.findIndex(this.refEmitterBindings_, (binding) => binding.unbound === callback);
+                if (index !== -1) {
+                    const binding = this.refEmitterBindings_[index];
+                    this.refEmitterBindings_.splice(index, 1);
+                    this.refEmitter_.off(eventType, binding.bound);
+                }
+            } else {
+                const indices: number[] = [];
+                lodash.each(this.refEmitterBindings_, (binding, index) => {
+                    if (binding.type === eventType) {
+                        indices.push(index);
+                        this.refEmitter_.off(eventType, binding.bound);
+                    }
+                });
+                indices.reverse();
+                lodash.each(indices, (index) => this.refEmitterBindings_.splice(index, 1));
             }
         } else {
             this.refEmitter_.removeAllListeners();
@@ -338,6 +320,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
         this.refEmitterBindings_.push({
             bound: boundSuccessCallback,
+            type: eventType,
             unbound: successCallback
         });
         this.refEmitter_.on(eventType, boundSuccessCallback);
@@ -433,7 +416,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         callback?: (error: Error | null) => any
     ): firebase.database.ThenableReference {
 
-        if (this.isQuery_()) {
+        if (this.queried_) {
             throw unsupported("Queries do not support 'push'.");
         }
 
@@ -451,7 +434,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         callback?: (error: Error | null) => any
     ): firebase.database.ThenableReference {
 
-        if (this.isQuery_()) {
+        if (this.queried_) {
             throw unsupported("Queries do not support 'remove'.");
         }
 
@@ -510,7 +493,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         callback?: (error: Error | null) => any
     ): firebase.Promise<any> {
 
-        if (this.isQuery_()) {
+        if (this.queried_) {
             throw unsupported("Queries do not support 'set'.");
         }
 
@@ -593,6 +576,27 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         });
     }
 
+    stats_(): MockRefStats {
+
+        const stats = {
+            listeners: {
+                child_added: 0,
+                child_changed: 0,
+                child_moved: 0,
+                child_removed: 0,
+                total: 0,
+                value: 0
+            }
+        };
+
+        this.refEmitterBindings_.forEach((binding) => {
+
+            ++stats.listeners[binding.type];
+            ++stats.listeners.total;
+        });
+        return stats;
+    }
+
     then(
         resolver?: (snapshot: firebase.database.DataSnapshot) => any,
         rejector?: (error: Error) => any
@@ -618,7 +622,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         applyLocally?: boolean
     ): firebase.Promise<any> {
 
-        if (this.isQuery_()) {
+        if (this.queried_) {
             throw unsupported("Queries do not support 'transaction'.");
         }
 
@@ -683,7 +687,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         callback?: (error: Error | null) => any
     ): firebase.Promise<any> {
 
-        if (this.isQuery_()) {
+        if (this.queried_) {
             throw unsupported("Queries do not support 'update'.");
         }
 

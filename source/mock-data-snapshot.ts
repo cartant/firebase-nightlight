@@ -60,7 +60,7 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
             this.content_ = options.snapshot.content_;
             this.previousContent_ = null;
         } else {
-            this.content_ = options.content || this.refInternals_.getContent_();
+            this.content_ = options.content || this.refInternals_.content_;
             this.previousContent_ = options.previousContent || null;
         }
     }
@@ -88,7 +88,7 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
 
     exists(): boolean {
 
-        return json.has(this.content_, this.refInternals_.getJsonPath_());
+        return json.has(this.content_, this.refInternals_.jsonPath_);
     }
 
     exportVal(): any {
@@ -109,7 +109,7 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
 
     hasChild(path: string): boolean {
 
-        return json.has(this.content_, json.join(this.refInternals_.getJsonPath_(), path));
+        return json.has(this.content_, json.join(this.refInternals_.jsonPath_, path));
     }
 
     hasChildren(): boolean {
@@ -126,7 +126,7 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
     pairs_(): MockPair[] {
 
         let pairs = lodash.map(this.val_() as any, toPair);
-        const query = this.refInternals_.getQuery_();
+        const query = this.refInternals_.query_;
 
         if (query.orderByChild) {
             pairs.sort(pairChildComparer(query.orderByChild));
@@ -161,7 +161,7 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
 
         let value: MockValue;
 
-        if (this.refInternals_.isQuery_()) {
+        if (this.refInternals_.queried_) {
             value = {};
             lodash.each(this.pairs_(), (pair) => { value[pair.key] = pair.value; });
         } else {
@@ -173,7 +173,7 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
     private val_(): MockValue | null {
 
         let value: MockValue = null;
-        const jsonPath = this.refInternals_.getJsonPath_();
+        const jsonPath = this.refInternals_.jsonPath_;
 
         if (json.has(this.content_, jsonPath)) {
             value = json.get(this.content_, jsonPath);
