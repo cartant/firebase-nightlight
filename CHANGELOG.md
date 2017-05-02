@@ -1,3 +1,10 @@
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/cartant/firebase-nightlight/compare/v1.1.0...v1.1.1) (2017-05-02)
+
+### Doc
+
+* Update `README.md` ([c8d58b5](https://github.com/cartant/firebase-nightlight/commit/c8d58b5))
+
 <a name="1.1.0"></a>
 ## [1.1.0](https://github.com/cartant/firebase-nightlight/compare/v1.0.9...v1.1.0) (2017-05-01)
 
