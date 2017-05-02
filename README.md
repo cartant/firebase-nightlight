@@ -6,11 +6,24 @@
 [![devDependency Status](https://img.shields.io/david/dev/cartant/firebase-nightlight.svg)](https://david-dm.org/cartant/firebase-nightlight#info=devDependencies)
 [![peerDependency Status](https://img.shields.io/david/peer/cartant/firebase-nightlight.svg)](https://david-dm.org/cartant/firebase-nightlight#info=peerDependencies)
 
-This is an in-memory, JavaScript mock for the Firebase Web API.
+### What is it?
 
-Each `Mock` instance mocks the properties and methods of the [`firebase`](https://firebase.google.com/docs/reference/js/firebase) namespace. The options passed when creating a `Mock` allow for the specification of the initial database content and authentication identities.
+`firebase-nightlight` is an in-memory, JavaScript mock for the Firebase Web API.
 
-**What is mocked?**
+### Why might I need it?
+
+Unit testing services or components that use the Firebase Web API can be tedious:
+
+* stubbing multiple API methods for each test involves a writing a lot of code, and
+* the alternative of running tests against an actual Firebase project is slow.
+
+You might find using an in-memory mock that can be created and destroyed on a per-test or per-suite basis to be less frustrating.
+
+### How does it work?
+
+Each `Mock` instance implements mocked versions of the properties and methods that are in the [`firebase`](https://firebase.google.com/docs/reference/js/firebase) namespace. The options passed when creating a `Mock` instance allow for the specification of the initial database content and authentication identities.
+
+### What is mocked?
 
 * Most of the `database` API is mocked:
     * References can be used to read, write and query data.
@@ -20,7 +33,13 @@ Each `Mock` instance mocks the properties and methods of the [`firebase`](https:
     * `onDisconnect` is not mocked.
     * The sometimes-synchronous nature of `child_added` events is not mimicked; mocked events are *always* asynchronous.
 * Some of the `auth` API is mocked:
-    * `createUserWithEmailAndPassword`, `onAuthStateChanged`, `signInAnonymously`, `signInWithCredential`, `signInWithCustomToken`, `signInWithEmailAndPassword`, and `signOut` are mocked.
+    * `createUserWithEmailAndPassword`,
+    * `onAuthStateChanged`,
+    * `signInAnonymously`,
+    * `signInWithCredential`,
+    * `signInWithCustomToken`,
+    * `signInWithEmailAndPassword`, and
+    * `signOut` are mocked.
     * Other methods are not mocked.
 * The `storage` and `messaging` APIs are not mocked.
 
@@ -126,7 +145,7 @@ console.log(mock);
 
 ## API
 
-Once a `Mock` instance is created, the mock API is equivalent to the Firebase Web API.
+Instances of the `Mock` class implement the properties and methods that are in the Firebase Web API's [`firebase`](https://firebase.google.com/docs/reference/js/firebase) namespace.
 
 The `Mock` constructor accepts an `options` object with the following optional properties:
 
