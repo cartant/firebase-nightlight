@@ -39,7 +39,7 @@ export class Mock {
         return Object.keys(this.apps_).reduce((acc, key) => {
             acc.push(this.apps_[key]);
             return acc;
-        }, []);
+        }, [] as (firebase.app.App | null)[]);
     }
 
     get SDK_VERSION(): string {
@@ -68,23 +68,23 @@ export class Mock {
 
     initializeApp(options: Object, name?: string): firebase.app.App {
 
-        name = name || defaultAppName;
+        const concreteName = name || defaultAppName;
 
-        let app = this.apps_[name];
+        let app = this.apps_[concreteName];
         if (app) {
             throw error_("app/name-already-in-use", "App name already exists.");
         }
 
-        const deleter = () => { delete this.apps_[name]; return Promise.resolve(); };
+        const deleter = () => { delete this.apps_[concreteName]; return Promise.resolve(); };
 
         let mockApp: MockApp;
-        if (this.options_.apps && this.options_.apps[name]) {
+        if (this.options_.apps && this.options_.apps[concreteName]) {
             mockApp = new MockApp({
-                database: this.options_.apps[name].database || { content: {} },
+                database: this.options_.apps[concreteName].database || { content: {} },
                 deleter,
-                identities: this.options_.apps[name].identities || [],
+                identities: this.options_.apps[concreteName].identities || [],
                 initializeOptions: options,
-                name
+                name: concreteName
             });
         } else {
             mockApp = new MockApp({
@@ -92,10 +92,10 @@ export class Mock {
                 deleter,
                 identities: this.options_.identities || [],
                 initializeOptions: options,
-                name
+                name: concreteName
             });
         }
-        this.apps_[name] = mockApp;
+        this.apps_[concreteName] = mockApp;
         return mockApp;
     }
 

@@ -28,7 +28,7 @@ export interface MockRefOptions {
     app: firebase.app.App;
     database: { content: MockValue | null };
     emitters: MockEmitters;
-    path: string;
+    path: string | null;
     promise?: firebase.Promise<any>;
     query?: MockQuery;
 }
@@ -42,10 +42,10 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     private database_: { content: MockValue | null };
     private emitters_: MockEmitters;
     private id_: number;
-    private key_: string;
-    private parentPath_: string;
+    private key_: string | null;
+    private parentPath_: string | null;
     private path_: string;
-    private promise_: firebase.Promise<any>;
+    private promise_?: firebase.Promise<any>;
     private queue_: any[];
     private refEmitter_: EventEmitter2;
     private refEmitterBindings_: { bound: Function, type: string, unbound: Function }[];
@@ -97,29 +97,29 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         }
 
         if (!this.promise_) {
-            this["catch"] = null;
-            this["then"] = null;
+            (this as any)["catch"] = null;
+            (this as any)["then"] = null;
         }
 
         if (this.queried_) {
-            this["push"] = null;
-            this["remove"] = null;
-            this["set"] = null;
-            this["update"] = null;
+            (this as any)["push"] = null;
+            (this as any)["remove"] = null;
+            (this as any)["set"] = null;
+            (this as any)["update"] = null;
         }
     }
 
-    get content_(): MockValue {
+    get content_(): MockValue | null {
 
         return this.database_.content;
     }
 
-    get key(): string {
+    get key(): string | null {
 
         return this.key_;
     }
 
-    get parent(): firebase.database.Reference {
+    get parent(): firebase.database.Reference | null {
 
         if (this.key_ === null) {
             return null;
@@ -150,7 +150,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     get root(): firebase.database.Reference {
 
         if (this.key_ === null) {
-            return null;
+            return this;
         }
         return new MockRef({
             app: this.app_,
@@ -162,7 +162,12 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
     catch(rejector?: (error: Error) => any): any {
 
-        return this.promise_.catch(rejector);
+        if (this.promise_) {
+            return rejector ?
+                this.promise_.catch(rejector) :
+                this.promise_.catch();
+        }
+        throw new Error("No internal promise.");
     }
 
     child(path: string): firebase.database.Reference {
@@ -295,7 +300,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         case "child_added":
             this.enqueue_("init_child_added", () => {
 
-                let previousKey: string = null;
+                let previousKey: string | null = null;
 
                 if (this.refEmitter_.listeners("child_added").indexOf(boundSuccessCallback) !== -1) {
                     lodash.each(mockSnapshot.pairs_(), (pair) => {
@@ -412,7 +417,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     }
 
     push(
-        value?: MockValue | null,
+        value?: any,
         callback?: (error: Error | null) => any
     ): firebase.database.ThenableReference {
 
@@ -426,7 +431,9 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
             database: childRef.database_,
             emitters: this.emitters_,
             path: childRef.path_,
-            promise: childRef.set(value).then(() => childRef)
+            promise: (value === undefined) ?
+                Promise.resolve(childRef) :
+                childRef.set(value).then(() => childRef)
         });
     }
 
@@ -489,7 +496,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     }
 
     set(
-        value: MockValue | null,
+        value: any,
         callback?: (error: Error | null) => any
     ): firebase.Promise<any> {
 
@@ -509,7 +516,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
                 try {
 
-                    validateKeys(value);
+                    validateKeys(value as MockValue);
                     value = json.clone(value);
 
                     if (this.jsonPath_.length === 0) {
@@ -602,7 +609,10 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         rejector?: (error: Error) => any
     ): firebase.Thenable<any> {
 
-        return this.promise_.then(resolver, rejector);
+        if (this.promise_) {
+            return this.promise_.then(resolver, rejector);
+        }
+        throw new Error("No internal promise.");
     }
 
     toJSON(): Object {
@@ -683,7 +693,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     }
 
     update(
-        value: MockValue,
+        values: Object,
         callback?: (error: Error | null) => any
     ): firebase.Promise<any> {
 
@@ -699,9 +709,9 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
                 try {
 
-                    validateKeysOrPaths(value);
+                    validateKeysOrPaths(values as MockValue);
 
-                    lodash.each(value, (value, key) => {
+                    lodash.each(values, (value, key: string) => {
 
                         const path = toJsonPath(json.join(this.jsonPath_, key));
                         if (value === null) {
@@ -838,11 +848,11 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         const childEvent = /^child_/.test(eventType);
         const limitQuery = this.query_.limitToFirst || this.query_.limitToLast;
 
-        let pairs: MockPair[];
-        let pairsIndex: number;
-        let previousKey: string;
-        let previousPairs: MockPair[];
-        let previousPairsIndex: number;
+        let pairs: MockPair[] = [];
+        let pairsIndex: number = -1;
+        let previousKey: string | null = null;
+        let previousPairs: MockPair[] = [];
+        let previousPairsIndex: number = -1;
 
         if (childEvent) {
 

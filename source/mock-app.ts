@@ -31,9 +31,9 @@ export class MockApp implements firebase.app.App {
     private deleter_: () => Promise<any>;
     private emitters_: MockEmitters;
     private initializeOptions_: Object;
-    private messaging_: firebase.messaging.Messaging;
+    private messaging_: firebase.messaging.Messaging | null;
     private name_: string;
-    private storage_: firebase.storage.Storage;
+    private storage_: firebase.storage.Storage | null;
 
     constructor(options: MockAppOptions) {
 
@@ -88,11 +88,17 @@ export class MockApp implements firebase.app.App {
 
     messaging(): firebase.messaging.Messaging {
 
+        if (this.messaging_ === null) {
+            throw new Error("Messaging is not mocked.");
+        }
         return this.messaging_;
     }
 
     storage(url?: string): firebase.storage.Storage {
 
+        if (this.storage_ === null) {
+            throw new Error("Storage is not mocked.");
+        }
         return this.storage_;
     }
 
@@ -101,16 +107,16 @@ export class MockApp implements firebase.app.App {
         { content, previousContent }: { content: MockValue, previousContent: MockValue }
     ): void {
 
-        lodash.each(this.emitters_.shared, (sharedEmitter, sharedEmitterJsonPath) => {
+        lodash.each(this.emitters_.shared, (sharedEmitter, sharedEmitterJsonPath: string) => {
 
             const sharedEmitterRef = this.database().ref(lodash.trim(sharedEmitterJsonPath, "/")) as any as MockRef;
 
-            let value: MockValue = null;
+            let value: MockValue | null = null;
             if (json.has(content, sharedEmitterJsonPath)) {
                 value = json.get(content, sharedEmitterJsonPath);
             }
 
-            let previousValue: MockValue = null;
+            let previousValue: MockValue | null = null;
             if (json.has(previousContent, sharedEmitterJsonPath)) {
                 previousValue = json.get(previousContent, sharedEmitterJsonPath);
             }
@@ -176,7 +182,7 @@ export class MockApp implements firebase.app.App {
                     childKeys
                 ), (changedKey) => {
 
-                    if (value[changedKey] !== previousValue[changedKey]) {
+                    if ((value as MockValue)[changedKey] !== (previousValue as MockValue)[changedKey]) {
                         sharedEmitter.emit("child_changed", {
                             previousSnapshot: new MockDataSnapshot({
                                 content: previousContent,

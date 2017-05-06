@@ -81,7 +81,7 @@ describe("mock-data-snapshot", () => {
                 expect(childSnapshot).to.have.property("key");
                 expect(childSnapshot).to.have.property("ref");
 
-                keys.push(childSnapshot.key);
+                keys.push(childSnapshot.key as string);
                 return false;
             });
 

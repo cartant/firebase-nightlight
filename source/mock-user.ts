@@ -45,7 +45,7 @@ export class MockUser implements firebase.User {
             uid
         }];
         this.providerId = "password";
-        this.refreshToken = null;
+        this.refreshToken = "";
         this.uid = uid;
     }
 

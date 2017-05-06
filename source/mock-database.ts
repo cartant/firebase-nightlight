@@ -52,7 +52,7 @@ export class MockDatabase implements firebase.database.Database {
             app: this.app_,
             database: this.database_,
             emitters: this.emitters_,
-            path
+            path: path || null
         });
     }
 

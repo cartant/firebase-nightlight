@@ -148,7 +148,7 @@ describe("mock-ref", () => {
                 });
                 mockRef.on("child_added", (snapshot) => {
 
-                    keys.push(snapshot.key);
+                    keys.push(snapshot.key as string);
                 });
             });
 
@@ -158,8 +158,10 @@ describe("mock-ref", () => {
 
                     callback();
                 });
-                mockRef.parent.on("value", () => {});
-                mockRef.parent.off();
+
+                const parent = mockRef.parent as MockRef;
+                parent.on("value", () => {});
+                parent.off();
             });
 
             it("should listen to push", (callback) => {
@@ -175,7 +177,7 @@ describe("mock-ref", () => {
                         pushedRef.catch(callback);
                     } else {
                         expect(snapshot).to.be.an("object");
-                        expect(snapshot.val()).to.have.property(pushedRef.key, "pushed");
+                        expect(snapshot.val()).to.have.property(pushedRef.key as string, "pushed");
                         mockRef.off();
                         callback();
                     }
@@ -240,7 +242,7 @@ describe("mock-ref", () => {
 
                 const context = { context: true };
 
-                function listener(snapshot: firebase.database.DataSnapshot): void {
+                function listener(this: any, snapshot: firebase.database.DataSnapshot): void {
 
                     // tslint:disable-next-line
                     expect(this).to.equal(context);
@@ -276,8 +278,8 @@ describe("mock-ref", () => {
                     expect(snapshot).to.have.property("ref");
                     expect(snapshot).to.respondTo("val");
 
-                    keys.push(snapshot.key);
-                    previousKeys.push(previousKey);
+                    keys.push(snapshot.key as string);
+                    previousKeys.push(previousKey as string);
                     values.push(snapshot.val());
 
                     if (keys.length >= 2) {
@@ -376,8 +378,8 @@ describe("mock-ref", () => {
                     expect(snapshot).to.have.property("ref");
                     expect(snapshot).to.respondTo("val");
 
-                    keys.push(snapshot.key);
-                    previousKeys.push(previousKey);
+                    keys.push(snapshot.key as string);
+                    previousKeys.push(previousKey as string);
                     values.push(snapshot.val());
 
                     if (keys.length >= 3) {
@@ -413,8 +415,8 @@ describe("mock-ref", () => {
                     expect(snapshot).to.have.property("ref");
                     expect(snapshot).to.respondTo("val");
 
-                    keys.push(snapshot.key);
-                    previousKeys.push(previousKey);
+                    keys.push(snapshot.key as string);
+                    previousKeys.push(previousKey as string);
                     values.push(snapshot.val());
 
                     if (keys.length >= 4) {
@@ -715,7 +717,7 @@ describe("mock-ref", () => {
 
         it("should push values with sequential keys", () => {
 
-            const pushedRefs = [];
+            const pushedRefs: firebase.database.ThenableReference[] = [];
 
             pushedRefs.push(sequenceRef.push({
                 name: "alice"
@@ -724,7 +726,7 @@ describe("mock-ref", () => {
                 name: "bob"
             }));
 
-            expect(pushedRefs[0].key < pushedRefs[1].key).to.be.true;
+            expect((pushedRefs[0].key as string) < (pushedRefs[1].key as string)).to.be.true;
 
             return Promise.all(pushedRefs);
         });
@@ -747,8 +749,8 @@ describe("mock-ref", () => {
                 .then((snapshot) => {
 
                     expect(snapshot.val()).to.deep.equal({ name: "alice" });
-                    expect(database.content).to.have.property(pushedRef.key);
-                    expect(database.content[pushedRef.key]).to.not.equal(snapshot.val());
+                    expect(database.content).to.have.property(pushedRef.key as string);
+                    expect(database.content[pushedRef.key as string]).to.not.equal(snapshot.val());
                 });
         });
 
@@ -784,10 +786,11 @@ describe("mock-ref", () => {
             it("should query by key", (callback) => {
 
                 const queryRef = mockRef.orderByKey().endAt("-zzzzzzz000000000001");
-                queryRef.on("value", (snapshot) => {
+                queryRef.on("value", (snapshot: firebase.database.DataSnapshot) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
+
                     expect(snapshot.val()).to.deep.equal({
                         "-zzzzzzz000000000000": database.content["path"]["to"]["data"]["-zzzzzzz000000000000"],
                         "-zzzzzzz000000000001": database.content["path"]["to"]["data"]["-zzzzzzz000000000001"]
@@ -799,7 +802,7 @@ describe("mock-ref", () => {
             it("should query by child", (callback) => {
 
                 const queryRef = mockRef.orderByChild("value").endAt(1);
-                queryRef.on("value", (snapshot) => {
+                queryRef.on("value", (snapshot: firebase.database.DataSnapshot) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
@@ -822,7 +825,7 @@ describe("mock-ref", () => {
                 /*tslint:enable:object-literal-sort-keys*/
 
                 const queryRef = mockRef.orderByChild("value").endAt(1, "-zzzzzzz000000000001");
-                queryRef.on("value", (snapshot) => {
+                queryRef.on("value", (snapshot: firebase.database.DataSnapshot) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
@@ -840,7 +843,7 @@ describe("mock-ref", () => {
             it("should query by key", (callback) => {
 
                 const queryRef = mockRef.orderByKey().equalTo("-zzzzzzz000000000000");
-                queryRef.on("value", (snapshot) => {
+                queryRef.on("value", (snapshot: firebase.database.DataSnapshot) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
@@ -854,7 +857,7 @@ describe("mock-ref", () => {
             it("should query by child", (callback) => {
 
                 const queryRef = mockRef.orderByChild("value").equalTo(0);
-                queryRef.on("value", (snapshot) => {
+                queryRef.on("value", (snapshot: firebase.database.DataSnapshot) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
@@ -876,7 +879,7 @@ describe("mock-ref", () => {
                 /*tslint:enable:object-literal-sort-keys*/
 
                 const queryRef = mockRef.orderByChild("value").equalTo(1, "-zzzzzzz000000000002");
-                queryRef.on("value", (snapshot) => {
+                queryRef.on("value", (snapshot: firebase.database.DataSnapshot) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
@@ -890,7 +893,7 @@ describe("mock-ref", () => {
             it("should support missing children", (callback) => {
 
                 const queryRef = mockRef.orderByChild("missing").equalTo(null);
-                queryRef.on("value", (snapshot) => {
+                queryRef.on("value", (snapshot: firebase.database.DataSnapshot) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
@@ -908,17 +911,17 @@ describe("mock-ref", () => {
 
             it("should limit initial queries", (callback) => {
 
-                const previousKeys: string[] = [];
+                const previousKeys: (string | null)[] = [];
                 const values: MockValue[] = [];
 
                 const queryRef = mockRef.orderByKey().limitToFirst(2);
-                queryRef.on("child_added", (snapshot, previousKey) => {
+                queryRef.on("child_added", (snapshot: firebase.database.DataSnapshot, previousKey) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
 
                     values.push(snapshot.val());
-                    previousKeys.push(previousKey);
+                    previousKeys.push(previousKey as string);
 
                     if (values.length === 2) {
                         expect(values).to.deep.equal([
@@ -936,15 +939,15 @@ describe("mock-ref", () => {
 
             it("should limit updated queries", (callback) => {
 
-                const previousKeys: string[] = [];
+                const previousKeys: (string | null)[] = [];
                 const removedKeys: string[] = [];
                 const values: MockValue[] = [];
 
                 const queryRef = mockRef.orderByKey().limitToFirst(2);
-                queryRef.on("child_added", (snapshot, previousKey) => {
+                queryRef.on("child_added", (snapshot: firebase.database.DataSnapshot, previousKey) => {
 
                     values.push(snapshot.val());
-                    previousKeys.push(previousKey);
+                    previousKeys.push(previousKey as string);
 
                     if (snapshot.val().value === 2) {
                         expect(values).to.deep.equal([
@@ -963,9 +966,9 @@ describe("mock-ref", () => {
                         callback();
                     }
                 });
-                queryRef.on("child_removed", (snapshot, previousKey) => {
+                queryRef.on("child_removed", (snapshot: firebase.database.DataSnapshot, previousKey) => {
 
-                    removedKeys.push(snapshot.key);
+                    removedKeys.push(snapshot.key as string);
                 });
                 mockRef.child("-zzzzzzz000000000000").remove().catch(callback);
             });
@@ -975,17 +978,17 @@ describe("mock-ref", () => {
 
             it("should limit initial queries", (callback) => {
 
-                const previousKeys: string[] = [];
+                const previousKeys: (string | null)[] = [];
                 const values: MockValue[] = [];
 
                 const queryRef = mockRef.orderByKey().limitToLast(2);
-                queryRef.on("child_added", (snapshot, previousKey) => {
+                queryRef.on("child_added", (snapshot: firebase.database.DataSnapshot, previousKey) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
 
                     values.push(snapshot.val());
-                    previousKeys.push(previousKey);
+                    previousKeys.push(previousKey as string);
 
                     if (values.length === 2) {
                         expect(values).to.deep.equal([
@@ -1008,10 +1011,10 @@ describe("mock-ref", () => {
                 const values: MockValue[] = [];
 
                 const queryRef = mockRef.orderByKey().limitToLast(2);
-                queryRef.on("child_added", (snapshot, previousKey) => {
+                queryRef.on("child_added", (snapshot: firebase.database.DataSnapshot, previousKey) => {
 
                     values.push(snapshot.val());
-                    previousKeys.push(previousKey);
+                    previousKeys.push(previousKey as string);
 
                     if (snapshot.val().value === 3) {
                         expect(values).to.deep.equal([
@@ -1030,9 +1033,9 @@ describe("mock-ref", () => {
                         callback();
                     }
                 });
-                queryRef.on("child_removed", (snapshot, previousKey) => {
+                queryRef.on("child_removed", (snapshot: firebase.database.DataSnapshot, previousKey) => {
 
-                    removedKeys.push(snapshot.key);
+                    removedKeys.push(snapshot.key as string);
                 });
                 mockRef.update({
                     "-zzzzzzz000000000003": { name: "three", value: 3 }
@@ -1059,13 +1062,13 @@ describe("mock-ref", () => {
                 const values: MockValue[] = [];
 
                 const queryRef = mockRef.orderByChild("value");
-                queryRef.on("child_added", (snapshot, previousKey) => {
+                queryRef.on("child_added", (snapshot: firebase.database.DataSnapshot, previousKey) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
 
                     values.push(snapshot.val());
-                    previousKeys.push(previousKey);
+                    previousKeys.push(previousKey as string);
 
                     if (values.length === 3) {
                         expect(values).to.deep.equal([
@@ -1089,13 +1092,13 @@ describe("mock-ref", () => {
                 const values: MockValue[] = [];
 
                 const queryRef = mockRef.orderByChild("value");
-                queryRef.on("child_added", (snapshot, previousKey) => {
+                queryRef.on("child_added", (snapshot: firebase.database.DataSnapshot, previousKey) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
 
                     values.push(snapshot.val());
-                    previousKeys.push(previousKey);
+                    previousKeys.push(previousKey as string);
 
                     if (values.length === 3) {
                         expect(values).to.deep.equal([
@@ -1130,11 +1133,11 @@ describe("mock-ref", () => {
             it("should order using 'value' and 'forEach'", (callback) => {
 
                 const queryRef = mockRef.orderByChild("value");
-                queryRef.on("value", (snapshot) => {
+                queryRef.on("value", (snapshot: firebase.database.DataSnapshot) => {
 
                     const values: MockValue[] = [];
 
-                    snapshot.forEach((childSnapshot) => {
+                    snapshot.forEach((childSnapshot: firebase.database.DataSnapshot) => {
 
                         values.push(childSnapshot.val());
                         return false;
@@ -1156,11 +1159,11 @@ describe("mock-ref", () => {
                 // https://firebase.googleblog.com/2015/09/introducing-multi-location-updates-and_86.html
 
                 const queryRef = mockRef.orderByChild("deep/value");
-                queryRef.on("value", (snapshot) => {
+                queryRef.on("value", (snapshot: firebase.database.DataSnapshot) => {
 
                     const values: MockValue[] = [];
 
-                    snapshot.forEach((childSnapshot) => {
+                    snapshot.forEach((childSnapshot: firebase.database.DataSnapshot) => {
 
                         values.push(childSnapshot.val());
                         return false;
@@ -1184,13 +1187,13 @@ describe("mock-ref", () => {
                 const values: MockValue[] = [];
 
                 const queryRef = mockRef.orderByKey();
-                queryRef.on("child_added", (snapshot, previousKey) => {
+                queryRef.on("child_added", (snapshot: firebase.database.DataSnapshot, previousKey) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
 
                     values.push(snapshot.val());
-                    previousKeys.push(previousKey);
+                    previousKeys.push(previousKey as string);
 
                     if (values.length === 3) {
                         expect(values).to.deep.equal([
@@ -1214,13 +1217,13 @@ describe("mock-ref", () => {
                 const values: MockValue[] = [];
 
                 const queryRef = mockRef.orderByKey();
-                queryRef.on("child_added", (snapshot, previousKey) => {
+                queryRef.on("child_added", (snapshot: firebase.database.DataSnapshot, previousKey) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
 
                     values.push(snapshot.val());
-                    previousKeys.push(previousKey);
+                    previousKeys.push(previousKey as string);
 
                     if (values.length === 3) {
                         expect(values).to.deep.equal([
@@ -1255,11 +1258,11 @@ describe("mock-ref", () => {
             it("should order using 'value' and 'forEach'", (callback) => {
 
                 const queryRef = mockRef.orderByKey();
-                queryRef.on("value", (snapshot) => {
+                queryRef.on("value", (snapshot: firebase.database.DataSnapshot) => {
 
                     const values: MockValue[] = [];
 
-                    snapshot.forEach((childSnapshot) => {
+                    snapshot.forEach((childSnapshot: firebase.database.DataSnapshot) => {
 
                         values.push(childSnapshot.val());
                         return false;
@@ -1297,13 +1300,13 @@ describe("mock-ref", () => {
                 const values: MockValue[] = [];
 
                 const queryRef = mockRef.orderByValue();
-                queryRef.on("child_added", (snapshot, previousKey) => {
+                queryRef.on("child_added", (snapshot: firebase.database.DataSnapshot, previousKey) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
 
                     values.push(snapshot.val());
-                    previousKeys.push(previousKey);
+                    previousKeys.push(previousKey as string);
 
                     if (values.length === 3) {
                         expect(values).to.deep.equal([0, 1, 2]);
@@ -1323,13 +1326,13 @@ describe("mock-ref", () => {
                 const values: MockValue[] = [];
 
                 const queryRef = mockRef.orderByValue();
-                queryRef.on("child_added", (snapshot, previousKey) => {
+                queryRef.on("child_added", (snapshot: firebase.database.DataSnapshot, previousKey) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
 
                     values.push(snapshot.val());
-                    previousKeys.push(previousKey);
+                    previousKeys.push(previousKey as string);
 
                     if (values.length === 3) {
                         expect(values).to.deep.equal([0, 1, 2]);
@@ -1355,11 +1358,11 @@ describe("mock-ref", () => {
             it("should order using 'value' and 'forEach'", (callback) => {
 
                 const queryRef = mockRef.orderByValue();
-                queryRef.on("value", (snapshot) => {
+                queryRef.on("value", (snapshot: firebase.database.DataSnapshot) => {
 
                     const values: MockValue[] = [];
 
-                    snapshot.forEach((childSnapshot) => {
+                    snapshot.forEach((childSnapshot: firebase.database.DataSnapshot) => {
 
                         values.push(childSnapshot.val());
                         return false;
@@ -1376,7 +1379,7 @@ describe("mock-ref", () => {
             it("should query by key", (callback) => {
 
                 const queryRef = mockRef.orderByKey().startAt("-zzzzzzz000000000001");
-                queryRef.on("value", (snapshot) => {
+                queryRef.on("value", (snapshot: firebase.database.DataSnapshot) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
@@ -1391,7 +1394,7 @@ describe("mock-ref", () => {
             it("should query by child", (callback) => {
 
                 const queryRef = mockRef.orderByChild("value").startAt(1);
-                queryRef.on("value", (snapshot) => {
+                queryRef.on("value", (snapshot: firebase.database.DataSnapshot) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");
@@ -1414,7 +1417,7 @@ describe("mock-ref", () => {
                 /*tslint:enable:object-literal-sort-keys*/
 
                 const queryRef = mockRef.orderByChild("value").startAt(1, "-zzzzzzz000000000002");
-                queryRef.on("value", (snapshot) => {
+                queryRef.on("value", (snapshot: firebase.database.DataSnapshot) => {
 
                     expect(snapshot).to.be.an("object");
                     expect(snapshot).to.respondTo("val");

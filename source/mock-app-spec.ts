@@ -49,12 +49,12 @@ describe("mock-app", () => {
 
         it("should delete the app", () => {
 
-            let filtered = mock.apps.filter((app) => app.name === "[DEFAULT]");
+            let filtered = mock.apps.filter((app) => app && (app.name === "[DEFAULT]"));
             expect(filtered).to.not.be.empty;
 
             return mockApp.delete().then(() => {
 
-                filtered = mock.apps.filter((app) => app.name === "[DEFAULT]");
+                filtered = mock.apps.filter((app) => app && (app.name === "[DEFAULT]"));
                 expect(filtered).to.be.empty;
             });
         });

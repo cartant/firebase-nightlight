@@ -19,7 +19,7 @@ export interface MockAuthOptions {
 export class MockAuth implements firebase.auth.Auth {
 
     private app_: firebase.app.App;
-    private currentUser_: firebase.User;
+    private currentUser_: firebase.User | null;
     private emitter_: EventEmitter2;
     private identities_: MockIdentity[];
 
@@ -36,7 +36,7 @@ export class MockAuth implements firebase.auth.Auth {
         return this.app_;
     }
 
-    get currentUser(): firebase.User {
+    get currentUser(): firebase.User | null {
 
         return this.currentUser_;
     }
@@ -112,8 +112,8 @@ export class MockAuth implements firebase.auth.Auth {
         setTimeout(() => this.emitter_.emit("auth", this.currentUser_), 0);
 
         return () => {
-            this.emitter_.off("auth", nextCallback);
-            this.emitter_.off("error", errorCallback);
+            this.emitter_.off("auth", nextCallback as Function);
+            this.emitter_.off("error", errorCallback as Function);
         };
     }
 
@@ -124,7 +124,7 @@ export class MockAuth implements firebase.auth.Auth {
 
     signInAnonymously(): firebase.Promise<any> {
 
-        this.currentUser_ = new MockUser({ email: null });
+        this.currentUser_ = new MockUser({ email: undefined });
         this.emitter_.emit("auth", this.currentUser_);
 
         return Promise.resolve(this.currentUser_);

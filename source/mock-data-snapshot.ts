@@ -17,16 +17,16 @@ export interface MockPair {
 }
 
 export interface MockDataSnapshotOptions {
-    content?: MockValue;
-    previousContent?: MockValue;
+    content?: MockValue | null;
+    previousContent?: MockValue | null;
     ref: firebase.database.Reference;
     snapshot?: MockDataSnapshot;
 }
 
 export class MockDataSnapshot implements firebase.database.DataSnapshot {
 
-    private content_: MockValue;
-    private previousContent_: MockValue;
+    private content_: MockValue | null;
+    private previousContent_: MockValue | null;
     private ref_: firebase.database.Reference;
     private refInternals_: MockRefInternals;
 
@@ -98,8 +98,16 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
 
     forEach(action: (snapshot: firebase.database.DataSnapshot) => boolean): boolean {
 
-        lodash.each(this.pairs_(), (pair) => action(this.child(pair.key)) ? false : undefined);
-        return undefined;
+        let cancelled = false;
+        lodash.each(this.pairs_(), (pair) => {
+
+            if (action(this.child(pair.key))) {
+                cancelled = true;
+                return false;
+            }
+            return undefined;
+        });
+        return cancelled;
     }
 
     getPriority(): string | number | null {
@@ -159,11 +167,12 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
 
     val(): MockValue | null {
 
-        let value: MockValue;
+        let value: MockValue | null;
 
         if (this.refInternals_.queried_) {
-            value = {};
-            lodash.each(this.pairs_(), (pair) => { value[pair.key] = pair.value; });
+            const result: MockValue = {};
+            lodash.each(this.pairs_(), (pair) => { result[pair.key] = pair.value; });
+            value = result;
         } else {
             value = this.val_();
         }
@@ -172,7 +181,7 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
 
     private val_(): MockValue | null {
 
-        let value: MockValue = null;
+        let value: MockValue| null = null;
         const jsonPath = this.refInternals_.jsonPath_;
 
         if (json.has(this.content_, jsonPath)) {
@@ -187,10 +196,10 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
 }
 
 function endAtPredicate(
-    value: MockValue,
+    value: MockValue | null,
     key: string,
     endAtValue: MockPrimitive | null,
-    endAtKey: string | null
+    endAtKey?: string | null
 ): boolean {
 
     const comparison = MockDataSnapshot.valueComparer(value, endAtValue);
@@ -204,10 +213,10 @@ function endAtPredicate(
 }
 
 function equalToPredicate(
-    value: MockValue,
+    value: MockValue | null,
     key: string,
     equalToValue: MockPrimitive | null,
-    equalToKey: string | null
+    equalToKey?: string | null
 ): boolean {
 
     if (MockDataSnapshot.valueComparer(value, equalToValue) !== 0) {
@@ -257,13 +266,13 @@ function pairKeyPredicate(query: MockQuery): (pair: MockPair) => boolean {
 
     return (pair) => {
 
-        if ((query.equalTo !== undefined) && (pair.key !== query.equalTo)) {
+        if ((query.equalTo !== undefined) && ((pair.key as string) !== (query.equalTo as string))) {
             return false;
         }
-        if ((query.startAt !== undefined) && (pair.key < query.startAt)) {
+        if ((query.startAt !== undefined) && ((pair.key as string) < (query.startAt as string))) {
             return false;
         }
-        if ((query.endAt !== undefined) && (pair.key > query.endAt)) {
+        if ((query.endAt !== undefined) && ((pair.key as string) > (query.endAt as string))) {
             return false;
         }
         return true;
@@ -293,10 +302,10 @@ function pairValuePredicate(query: MockQuery): (pair: MockPair) => boolean {
 }
 
 function startAtPredicate(
-    value: MockValue,
+    value: MockValue | null,
     key: string,
     startAtValue: MockPrimitive | null,
-    startAtKey: string | null
+    startAtKey?: string | null
 ): boolean {
 
     const comparison = MockDataSnapshot.valueComparer(value, startAtValue);
