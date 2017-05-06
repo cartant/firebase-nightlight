@@ -766,6 +766,24 @@ describe("mock-ref", () => {
                     expect(ref.toString()).to.equal(pushedRef.toString());
                 });
         });
+
+        it("should be callable with no arguments", () => {
+
+            const pushedRef = sequenceRef.push();
+
+            expect(pushedRef).to.be.an("object");
+            expect(pushedRef).to.have.property("key");
+            expect(database.content["path"]["to"]["data"]["sequence"]).to.deep.equal({});
+        });
+
+        it("should be callable with undefined", () => {
+
+            const pushedRef = sequenceRef.push(undefined);
+
+            expect(pushedRef).to.be.an("object");
+            expect(pushedRef).to.have.property("key");
+            expect(database.content["path"]["to"]["data"]["sequence"]).to.deep.equal({});
+        });
     });
 
     describe("queries", () => {
