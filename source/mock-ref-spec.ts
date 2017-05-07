@@ -5,7 +5,7 @@
  */
 /*tslint:disable:no-unused-expression*/
 
-import * as firebase from "firebase/app";
+import * as firebase from "firebase";
 import * as json from "./json";
 
 import { expect } from "chai";

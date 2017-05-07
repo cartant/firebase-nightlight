@@ -4,7 +4,7 @@
  * found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
-import * as firebase from "firebase/app";
+import * as firebase from "firebase";
 import * as json from "./json";
 import * as lodash from "./lodash";
 

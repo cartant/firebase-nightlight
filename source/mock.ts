@@ -4,7 +4,7 @@
  * found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
-import * as firebase from "firebase/app";
+import * as firebase from "firebase";
 
 import { MockApp } from "./mock-app";
 import { error_ } from "./mock-error";
