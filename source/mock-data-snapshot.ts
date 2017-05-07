@@ -4,10 +4,10 @@
  * found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
-import * as firebase from "firebase";
 import * as json from "./json";
 import * as lodash from "./lodash";
 
+import { firebase } from "./firebase";
 import { unsupported_ } from "./mock-error";
 import { MockPrimitive, MockQuery, MockRefInternals, MockValue } from "./mock-types";
 

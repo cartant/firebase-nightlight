@@ -5,10 +5,10 @@
  */
 /*tslint:disable:no-unused-expression*/
 
-import * as firebase from "firebase";
 import * as json from "./json";
 
 import { expect } from "chai";
+import { firebase } from "./firebase";
 import { Mock } from "./mock";
 import { MockRef } from "./mock-ref";
 import { MockValue } from "./mock-types";

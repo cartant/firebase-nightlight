@@ -5,9 +5,8 @@
  */
 /*tslint:disable:no-unused-expression*/
 
-import * as firebase from "firebase";
-
 import { expect } from "chai";
+import { firebase } from "./firebase";
 import { Mock } from "./mock";
 
 describe("mock-app", () => {

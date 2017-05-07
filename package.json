@@ -1,8 +1,5 @@
 {
   "author": "Nicholas Jamieson <nicholas@cartant.com>",
-  "browser": {
-    "firebase": false
-  },
   "bugs": {
     "url": "https://github.com/cartant/firebase-nightlight/issues"
   },

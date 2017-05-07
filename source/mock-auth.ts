@@ -4,9 +4,8 @@
  * found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
-import * as firebase from "firebase";
-
 import { EventEmitter2 } from "eventemitter2";
+import { firebase } from "./firebase";
 import { error_, unsupported_ } from "./mock-error";
 import { MockIdentity } from "./mock-types";
 import { MockUser } from "./mock-user";

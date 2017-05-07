@@ -3,9 +3,9 @@
  * Use of this source code is governed by a GPL-3.0 license that can be
  * found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
-import * as firebase from "firebase";
 
 import { EventEmitter2 } from "eventemitter2";
+import { firebase } from "./firebase";
 
 export type MockPrimitive = boolean | number | string;
 export type MockComposite = { [key: string]: MockPrimitive | MockComposite };
