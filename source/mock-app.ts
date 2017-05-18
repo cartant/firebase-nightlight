@@ -12,7 +12,9 @@ import { firebase } from "./firebase";
 import { MockAuth } from "./mock-auth";
 import { MockDatabase } from "./mock-database";
 import { MockDataSnapshot } from "./mock-data-snapshot";
+import { MockMessaging } from "./mock-messaging";
 import { MockRef } from "./mock-ref";
+import { MockStorage } from "./mock-storage";
 import { MockEmitters, MockIdentity, MockValue } from "./mock-types";
 
 export interface MockAppOptions {
@@ -31,17 +33,14 @@ export class MockApp implements firebase.app.App {
     private deleter_: () => Promise<any>;
     private emitters_: MockEmitters;
     private initializeOptions_: Object;
-    private messaging_: firebase.messaging.Messaging | null;
+    private messaging_: firebase.messaging.Messaging;
     private name_: string;
-    private storage_: firebase.storage.Storage | null;
 
     constructor(options: MockAppOptions) {
 
         this.deleter_ = options.deleter;
         this.initializeOptions_ = options.initializeOptions;
-        this.messaging_ = null;
         this.name_ = options.name;
-        this.storage_ = null;
 
         this.emitters_ = {
             root: new EventEmitter2({ wildcard: true }),
@@ -58,6 +57,10 @@ export class MockApp implements firebase.app.App {
             app: this,
             database: options.database,
             emitters: this.emitters_
+        });
+
+        this.messaging_ = new MockMessaging({
+            app: this
         });
     }
 
@@ -88,18 +91,15 @@ export class MockApp implements firebase.app.App {
 
     messaging(): firebase.messaging.Messaging {
 
-        if (this.messaging_ === null) {
-            throw new Error("Messaging is not mocked.");
-        }
         return this.messaging_;
     }
 
     storage(url?: string): firebase.storage.Storage {
 
-        if (this.storage_ === null) {
-            throw new Error("Storage is not mocked.");
-        }
-        return this.storage_;
+        return new MockStorage({
+            app: this,
+            url
+        });
     }
 
     private rootListener_(

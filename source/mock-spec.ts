@@ -99,7 +99,7 @@ describe("mock", () => {
         });
     });
 
-    describe.skip("messaging", () => {
+    describe("messaging", () => {
 
         it("should return a messaging mock", () => {
 
@@ -111,7 +111,7 @@ describe("mock", () => {
         });
     });
 
-    describe.skip("storage", () => {
+    describe("storage", () => {
 
         it("should return a storage mock", () => {
 
