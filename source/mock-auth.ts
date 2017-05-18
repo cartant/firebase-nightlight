@@ -117,7 +117,7 @@ export class MockAuth implements firebase.auth.Auth {
         completed?: () => any
     ): () => any {
 
-        throw unsupported_();
+        return this.onAuthStateChanged(nextOrObserver, error, completed);
     }
 
     sendPasswordResetEmail(email: string): firebase.Promise<any> {

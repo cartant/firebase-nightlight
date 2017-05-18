@@ -166,6 +166,77 @@ describe("mock-auth", () => {
         });
     });
 
+    describe("onIdTokenChanged", () => {
+
+        it("should support callbacks", () => {
+
+            let user: firebase.User;
+
+            const unsubscribe = mockAuth.onIdTokenChanged(
+                (next: firebase.User) => { user = next; },
+                (error) => { throw error; },
+                () => {}
+            );
+            expect(unsubscribe).to.be.a("function");
+
+            return mockAuth
+                .signInWithEmailAndPassword("alice@firebase.com", "wonderland")
+                .then(() => {
+
+                    expect(mockAuth.currentUser).to.not.be.null;
+                    expect(mockAuth.currentUser).to.equal(user);
+                    return mockAuth.signOut();
+                })
+                .then(() => {
+
+                    expect(mockAuth.currentUser).to.be.null;
+                    expect(mockAuth.currentUser).to.equal(user);
+                    unsubscribe();
+                });
+        });
+
+        it("should support an observer", () => {
+
+            let user: firebase.User;
+
+            const unsubscribe = mockAuth.onIdTokenChanged({
+                completed(): void {},
+                error(error: any): void { throw error; },
+                next(value: firebase.User): void { user = value; }
+            });
+            expect(unsubscribe).to.be.a("function");
+
+            return mockAuth
+                .signInWithEmailAndPassword("alice@firebase.com", "wonderland")
+                .then(() => {
+
+                    expect(mockAuth.currentUser).to.not.be.null;
+                    expect(mockAuth.currentUser).to.equal(user);
+                    return mockAuth.signOut();
+                })
+                .then(() => {
+
+                    expect(mockAuth.currentUser).to.be.null;
+                    expect(mockAuth.currentUser).to.equal(user);
+                    unsubscribe();
+                });
+        });
+
+        it("should emit the current state", (callback) => {
+
+            const unsubscribe = mockAuth.onIdTokenChanged({
+                completed(): void {},
+                error(error: any): void { throw error; },
+                next(value: firebase.User): void {
+
+                    expect(value).to.be.null;
+                    unsubscribe();
+                    callback();}
+            });
+            expect(unsubscribe).to.be.a("function");
+        });
+    });
+
     describe("signInAnonymously", () => {
 
         it("should sign in anonymously", () => {
