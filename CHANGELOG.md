@@ -1,3 +1,10 @@
+<a name="2.0.0"></a>
+## [2.0.0](https://github.com/cartant/firebase-nightlight/compare/v1.1.0...v2.0.0) (2017-05-18)
+
+### Firebase
+
+* Update to Firebase v4 ([e1027ab](https://github.com/cartant/firebase-nightlight/commit/e1027ab))
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/cartant/firebase-nightlight/compare/v1.1.0...v1.1.1) (2017-05-02)
 
