@@ -1,3 +1,10 @@
+<a name="2.0.2"></a>
+## [2.0.2](https://github.com/cartant/firebase-nightlight/compare/v2.0.1...v2.0.2) (2017-05-18)
+
+### Features
+
+* Mock `onIdTokenChanged` ([4bfb701](https://github.com/cartant/firebase-nightlight/commit/4bfb701))
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/cartant/firebase-nightlight/compare/v2.0.0...v2.0.1) (2017-05-18)
 
