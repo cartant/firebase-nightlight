@@ -19,6 +19,7 @@ export class MockUser implements firebase.User {
     public email: string | null;
     public emailVerified: boolean;
     public isAnonymous: boolean;
+    public phoneNumber: string | null;
     public photoURL: string | null;
     public providerData: (firebase.UserInfo | null)[];
     public providerId: string;
@@ -53,6 +54,11 @@ export class MockUser implements firebase.User {
         throw unsupported_();
     }
 
+    getIdToken(forceRefresh?: boolean): firebase.Promise<any> {
+
+        throw unsupported_();
+    }
+
     getToken(forceRefresh?: boolean): firebase.Promise<any> {
 
         throw unsupported_();
@@ -63,7 +69,20 @@ export class MockUser implements firebase.User {
         throw unsupported_();
     }
 
+    linkAndRetrieveDataWithCredential(credential: firebase.auth.AuthCredential): firebase.Promise<any> {
+
+        throw unsupported_();
+    }
+
     linkWithCredential(credential: firebase.auth.AuthCredential): firebase.Promise<any> {
+
+        throw unsupported_();
+    }
+
+    linkWithPhoneNumber(
+        phoneNumber: string,
+        applicationVerifier: firebase.auth.ApplicationVerifier
+    ): firebase.Promise<any> {
 
         throw unsupported_();
     }
@@ -83,7 +102,20 @@ export class MockUser implements firebase.User {
         throw unsupported_();
     }
 
+    reauthenticateAndRetrieveDataWithCredential(credential: firebase.auth.AuthCredential): firebase.Promise<any> {
+
+        throw unsupported_();
+    }
+
     reauthenticateWithCredential(credential: firebase.auth.AuthCredential): firebase.Promise<any> {
+
+        throw unsupported_();
+    }
+
+    reauthenticateWithPhoneNumber(
+        phoneNumber: string,
+        applicationVerifier: firebase.auth.ApplicationVerifier
+    ): firebase.Promise<any> {
 
         throw unsupported_();
     }
@@ -124,6 +156,11 @@ export class MockUser implements firebase.User {
     }
 
     updatePassword(password: string): firebase.Promise<any> {
+
+        throw unsupported_();
+    }
+
+    updatePhoneNumber(phoneCredential: firebase.auth.AuthCredential): firebase.Promise<any> {
 
         throw unsupported_();
     }

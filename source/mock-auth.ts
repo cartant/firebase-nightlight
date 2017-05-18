@@ -116,7 +116,21 @@ export class MockAuth implements firebase.auth.Auth {
         };
     }
 
+    onIdTokenChanged(
+        nextOrObserver: Object,
+        error?: (error: firebase.auth.Error) => any,
+        completed?: () => any
+    ): () => any {
+
+        throw unsupported_();
+    }
+
     sendPasswordResetEmail(email: string): firebase.Promise<any> {
+
+        throw unsupported_();
+    }
+
+    signInAndRetrieveDataWithCredential(credential: firebase.auth.AuthCredential): firebase.Promise<any> {
 
         throw unsupported_();
     }
@@ -178,6 +192,14 @@ export class MockAuth implements firebase.auth.Auth {
         this.emitter_.emit("auth", this.currentUser_);
 
         return Promise.resolve(this.currentUser_);
+    }
+
+    signInWithPhoneNumber(
+        phoneNumber: string,
+        applicationVerifier: firebase.auth.ApplicationVerifier
+    ): firebase.Promise<any> {
+
+        throw unsupported_();
     }
 
     signInWithPopup(provider: firebase.auth.AuthProvider): firebase.Promise<any> {
