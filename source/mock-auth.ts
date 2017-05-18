@@ -55,11 +55,6 @@ export class MockAuth implements firebase.auth.Auth {
         throw unsupported_();
     }
 
-    createCustomToken(uid: string, claims?: Object | null): string {
-
-        throw unsupported_();
-    }
-
     createUserWithEmailAndPassword(email: string, password: string): firebase.Promise<any> {
 
         let identity = this.identities_.find((identity) => identity.email === email);
@@ -218,11 +213,6 @@ export class MockAuth implements firebase.auth.Auth {
         this.emitter_.emit("auth", this.currentUser_);
 
         return Promise.resolve();
-    }
-
-    verifyIdToken(idToken: string): firebase.Promise<any> {
-
-        throw unsupported_();
     }
 
     verifyPasswordResetCode(code: string): firebase.Promise<any> {
