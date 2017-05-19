@@ -69,7 +69,7 @@ describe("something", () => {
                 password: "wonderland"
             }]
         });
-        mockApp = mock.initilizeApp({});
+        mockApp = mock.initializeApp({});
     });
 
     it("should do something with the mock", () => {
