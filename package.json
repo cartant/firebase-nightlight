@@ -36,7 +36,7 @@
     "rimraf": "^2.6.1",
     "tslint": "^5.2.0",
     "typescript": "^2.2.2",
-    "uglifyjs": "2.4.10"
+    "uglify-js": "^3.0.10"
   },
   "homepage": "https://github.com/cartant/firebase-nightlight",
   "keywords": [
@@ -62,7 +62,7 @@
     "dist:build": "npm run dist:clean && npm run dist:copy && tsc -p tsconfig-dist.json && browserify dist/index.js -s firebaseNightlight -o bundles/firebase-nightlight.umd.js",
     "dist:copy": "cpy source/lodash.* dist/",
     "dist:clean": "rimraf dist && rimraf bundles/firebase-nightlight.* && mkdirp bundles",
-    "dist:uglify": "uglifyjs -c -m --screw-ie8 -o bundles/firebase-nightlight.min.umd.js bundles/firebase-nightlight.umd.js",
+    "dist:uglify": "uglifyjs -c -m -o bundles/firebase-nightlight.min.umd.js bundles/firebase-nightlight.umd.js",
     "lint": "tslint --project tsconfig.json --type-check source/**/*.ts",
     "prepublish": "npm run test && npm run dist",
     "test": "npm run lint && npm run test:build && karma start",
