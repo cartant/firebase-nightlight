@@ -20,7 +20,7 @@ Build
 <a name="2.0.0"></a>
 ## [2.0.0](https://github.com/cartant/firebase-nightlight/compare/v1.1.1...v2.0.0) (2017-05-18)
 
-### Firebase
+### Breaking Changes
 
 * Update to Firebase v4 ([e1027ab](https://github.com/cartant/firebase-nightlight/commit/e1027ab))
 
