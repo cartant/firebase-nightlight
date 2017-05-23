@@ -34,7 +34,7 @@
     "mkdirp": "^0.5.1",
     "mocha": "^3.2.0",
     "rimraf": "^2.6.1",
-    "tslint": "^5.2.0",
+    "tslint": "5.2.0",
     "typescript": "^2.2.2",
     "uglify-js": "^3.0.10"
   },
