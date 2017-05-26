@@ -784,6 +784,18 @@ describe("mock-ref", () => {
             expect(pushedRef).to.have.property("key");
             expect(database.content["path"]["to"]["data"]["sequence"]).to.deep.equal({});
         });
+
+        it("should support a callback", () => {
+
+            let called = false;
+
+            return sequenceRef
+                .push({ name: "alice" }, () => called = true)
+                .then(() => {
+
+                    expect(called).to.be.true;
+                });
+        });
     });
 
     describe("queries", () => {
@@ -1534,6 +1546,22 @@ describe("mock-ref", () => {
                     expect(database.content).to.not.equal(snapshot.val());
                 });
         });
+
+        it("should support a callback", () => {
+
+            let called = false;
+
+            return mockRef
+                .remove(() => called = true)
+                .then(() => {
+
+                    return mockRef.once("value");
+                })
+                .then((snapshot) => {
+
+                    expect(called).to.be.true;
+                });
+        });
     });
 
     describe("root", () => {
@@ -1593,6 +1621,22 @@ describe("mock-ref", () => {
                 .catch((error) => {
 
                     expect(error).to.match(/illegal character/i);
+                });
+        });
+
+        it("should support a callback", () => {
+
+            let called = false;
+
+            return mockRef
+                .set({ modifed: true }, () => called = true)
+                .then(() => {
+
+                    return mockRef.once("value");
+                })
+                .then((snapshot) => {
+
+                    expect(called).to.be.true;
                 });
         });
     });
@@ -1904,6 +1948,18 @@ describe("mock-ref", () => {
                         question: "what do you get if you multiply six by nine?"
                     });
                     expect(database.content["path"]["to"]["data"]).to.not.equal(snapshot.val());
+                });
+        });
+
+        it("should support a callback", () => {
+
+            let called = false;
+
+            return mockRef
+                .update({ modifed: true }, () => called = true)
+                .then(() => {
+
+                    expect(called).to.be.true;
                 });
         });
     });
