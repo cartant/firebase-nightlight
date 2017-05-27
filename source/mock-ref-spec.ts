@@ -796,6 +796,54 @@ describe("mock-ref", () => {
                     expect(called).to.be.true;
                 });
         });
+
+        it("should support forced errors", () => {
+
+            database.content["path"]["to"]["data"]["sequence"][".error"] = "Boom!";
+
+            return sequenceRef
+                .push({ name: "alice" })
+                .then(() => {
+
+                    throw new Error("Unexpected success.");
+                })
+                .catch((error) => {
+
+                    expect(error).to.match(/Boom!/);
+                });
+        });
+
+        it("should support forced errors specified on parents", () => {
+
+            database.content["path"][".error"] = "Boom!";
+
+            return sequenceRef
+                .push({ name: "alice" })
+                .then(() => {
+
+                    throw new Error("Unexpected success.");
+                })
+                .catch((error) => {
+
+                    expect(error).to.match(/Boom!/);
+                });
+        });
+
+        it("should support forced errors specified at the root", () => {
+
+            database.content[".error"] = "Boom!";
+
+            return sequenceRef
+                .push({ name: "alice" })
+                .then(() => {
+
+                    throw new Error("Unexpected success.");
+                })
+                .catch((error) => {
+
+                    expect(error).to.match(/Boom!/);
+                });
+        });
     });
 
     describe("queries", () => {
@@ -1562,6 +1610,54 @@ describe("mock-ref", () => {
                     expect(called).to.be.true;
                 });
         });
+
+        it("should support forced errors", () => {
+
+            database.content["path"]["to"]["data"][".error"] = "Boom!";
+
+            return mockRef
+                .remove()
+                .then(() => {
+
+                    throw new Error("Unexpected success.");
+                })
+                .catch((error) => {
+
+                    expect(error).to.match(/Boom!/);
+                });
+        });
+
+        it("should support forced errors specified on parents", () => {
+
+            database.content["path"][".error"] = "Boom!";
+
+            return mockRef
+                .remove()
+                .then(() => {
+
+                    throw new Error("Unexpected success.");
+                })
+                .catch((error) => {
+
+                    expect(error).to.match(/Boom!/);
+                });
+        });
+
+        it("should support forced errors specified at the root", () => {
+
+            database.content[".error"] = "Boom!";
+
+            return mockRef
+                .remove()
+                .then(() => {
+
+                    throw new Error("Unexpected success.");
+                })
+                .catch((error) => {
+
+                    expect(error).to.match(/Boom!/);
+                });
+        });
     });
 
     describe("root", () => {
@@ -1637,6 +1733,54 @@ describe("mock-ref", () => {
                 .then((snapshot) => {
 
                     expect(called).to.be.true;
+                });
+        });
+
+        it("should support forced errors", () => {
+
+            database.content["path"]["to"]["data"][".error"] = "Boom!";
+
+            return mockRef
+                .set({ modifed: true })
+                .then(() => {
+
+                    throw new Error("Unexpected success.");
+                })
+                .catch((error) => {
+
+                    expect(error).to.match(/Boom!/);
+                });
+        });
+
+        it("should support forced errors specified on parents", () => {
+
+            database.content["path"][".error"] = "Boom!";
+
+            return mockRef
+                .set({ modifed: true })
+                .then(() => {
+
+                    throw new Error("Unexpected success.");
+                })
+                .catch((error) => {
+
+                    expect(error).to.match(/Boom!/);
+                });
+        });
+
+        it("should support forced errors specified at the root", () => {
+
+            database.content[".error"] = "Boom!";
+
+            return mockRef
+                .set({ modifed: true })
+                .then(() => {
+
+                    throw new Error("Unexpected success.");
+                })
+                .catch((error) => {
+
+                    expect(error).to.match(/Boom!/);
                 });
         });
     });
@@ -1960,6 +2104,54 @@ describe("mock-ref", () => {
                 .then(() => {
 
                     expect(called).to.be.true;
+                });
+        });
+
+        it("should support forced errors", () => {
+
+            database.content["path"]["to"]["data"][".error"] = "Boom!";
+
+            return mockRef
+                .update({ modifed: true })
+                .then(() => {
+
+                    throw new Error("Unexpected success.");
+                })
+                .catch((error) => {
+
+                    expect(error).to.match(/Boom!/);
+                });
+        });
+
+        it("should support forced errors specified on parents", () => {
+
+            database.content["path"][".error"] = "Boom!";
+
+            return mockRef
+                .update({ modifed: true })
+                .then(() => {
+
+                    throw new Error("Unexpected success.");
+                })
+                .catch((error) => {
+
+                    expect(error).to.match(/Boom!/);
+                });
+        });
+
+        it("should support forced errors specified at the root", () => {
+
+            database.content[".error"] = "Boom!";
+
+            return mockRef
+                .update({ modifed: true })
+                .then(() => {
+
+                    throw new Error("Unexpected success.");
+                })
+                .catch((error) => {
+
+                    expect(error).to.match(/Boom!/);
                 });
         });
     });

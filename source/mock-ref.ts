@@ -453,6 +453,11 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
                 try {
 
+                    const error = findError(this.jsonPath_, this.database_.content);
+                    if (error) {
+                        throw error;
+                    }
+
                     if (this.jsonPath_.length === 0) {
 
                         this.database_.content = {};
@@ -518,6 +523,11 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
                     validateKeys(value as MockValue);
                     value = json.clone(value);
+
+                    const error = findError(this.jsonPath_, this.database_.content);
+                    if (error) {
+                        throw error;
+                    }
 
                     if (this.jsonPath_.length === 0) {
 
@@ -713,17 +723,22 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
                     lodash.each(values, (value, key: string) => {
 
-                        const path = toJsonPath(json.join(this.jsonPath_, key));
+                        const jsonPath = toJsonPath(json.join(this.jsonPath_, key));
+                        const error = findError(jsonPath, this.database_.content);
+                        if (error) {
+                            throw error;
+                        }
+
                         if (value === null) {
                             this.database_.content = json.remove(
                                 this.database_.content,
-                                path
+                                jsonPath
                             );
-                            json.prune(this.database_.content, path);
+                            json.prune(this.database_.content, jsonPath);
                         } else {
                             this.database_.content = json.set(
                                 this.database_.content,
-                                path,
+                                jsonPath,
                                 json.clone(value)
                             );
                         }
@@ -913,6 +928,37 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
                 }).child(addedPair.key), previousKey);
             });
         }
+    }
+}
+
+function findError(jsonPath: string, content: MockValue | null): Error | null {
+
+    if (content === null) {
+        return null;
+    }
+
+    const parts = jsonPath.split("/").filter(Boolean);
+
+    if (json.has(content, "/.error")) {
+        return toError(json.get(content, "/.error"));
+    }
+
+    for (let p = 0; p < parts.length; ++p) {
+        const path = `${json.join.apply(null, [...parts.slice(0, p + 1), ".error"])}`;
+        if (json.has(content, path)) {
+            return toError(json.get(content, path));
+        }
+    }
+    return null;
+
+    function toError(value: any): Error {
+
+        const error = new Error((typeof value === "string") ?
+            value :
+            value.message || "Unknown message."
+        );
+        error["code"] = value.code || "unknown/code";
+        return error;
     }
 }
 
