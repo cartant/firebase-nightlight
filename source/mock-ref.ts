@@ -48,7 +48,13 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     private promise_?: firebase.Promise<any>;
     private queue_: any[];
     private refEmitter_: EventEmitter2;
-    private refEmitterBindings_: { bound: Function, type: string, unbound: Function }[];
+    private refEmitterBindings_: {
+        boundError: Function,
+        boundSuccess: Function,
+        type: string,
+        unboundError: Function | null,
+        unboundSuccess: Function
+    }[];
     private rootEmitter_: EventEmitter2;
     private sharedEmitter_: EventEmitter2;
 
@@ -249,18 +255,20 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
         if (eventType) {
             if (callback) {
-                const index = lodash.findIndex(this.refEmitterBindings_, (binding) => binding.unbound === callback);
+                const index = lodash.findIndex(this.refEmitterBindings_, (binding) => binding.unboundSuccess === callback);
                 if (index !== -1) {
                     const binding = this.refEmitterBindings_[index];
                     this.refEmitterBindings_.splice(index, 1);
-                    this.refEmitter_.off(eventType, binding.bound);
+                    this.refEmitter_.off(eventType, binding.boundSuccess);
+                    this.refEmitter_.off(`${eventType}_error`, binding.boundError);
                 }
             } else {
                 const indices: number[] = [];
                 lodash.each(this.refEmitterBindings_, (binding, index) => {
                     if (binding.type === eventType) {
                         indices.push(index);
-                        this.refEmitter_.off(eventType, binding.bound);
+                        this.refEmitter_.off(eventType, binding.boundSuccess);
+                        this.refEmitter_.off(`${eventType}_error`, binding.boundError);
                     }
                 });
                 indices.reverse();
@@ -284,11 +292,15 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
             errorCallback = undefined;
         }
 
+        const safeErrorCallback = errorCallback ?
+            errorCallback as Function :
+            () => {};
+
         // tslint:disable-next-line
-        let boundErrorCallback = errorCallback;
+        let boundErrorCallback = safeErrorCallback;
         let boundSuccessCallback = successCallback;
         if (context) {
-            boundErrorCallback = errorCallback ? (errorCallback as Function).bind(context) : null;
+            boundErrorCallback = safeErrorCallback.bind(context);
             boundSuccessCallback = successCallback.bind(context);
         }
 
@@ -303,11 +315,17 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
                 let previousKey: string | null = null;
 
                 if (this.refEmitter_.listeners("child_added").indexOf(boundSuccessCallback) !== -1) {
-                    lodash.each(mockSnapshot.pairs_(), (pair) => {
 
-                        boundSuccessCallback(mockSnapshot.child(pair.key), previousKey);
-                        previousKey = pair.key;
-                    });
+                    const error = findError(this.jsonPath_, this.database_.content);
+                    if (error) {
+                        boundErrorCallback(error);
+                    } else {
+                        lodash.each(mockSnapshot.pairs_(), (pair) => {
+
+                            boundSuccessCallback(mockSnapshot.child(pair.key), previousKey);
+                            previousKey = pair.key;
+                        });
+                    }
                 }
             });
             break;
@@ -315,7 +333,13 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
             this.enqueue_("init_value", () => {
 
                 if (this.refEmitter_.listeners("value").indexOf(boundSuccessCallback) !== -1) {
-                    boundSuccessCallback(mockSnapshot);
+
+                    const error = findError(this.jsonPath_, this.database_.content);
+                    if (error) {
+                        boundErrorCallback(error);
+                    } else {
+                        boundSuccessCallback(mockSnapshot);
+                    }
                 }
             });
             break;
@@ -324,11 +348,14 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         }
 
         this.refEmitterBindings_.push({
-            bound: boundSuccessCallback,
+            boundError: boundErrorCallback,
+            boundSuccess: boundSuccessCallback,
             type: eventType,
-            unbound: successCallback
+            unboundError: errorCallback || null,
+            unboundSuccess: successCallback
         });
         this.refEmitter_.on(eventType, boundSuccessCallback);
+        this.refEmitter_.on(`${eventType}_error`, boundErrorCallback);
         return successCallback;
     }
 
@@ -857,6 +884,12 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     ): void {
 
         if (this.refEmitterBindings_.length === 0) {
+            return;
+        }
+
+        const error = findError(this.jsonPath_, this.database_.content);
+        if (error) {
+            this.refEmitter_.emit(`${eventType}_error`, error);
             return;
         }
 
