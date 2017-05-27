@@ -183,3 +183,30 @@ expect(stats.listeners).to.deep.equal({
     value: 0
 });
 ```
+
+### Forcing database errors
+
+It's possible to force database errors by delcaring errors in the database content. For example, with this content:
+
+```js
+const mockDatabase = {
+    content: {
+        a: {
+            b: {
+                ".error": {
+                    code: "database/boom",
+                    message: "Boom!"
+                },
+                c: {
+                    value: 3
+                }
+            }
+        }
+    }
+};
+const mock = new Mock({
+    database: mockDatabase
+});
+```
+
+All reads and writes on the `a/b` path will fail with the specified error. Any reads or writes on deeper paths - `a/b/c`, for example - will also fail with the specified error.

@@ -1,3 +1,10 @@
+<a name="2.1.0"></a>
+## [2.1.0](https://github.com/cartant/firebase-nightlight/compare/v2.0.4...v2.1.0) (2017-05-27)
+
+### Features
+
+* Add support for declaring errors in the database content ([3c674ac](https://github.com/cartant/firebase-nightlight/commit/3c674ac)) and ([7550f49](https://github.com/cartant/firebase-nightlight/commit/7550f49))
+
 <a name="2.0.4"></a>
 ## [2.0.4](https://github.com/cartant/firebase-nightlight/compare/v2.0.3...v2.0.4) (2017-05-27)
 
