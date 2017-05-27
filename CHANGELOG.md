@@ -1,3 +1,10 @@
+<a name="2.0.4"></a>
+## [2.0.4](https://github.com/cartant/firebase-nightlight/compare/v2.0.3...v2.0.4) (2017-05-27)
+
+### Bug Fixes
+
+* Skip callback when pushing `undefined` ([9fcf75d](https://github.com/cartant/firebase-nightlight/commit/9fcf75d))
+
 <a name="2.0.3"></a>
 ## [2.0.3](https://github.com/cartant/firebase-nightlight/compare/v2.0.2...v2.0.3) (2017-05-27)
 
