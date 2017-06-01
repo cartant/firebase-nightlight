@@ -1,3 +1,10 @@
+<a name="2.2.0"></a>
+## [2.2.0](https://github.com/cartant/firebase-nightlight/compare/v2.1.0...v2.2.0) (2017-06-02)
+
+### Features
+
+* Add support for use with `firebase-admin` ([1a97ce6](https://github.com/cartant/firebase-nightlight/commit/1a97ce6))
+
 <a name="2.1.0"></a>
 ## [2.1.0](https://github.com/cartant/firebase-nightlight/compare/v2.0.4...v2.1.0) (2017-05-27)
 

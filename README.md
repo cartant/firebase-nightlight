@@ -143,6 +143,14 @@ console.log(mock);
 </script>
 ```
 
+The mock can be used with `firebase-admin` if the `admin` subdirectory is used:
+
+```js
+import { Mock } from "firebase-nightlight/admin";
+const mock = new Mock();
+console.log(mock);
+```
+
 ## API
 
 Instances of the `Mock` class implement the properties and methods that are in the Firebase Web API's [`firebase`](https://firebase.google.com/docs/reference/js/firebase) namespace.
