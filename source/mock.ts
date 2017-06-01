@@ -55,10 +55,12 @@ export class Mock {
         throw error_("app/invalid-name", "App not found.");
     }
 
+    /* @ifndef ADMIN */
     auth(app?: firebase.app.App): firebase.auth.Auth {
 
         return app ? app.auth() : this.app().auth();
     }
+    /* @endif*/
 
     database(app?: firebase.app.App): firebase.database.Database {
 
@@ -98,6 +100,7 @@ export class Mock {
         return mockApp;
     }
 
+    /* @ifndef ADMIN */
     messaging(app?: firebase.app.App): firebase.messaging.Messaging {
 
         return app ? app.messaging() : this.app().messaging();
@@ -107,4 +110,5 @@ export class Mock {
 
         return app ? app.storage() : this.app().storage();
     }
+    /* @endif */
 }

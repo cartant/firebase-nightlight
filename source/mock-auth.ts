@@ -5,7 +5,7 @@
  */
 
 import { EventEmitter2 } from "eventemitter2";
-import { firebase } from "./firebase";
+import { firebase, FirebasePromise } from "./firebase";
 import { error_, unsupported_ } from "./mock-error";
 import { MockIdentity } from "./mock-types";
 import { MockUser } from "./mock-user";
@@ -40,22 +40,22 @@ export class MockAuth implements firebase.auth.Auth {
         return this.currentUser_;
     }
 
-    applyActionCode(code: string): firebase.Promise <any> {
+    applyActionCode(code: string): FirebasePromise<any> {
 
         throw unsupported_();
     }
 
-    checkActionCode(code: string): firebase.Promise <any> {
+    checkActionCode(code: string): FirebasePromise<any> {
 
         throw unsupported_();
     }
 
-    confirmPasswordReset(code: string, password: string): firebase.Promise <any> {
+    confirmPasswordReset(code: string, password: string): FirebasePromise<any> {
 
         throw unsupported_();
     }
 
-    createUserWithEmailAndPassword(email: string, password: string): firebase.Promise<any> {
+    createUserWithEmailAndPassword(email: string, password: string): FirebasePromise<any> {
 
         let identity = this.identities_.find((identity) => identity.email === email);
         if (identity) {
@@ -71,12 +71,12 @@ export class MockAuth implements firebase.auth.Auth {
         return Promise.resolve(this.currentUser_);
     }
 
-    fetchProvidersForEmail(email: string): firebase.Promise<any> {
+    fetchProvidersForEmail(email: string): FirebasePromise<any> {
 
         throw unsupported_();
     }
 
-    getRedirectResult(): firebase.Promise<any> {
+    getRedirectResult(): FirebasePromise<any> {
 
         return Promise.resolve({
             credential: null,
@@ -120,17 +120,17 @@ export class MockAuth implements firebase.auth.Auth {
         return this.onAuthStateChanged(nextOrObserver, error, completed);
     }
 
-    sendPasswordResetEmail(email: string): firebase.Promise<any> {
+    sendPasswordResetEmail(email: string): FirebasePromise<any> {
 
         throw unsupported_();
     }
 
-    signInAndRetrieveDataWithCredential(credential: firebase.auth.AuthCredential): firebase.Promise<any> {
+    signInAndRetrieveDataWithCredential(credential: firebase.auth.AuthCredential): FirebasePromise<any> {
 
         throw unsupported_();
     }
 
-    signInAnonymously(): firebase.Promise<any> {
+    signInAnonymously(): FirebasePromise<any> {
 
         this.currentUser_ = new MockUser({ email: undefined });
         this.emitter_.emit("auth", this.currentUser_);
@@ -138,7 +138,7 @@ export class MockAuth implements firebase.auth.Auth {
         return Promise.resolve(this.currentUser_);
     }
 
-    signInWithCredential(credential: firebase.auth.AuthCredential): firebase.Promise<any> {
+    signInWithCredential(credential: firebase.auth.AuthCredential): FirebasePromise<any> {
 
         let identity = this.identities_.find((identity) => identity.credential === credential);
         if (!identity) {
@@ -154,7 +154,7 @@ export class MockAuth implements firebase.auth.Auth {
         return Promise.resolve(this.currentUser_);
     }
 
-    signInWithCustomToken(token: string): firebase.Promise<any> {
+    signInWithCustomToken(token: string): FirebasePromise<any> {
 
         let identity = this.identities_.find((identity) => identity.token === token);
         if (!identity) {
@@ -170,7 +170,7 @@ export class MockAuth implements firebase.auth.Auth {
         return Promise.resolve(this.currentUser_);
     }
 
-    signInWithEmailAndPassword(email: string, password: string): firebase.Promise<any> {
+    signInWithEmailAndPassword(email: string, password: string): FirebasePromise<any> {
 
         let identity = this.identities_.find((identity) => identity.email === email);
         if (!identity) {
@@ -192,22 +192,22 @@ export class MockAuth implements firebase.auth.Auth {
     signInWithPhoneNumber(
         phoneNumber: string,
         applicationVerifier: firebase.auth.ApplicationVerifier
-    ): firebase.Promise<any> {
+    ): FirebasePromise<any> {
 
         throw unsupported_();
     }
 
-    signInWithPopup(provider: firebase.auth.AuthProvider): firebase.Promise<any> {
+    signInWithPopup(provider: firebase.auth.AuthProvider): FirebasePromise<any> {
 
         throw unsupported_();
     }
 
-    signInWithRedirect(provider: firebase.auth.AuthProvider): firebase.Promise<any> {
+    signInWithRedirect(provider: firebase.auth.AuthProvider): FirebasePromise<any> {
 
         throw unsupported_();
     }
 
-    signOut(): firebase.Promise<any> {
+    signOut(): FirebasePromise<any> {
 
         this.currentUser_ = null;
         this.emitter_.emit("auth", this.currentUser_);
@@ -215,7 +215,7 @@ export class MockAuth implements firebase.auth.Auth {
         return Promise.resolve();
     }
 
-    verifyPasswordResetCode(code: string): firebase.Promise<any> {
+    verifyPasswordResetCode(code: string): FirebasePromise<any> {
 
         throw unsupported_();
     }

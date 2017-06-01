@@ -54,11 +54,12 @@ describe("mock", () => {
             const mock = new Mock({});
             const mockApp = mock.initializeApp(initializeOptions);
 
-            expect(mock).to.respondTo("auth");
-            expect(mock.auth()).to.exist;
+            expect(mock).to.respondTo("database");
+            expect(mock.database()).to.exist;
         });
     });
 
+    /* @ifndef ADMIN */
     describe("auth", () => {
 
         it("should return an auth mock", () => {
@@ -70,6 +71,7 @@ describe("mock", () => {
             expect(mock.auth()).to.exist;
         });
     });
+    /* @endif */
 
     describe("database", () => {
 
@@ -99,6 +101,7 @@ describe("mock", () => {
         });
     });
 
+    /* @ifndef ADMIN */
     describe("messaging", () => {
 
         it("should return a messaging mock", () => {
@@ -122,4 +125,5 @@ describe("mock", () => {
             expect(mock.storage()).to.exist;
         });
     });
+    /* @endif */
 });

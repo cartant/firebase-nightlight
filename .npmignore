@@ -1,6 +1,7 @@
 /build
 /bundles/*-test.umd.js
 /node_modules
+/pre
 /scripts
 /source
 /temp

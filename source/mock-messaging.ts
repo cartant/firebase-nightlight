@@ -4,7 +4,7 @@
  * found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
-import { firebase } from "./firebase";
+import { firebase, FirebasePromise } from "./firebase";
 import { error_, unsupported_ } from "./mock-error";
 
 export interface MockMessagingOptions {
@@ -20,12 +20,17 @@ export class MockMessaging implements firebase.messaging.Messaging {
         this.app_ = options.app;
     }
 
-    deleteToken(token: string): firebase.Promise<any> | null {
+    get app(): firebase.app.App {
+
+        return this.app_;
+    }
+
+    deleteToken(token: string): FirebasePromise<any> | null {
 
         throw unsupported_();
     }
 
-    getToken(): firebase.Promise<any> | null {
+    getToken(): FirebasePromise<any> | null {
 
         throw unsupported_();
     }
@@ -40,7 +45,7 @@ export class MockMessaging implements firebase.messaging.Messaging {
         throw unsupported_();
     }
 
-    requestPermission(): firebase.Promise<any> | null {
+    requestPermission(): FirebasePromise<any> | null {
 
         throw unsupported_();
     }

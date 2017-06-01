@@ -160,10 +160,18 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
         return pairs;
     }
 
+    /* @ifndef ADMIN */
     toJSON(): Object | null {
 
         throw unsupported_();
     }
+    /* @endif */
+    /* @ifdef ADMIN */
+    toJSON(): Object {
+
+        throw unsupported_();
+    }
+    /* @endif */
 
     val(): MockValue | null {
 

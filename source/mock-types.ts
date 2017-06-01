@@ -17,7 +17,9 @@ export interface MockEmitters {
 }
 
 export interface MockIdentity {
+    /* @ifndef ADMIN */
     credential?: firebase.auth.AuthCredential;
+    /* @endif */
     email: string;
     password?: string;
     token?: string;

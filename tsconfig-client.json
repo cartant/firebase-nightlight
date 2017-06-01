@@ -17,7 +17,6 @@
   },
   "exclude": [],
   "include": [
-    "source/**/*.js",
-    "source/**/*.ts"
+    "pre/**/*.ts"
   ]
 }
