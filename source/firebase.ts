@@ -4,5 +4,6 @@
  * found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
-import * as _firebase from "firebase";
-export type firebase = typeof _firebase;
+import * as firebase from "firebase";
+
+export { firebase };
