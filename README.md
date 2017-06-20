@@ -117,7 +117,7 @@ Install the package using NPM:
 npm install firebase-nightlight --save-dev
 ```
 
-And import the `Mock` class for use with TypeScript and ES2015:
+And import the `Mock` class for use with TypeScript or ES2015:
 
 ```js
 import { Mock } from "firebase-nightlight";
