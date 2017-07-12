@@ -7,7 +7,7 @@
 import * as json from "./json";
 import * as lodash from "./lodash";
 
-import { EventEmitter2 } from "eventemitter2";
+import { EventEmitter2, Listener } from "eventemitter2";
 import { key } from "firebase-key";
 import { firebase, FirebasePromise, FirebaseThenable } from "./firebase";
 import { MockDataSnapshot, MockPair } from "./mock-data-snapshot";
@@ -260,16 +260,16 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
                 if (index !== -1) {
                     const binding = this.refEmitterBindings_[index];
                     this.refEmitterBindings_.splice(index, 1);
-                    this.refEmitter_.off(eventType, binding.boundSuccess);
-                    this.refEmitter_.off(`${eventType}_error`, binding.boundError);
+                    this.refEmitter_.off(eventType, binding.boundSuccess as Listener);
+                    this.refEmitter_.off(`${eventType}_error`, binding.boundError as Listener);
                 }
             } else {
                 const indices: number[] = [];
                 lodash.each(this.refEmitterBindings_, (binding, index) => {
                     if (binding.type === eventType) {
                         indices.push(index);
-                        this.refEmitter_.off(eventType, binding.boundSuccess);
-                        this.refEmitter_.off(`${eventType}_error`, binding.boundError);
+                        this.refEmitter_.off(eventType, binding.boundSuccess as Listener);
+                        this.refEmitter_.off(`${eventType}_error`, binding.boundError as Listener);
                     }
                 });
                 indices.reverse();
@@ -315,7 +315,9 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
                 let previousKey: string | null = null;
 
-                if (this.refEmitter_.listeners("child_added").indexOf(boundSuccessCallback) !== -1) {
+                // TODO: https://github.com/asyncly/EventEmitter2/issues/217
+                const listeners = this.refEmitter_.listeners("child_added") as any;
+                if (listeners.indexOf(boundSuccessCallback as Listener) !== -1) {
 
                     const error = findError(this.jsonPath_, this.database_.content);
                     if (error) {
@@ -333,7 +335,9 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         case "value":
             this.enqueue_("init_value", () => {
 
-                if (this.refEmitter_.listeners("value").indexOf(boundSuccessCallback) !== -1) {
+                // TODO: https://github.com/asyncly/EventEmitter2/issues/217
+                const listeners = this.refEmitter_.listeners("value") as any;
+                if (listeners.indexOf(boundSuccessCallback) !== -1) {
 
                     const error = findError(this.jsonPath_, this.database_.content);
                     if (error) {
@@ -356,7 +360,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
             unboundSuccess: successCallback
         });
         this.refEmitter_.on(eventType, boundSuccessCallback);
-        this.refEmitter_.on(`${eventType}_error`, boundErrorCallback);
+        this.refEmitter_.on(`${eventType}_error`, boundErrorCallback as Listener);
         return successCallback;
     }
 

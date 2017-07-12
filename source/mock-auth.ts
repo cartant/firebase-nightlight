@@ -4,7 +4,7 @@
  * found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
-import { EventEmitter2 } from "eventemitter2";
+import { EventEmitter2, Listener } from "eventemitter2";
 import { firebase, FirebasePromise } from "./firebase";
 import { error_, unsupported_ } from "./mock-error";
 import { MockIdentity } from "./mock-types";
@@ -100,14 +100,14 @@ export class MockAuth implements firebase.auth.Auth {
             nextCallback = (value: firebase.User) => { nextOrObserver["next"](value); };
         }
 
-        this.emitter_.on("auth", nextCallback);
+        this.emitter_.on("auth", nextCallback as Listener);
         this.emitter_.on("error", errorCallback);
 
         setTimeout(() => this.emitter_.emit("auth", this.currentUser_), 0);
 
         return () => {
-            this.emitter_.off("auth", nextCallback as Function);
-            this.emitter_.off("error", errorCallback as Function);
+            this.emitter_.off("auth", nextCallback as Listener);
+            this.emitter_.off("error", errorCallback as Listener);
         };
     }
 
