@@ -315,9 +315,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
                 let previousKey: string | null = null;
 
-                // TODO: https://github.com/asyncly/EventEmitter2/issues/217
-                const listeners = this.refEmitter_.listeners("child_added") as any;
-                if (listeners.indexOf(boundSuccessCallback as Listener) !== -1) {
+                if (this.refEmitter_.listeners("child_added").indexOf(boundSuccessCallback as Listener) !== -1) {
 
                     const error = findError(this.jsonPath_, this.database_.content);
                     if (error) {
@@ -335,9 +333,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         case "value":
             this.enqueue_("init_value", () => {
 
-                // TODO: https://github.com/asyncly/EventEmitter2/issues/217
-                const listeners = this.refEmitter_.listeners("value") as any;
-                if (listeners.indexOf(boundSuccessCallback) !== -1) {
+                if (this.refEmitter_.listeners("value").indexOf(boundSuccessCallback) !== -1) {
 
                     const error = findError(this.jsonPath_, this.database_.content);
                     if (error) {
