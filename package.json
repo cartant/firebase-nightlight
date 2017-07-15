@@ -35,7 +35,7 @@
     "mocha": "^3.2.0",
     "preprocess": "^3.1.0",
     "rimraf": "^2.6.1",
-    "tslint": "5.2.0",
+    "tslint": "^5.2.0",
     "typescript": "^2.4.0",
     "uglify-js": "^3.0.10",
     "yargs": "^8.0.0"

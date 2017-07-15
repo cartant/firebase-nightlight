@@ -1998,6 +1998,8 @@ describe("mock-ref", () => {
             return mockRef
                 .transaction((value) => {
 
+                    // https://github.com/palantir/tslint/issues/2812
+                    // tslint:disable-next-line
                     return undefined;
                 })
                 .then(({ committed, snapshot }) => {
@@ -2018,6 +2020,9 @@ describe("mock-ref", () => {
 
                     value.answer = "mutated";
                     value.question = "mutated";
+
+                    // https://github.com/palantir/tslint/issues/2812
+                    // tslint:disable-next-line
                     return undefined;
                 })
                 .then(({ committed, snapshot }) => {
