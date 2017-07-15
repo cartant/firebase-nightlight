@@ -283,10 +283,10 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
     on(
         eventType: string,
-        successCallback: (snapshot: firebase.database.DataSnapshot, prevKey?: string | null) => any,
+        successCallback: (snapshot: firebase.database.DataSnapshot, prevKey?: string) => any,
         errorCallback?: Object | null,
         context?: Object | null
-    ): (snapshot: firebase.database.DataSnapshot, prevKey?: string | null) => any {
+    ): (snapshot: firebase.database.DataSnapshot, prevKey?: string) => any {
 
         if (errorCallback && (typeof errorCallback !== "function")) {
             context = errorCallback;
@@ -313,7 +313,12 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         case "child_added":
             this.enqueue_("init_child_added", () => {
 
-                let previousKey: string | null = null;
+                // Note that although the typings specify the previous key as
+                // an optional string - i.e string | undefined, the
+                // documentation specifies that null is passed if there is no
+                // previous key.
+
+                let previousKey: any = null;
 
                 if (this.refEmitter_.listeners("child_added").indexOf(boundSuccessCallback as Listener) !== -1) {
 
@@ -362,7 +367,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
     once(
         eventType: string,
-        successCallback?: (snapshot: firebase.database.DataSnapshot, prevKey?: string | null) => any,
+        successCallback?: (snapshot: firebase.database.DataSnapshot, prevKey?: string) => any,
         errorCallback?: Object | null,
         context?: Object | null
     ): FirebasePromise<any> {
