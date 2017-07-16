@@ -6,8 +6,10 @@
 
 import "./polyfills";
 
-const chai = require("chai");
-chai.use(require("chai-as-promised"));
+import * as chai from "chai";
+import * as chaiAsPromised from "chai-as-promised-transpiled";
+
+chai.use(chaiAsPromised);
 
 import "./json-spec";
 import "./mock-app-spec";
