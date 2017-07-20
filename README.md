@@ -10,7 +10,7 @@
 
 `firebase-nightlight` is an in-memory, JavaScript mock for the Firebase Web API.
 
-### Why might I need it?
+### Why might you need it?
 
 Unit testing services or components that use the Firebase Web API can be tedious:
 
