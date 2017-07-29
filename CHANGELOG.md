@@ -1,3 +1,10 @@
+<a name="2.2.1"></a>
+## [2.2.1](https://github.com/cartant/firebase-nightlight/compare/v2.2.0...v2.2.1) (2017-07-29)
+
+### Build
+
+* Update to latest `firebase`; fix TypeScript issues. ([9bb2514](https://github.com/cartant/firebase-nightlight/commit/9bb2514))
+
 <a name="2.2.0"></a>
 ## [2.2.0](https://github.com/cartant/firebase-nightlight/compare/v2.1.0...v2.2.0) (2017-06-02)
 
@@ -41,7 +48,7 @@
 * Remove token methods ([ba17d23](https://github.com/cartant/firebase-nightlight/commit/ba17d23))
 * Add `messaging` and `storage` accessors ([d6e58d0](https://github.com/cartant/firebase-nightlight/commit/d6e58d0))
 
-Build
+### Build
 
 * Use uglifyjs 2.4.10 ([20554b5](https://github.com/cartant/firebase-nightlight/commit/20554b5))
 
