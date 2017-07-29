@@ -125,6 +125,11 @@ export class MockAuth implements firebase.auth.Auth {
         throw unsupported_();
     }
 
+    setPersistence(persistence: firebase.auth.Auth.Persistence): FirebasePromise<any> {
+
+        throw unsupported_();
+    }
+
     signInAndRetrieveDataWithCredential(credential: firebase.auth.AuthCredential): FirebasePromise<any> {
 
         throw unsupported_();

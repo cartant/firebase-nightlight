@@ -40,6 +40,7 @@ export class MockUser implements firebase.User {
         this.providerData = [{
             displayName: email,
             email,
+            phoneNumber: null,
             photoURL: null,
             providerId: "password",
             uid

@@ -139,6 +139,11 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         });
     }
 
+    get path(): string {
+
+        return this.path_;
+    }
+
     get queried_(): boolean {
 
         return !lodash.isEmpty(this.query_);

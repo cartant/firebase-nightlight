@@ -104,7 +104,7 @@ describe("mock-auth", () => {
             const unsubscribe = mockAuth.onAuthStateChanged(
                 (next: firebase.User) => { user = next; },
                 (error) => { throw error; },
-                () => {}
+                () => undefined
             );
             expect(unsubscribe).to.be.a("function");
 
@@ -129,7 +129,7 @@ describe("mock-auth", () => {
             let user: firebase.User;
 
             const unsubscribe = mockAuth.onAuthStateChanged({
-                completed(): void {},
+                complete(): void {},
                 error(error: any): void { throw error; },
                 next(value: firebase.User): void { user = value; }
             });
@@ -154,7 +154,7 @@ describe("mock-auth", () => {
         it("should emit the current state", (callback) => {
 
             const unsubscribe = mockAuth.onAuthStateChanged({
-                completed(): void {},
+                complete(): void {},
                 error(error: any): void { throw error; },
                 next(value: firebase.User): void {
 
@@ -175,7 +175,7 @@ describe("mock-auth", () => {
             const unsubscribe = mockAuth.onIdTokenChanged(
                 (next: firebase.User) => { user = next; },
                 (error) => { throw error; },
-                () => {}
+                () => undefined
             );
             expect(unsubscribe).to.be.a("function");
 
@@ -200,7 +200,7 @@ describe("mock-auth", () => {
             let user: firebase.User;
 
             const unsubscribe = mockAuth.onIdTokenChanged({
-                completed(): void {},
+                complete(): void {},
                 error(error: any): void { throw error; },
                 next(value: firebase.User): void { user = value; }
             });
@@ -225,7 +225,7 @@ describe("mock-auth", () => {
         it("should emit the current state", (callback) => {
 
             const unsubscribe = mockAuth.onIdTokenChanged({
-                completed(): void {},
+                complete(): void {},
                 error(error: any): void { throw error; },
                 next(value: firebase.User): void {
 
