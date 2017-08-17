@@ -20,8 +20,6 @@ if (argv.admin) {
         "mock-auth-spec.ts",
         "mock-messaging.ts",
         "mock-messaging-spec.ts",
-        "mock-storage.ts",
-        "mock-storage-spec.ts",
         "mock-user.ts",
         "mock-user-spec.ts"
     ].indexOf(name) === -1);

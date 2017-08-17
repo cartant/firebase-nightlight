@@ -13,12 +13,12 @@ import { MockDatabase } from "./mock-database";
 import { MockDataSnapshot } from "./mock-data-snapshot";
 import { unsupported_ } from "./mock-error";
 import { MockRef } from "./mock-ref";
+import { MockStorage } from "./mock-storage";
 import { MockEmitters, MockIdentity, MockValue } from "./mock-types";
 
 /* @ifndef ADMIN */
 import { MockAuth } from "./mock-auth";
 import { MockMessaging } from "./mock-messaging";
-import { MockStorage } from "./mock-storage";
 /* @endif */
 
 export interface MockAppOptions {
@@ -113,7 +113,6 @@ export class MockApp implements firebase.app.App {
         /* @endif */
     }
 
-    /* @ifndef ADMIN */
     storage(url?: string): firebase.storage.Storage {
 
         return new MockStorage({
@@ -121,7 +120,6 @@ export class MockApp implements firebase.app.App {
             url
         });
     }
-    /* @endif */
 
     private rootListener_(
         eventType: string,
