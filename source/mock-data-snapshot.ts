@@ -128,7 +128,7 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
     numChildren(): number {
 
         const value = this.val();
-        return lodash.isObject(value) ? Object.keys(value).length : 0;
+        return lodash.isObject(value) ? Object.keys(value as any).length : 0;
     }
 
     pairs_(): MockPair[] {

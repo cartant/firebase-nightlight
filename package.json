@@ -35,7 +35,7 @@
     "preprocess": "^3.1.0",
     "rimraf": "^2.6.1",
     "tslint": "^5.2.0",
-    "typescript": "^2.4.1 <2.5.0",
+    "typescript": "^2.5.2 <2.6.0",
     "uglify-js": "^3.0.10",
     "yargs": "^8.0.0"
   },
