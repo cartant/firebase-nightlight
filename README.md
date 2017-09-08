@@ -6,6 +6,8 @@
 [![devDependency Status](https://img.shields.io/david/dev/cartant/firebase-nightlight.svg)](https://david-dm.org/cartant/firebase-nightlight#info=devDependencies)
 [![peerDependency Status](https://img.shields.io/david/peer/cartant/firebase-nightlight.svg)](https://david-dm.org/cartant/firebase-nightlight#info=peerDependencies)
 
+<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/jZB4ja6SvwGUN4ibgYVgUVYV/cartant/firebase-nightlight'>  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/jZB4ja6SvwGUN4ibgYVgUVYV/cartant/firebase-nightlight.svg' /></a>
+
 ### What is it?
 
 `firebase-nightlight` is an in-memory, JavaScript mock for the Firebase Web API.
