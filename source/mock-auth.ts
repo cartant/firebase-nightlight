@@ -40,6 +40,11 @@ export class MockAuth implements firebase.auth.Auth {
         return this.currentUser_;
     }
 
+    get languageCode(): string | null {
+
+        throw unsupported_();
+    }
+
     applyActionCode(code: string): FirebasePromise<any> {
 
         throw unsupported_();
@@ -218,6 +223,11 @@ export class MockAuth implements firebase.auth.Auth {
         this.emitter_.emit("auth", this.currentUser_);
 
         return Promise.resolve();
+    }
+
+    useDeviceLanguage(): any {
+
+        throw unsupported_();
     }
 
     verifyPasswordResetCode(code: string): FirebasePromise<any> {
