@@ -1,5 +1,7 @@
 # firebase-nightlight
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/cartant/firebase-nightlight.svg)](https://greenkeeper.io/)
+
 [![NPM version](https://img.shields.io/npm/v/firebase-nightlight.svg)](https://www.npmjs.com/package/firebase-nightlight)
 [![Build status](https://img.shields.io/travis/cartant/firebase-nightlight.svg)](http://travis-ci.org/cartant/firebase-nightlight)
 [![dependency status](https://img.shields.io/david/cartant/firebase-nightlight.svg)](https://david-dm.org/cartant/firebase-nightlight)
