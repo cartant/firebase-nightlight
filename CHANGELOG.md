@@ -1,3 +1,10 @@
+<a name="2.2.4"></a>
+## [2.2.4](https://github.com/cartant/firebase-nightlight/compare/v2.2.3...v2.2.4) (2017-10-04)
+
+### Build
+
+* Restrict `firebase` dependency semvers due to breaking changes in the typings. ([4a76d31](https://github.com/cartant/firebase-nightlight/commit/4a76d31))
+
 <a name="2.2.3"></a>
 ## [2.2.3](https://github.com/cartant/firebase-nightlight/compare/v2.2.2...v2.2.3) (2017-09-08)
 
