@@ -6,13 +6,9 @@
 
 /* @ifndef ADMIN */
 import * as firebase from "firebase/app";
-type FirebasePromise<T> = firebase.Promise<T>;
-type FirebaseThenable<T> = firebase.Thenable<T>;
 /* @endif */
 /* @ifdef ADMIN */
 import * as firebase from "firebase-admin";
-type FirebasePromise<T> = Promise<T>;
-type FirebaseThenable<T> = Promise<T>;
 /* @endif */
 
-export { firebase, FirebasePromise, FirebaseThenable };
+export { firebase };

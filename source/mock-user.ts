@@ -4,7 +4,7 @@
  * found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
-import { firebase, FirebasePromise } from "./firebase";
+import { firebase } from "./firebase";
 import { unsupported_ } from "./mock-error";
 import { randomString } from "./text-random-string";
 
@@ -50,32 +50,32 @@ export class MockUser implements firebase.User {
         this.uid = uid;
     }
 
-    delete(): FirebasePromise<any> {
+    delete(): Promise<any> {
 
         throw unsupported_();
     }
 
-    getIdToken(forceRefresh?: boolean): FirebasePromise<any> {
+    getIdToken(forceRefresh?: boolean): Promise<any> {
 
         throw unsupported_();
     }
 
-    getToken(forceRefresh?: boolean): FirebasePromise<any> {
+    getToken(forceRefresh?: boolean): Promise<any> {
 
         throw unsupported_();
     }
 
-    link(credential: firebase.auth.AuthCredential): FirebasePromise<any> {
+    link(credential: firebase.auth.AuthCredential): Promise<any> {
 
         throw unsupported_();
     }
 
-    linkAndRetrieveDataWithCredential(credential: firebase.auth.AuthCredential): FirebasePromise<any> {
+    linkAndRetrieveDataWithCredential(credential: firebase.auth.AuthCredential): Promise<any> {
 
         throw unsupported_();
     }
 
-    linkWithCredential(credential: firebase.auth.AuthCredential): FirebasePromise<any> {
+    linkWithCredential(credential: firebase.auth.AuthCredential): Promise<any> {
 
         throw unsupported_();
     }
@@ -83,32 +83,32 @@ export class MockUser implements firebase.User {
     linkWithPhoneNumber(
         phoneNumber: string,
         applicationVerifier: firebase.auth.ApplicationVerifier
-    ): FirebasePromise<any> {
+    ): Promise<any> {
 
         throw unsupported_();
     }
 
-    linkWithPopup(provider: firebase.auth.AuthProvider): FirebasePromise<any> {
+    linkWithPopup(provider: firebase.auth.AuthProvider): Promise<any> {
 
         throw unsupported_();
     }
 
-    linkWithRedirect(provider: firebase.auth.AuthProvider): FirebasePromise<any> {
+    linkWithRedirect(provider: firebase.auth.AuthProvider): Promise<any> {
 
         throw unsupported_();
     }
 
-    reauthenticate(credential: firebase.auth.AuthCredential): FirebasePromise<any> {
+    reauthenticate(credential: firebase.auth.AuthCredential): Promise<any> {
 
         throw unsupported_();
     }
 
-    reauthenticateAndRetrieveDataWithCredential(credential: firebase.auth.AuthCredential): FirebasePromise<any> {
+    reauthenticateAndRetrieveDataWithCredential(credential: firebase.auth.AuthCredential): Promise<any> {
 
         throw unsupported_();
     }
 
-    reauthenticateWithCredential(credential: firebase.auth.AuthCredential): FirebasePromise<any> {
+    reauthenticateWithCredential(credential: firebase.auth.AuthCredential): Promise<any> {
 
         throw unsupported_();
     }
@@ -116,27 +116,27 @@ export class MockUser implements firebase.User {
     reauthenticateWithPhoneNumber(
         phoneNumber: string,
         applicationVerifier: firebase.auth.ApplicationVerifier
-    ): FirebasePromise<any> {
+    ): Promise<any> {
 
         throw unsupported_();
     }
 
-    reauthenticateWithPopup(provider: firebase.auth.AuthProvider): FirebasePromise<any> {
+    reauthenticateWithPopup(provider: firebase.auth.AuthProvider): Promise<any> {
 
         throw unsupported_();
     }
 
-    reauthenticateWithRedirect(provider: firebase.auth.AuthProvider): FirebasePromise<any> {
+    reauthenticateWithRedirect(provider: firebase.auth.AuthProvider): Promise<any> {
 
         throw unsupported_();
     }
 
-    reload(): FirebasePromise<any> {
+    reload(): Promise<any> {
 
         throw unsupported_();
     }
 
-    sendEmailVerification(): FirebasePromise<any> {
+    sendEmailVerification(): Promise<any> {
 
         throw unsupported_();
     }
@@ -146,29 +146,29 @@ export class MockUser implements firebase.User {
         throw unsupported_();
     }
 
-    unlink(providerId: string): FirebasePromise<any> {
+    unlink(providerId: string): Promise<any> {
 
         throw unsupported_();
     }
 
-    updateEmail(email: string): FirebasePromise<any> {
+    updateEmail(email: string): Promise<any> {
 
         throw unsupported_();
     }
 
-    updatePassword(password: string): FirebasePromise<any> {
+    updatePassword(password: string): Promise<any> {
 
         throw unsupported_();
     }
 
-    updatePhoneNumber(phoneCredential: firebase.auth.AuthCredential): FirebasePromise<any> {
+    updatePhoneNumber(phoneCredential: firebase.auth.AuthCredential): Promise<any> {
 
         throw unsupported_();
     }
 
     updateProfile(
         profile: { displayName: string | null, photoURL: string | null }
-    ): FirebasePromise<any> {
+    ): Promise<any> {
 
         throw unsupported_();
     }

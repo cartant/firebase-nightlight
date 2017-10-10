@@ -15,6 +15,10 @@ import { MockValue } from "./mock-types";
 
 const waitMilliseconds = 40;
 
+function asPromise(ref: firebase.database.ThenableReference): Promise<any> {
+    return ref as any as Promise<any>;
+}
+
 describe("mock-ref", () => {
 
     let database: { content: MockValue };
@@ -174,7 +178,7 @@ describe("mock-ref", () => {
                     if (initial) {
                         initial = false;
                         pushedRef = mockRef.push("pushed");
-                        pushedRef.catch(callback);
+                        asPromise(pushedRef).catch(callback);
                     } else {
                         expect(snapshot).to.be.an("object");
                         expect(snapshot.val()).to.have.property(pushedRef.key as string, "pushed");
@@ -351,7 +355,7 @@ describe("mock-ref", () => {
                         if (++count === Object.keys(database.content["path"]["to"]["data"]).length) {
                             initial = false;
                             pushedRef = mockRef.push("pushed");
-                            pushedRef.catch(callback);
+                            asPromise(pushedRef).catch(callback);
                         }
                     } else {
                         expect(snapshot).to.be.an("object");
@@ -845,7 +849,7 @@ describe("mock-ref", () => {
             return pushedRef
                 .then(() => {
 
-                    return pushedRef.once("value");
+                    return pushedRef.once("value") as PromiseLike<any>;
                 })
                 .then((snapshot) => {
 
@@ -882,7 +886,7 @@ describe("mock-ref", () => {
             return pushedRef
                 .then(() => {
 
-                    return pushedRef.once("value");
+                    return pushedRef.once("value") as PromiseLike<any>;
                 })
                 .then((snapshot) => {
 
@@ -939,8 +943,8 @@ describe("mock-ref", () => {
 
             database.content["path"]["to"]["data"]["sequence"][".error"] = "Boom!";
 
-            return sequenceRef
-                .push({ name: "alice" })
+            const pushedRef = sequenceRef.push({ name: "alice" });
+            return asPromise(pushedRef)
                 .then(() => {
 
                     throw new Error("Unexpected success.");
@@ -955,8 +959,8 @@ describe("mock-ref", () => {
 
             database.content["path"][".error"] = "Boom!";
 
-            return sequenceRef
-                .push({ name: "alice" })
+            const pushedRef = sequenceRef.push({ name: "alice" });
+            return asPromise(pushedRef)
                 .then(() => {
 
                     throw new Error("Unexpected success.");
@@ -971,8 +975,8 @@ describe("mock-ref", () => {
 
             database.content[".error"] = "Boom!";
 
-            return sequenceRef
-                .push({ name: "alice" })
+            const pushedRef = sequenceRef.push({ name: "alice" });
+            return asPromise(pushedRef)
                 .then(() => {
 
                     throw new Error("Unexpected success.");
@@ -1343,7 +1347,8 @@ describe("mock-ref", () => {
                         callback();
                     }
                 });
-                mockRef.push({ deep: { value: "z" }, name: "three", value: "d" }).catch(callback);
+                const pushedRef = mockRef.push({ deep: { value: "z" }, name: "three", value: "d" });
+                asPromise(pushedRef).catch(callback);
             });
 
             it("should order using 'value' and 'forEach'", (callback) => {
@@ -1468,7 +1473,8 @@ describe("mock-ref", () => {
                         callback();
                     }
                 });
-                mockRef.push({ name: "three", value: 3 }).catch(callback);
+                const pushedRef = mockRef.push({ name: "three", value: 3 });
+                asPromise(pushedRef).catch(callback);
             });
 
             it("should order using 'value' and 'forEach'", (callback) => {
@@ -1568,7 +1574,8 @@ describe("mock-ref", () => {
                         callback();
                     }
                 });
-                mockRef.push(3).catch(callback);
+                const pushedRef = mockRef.push(3);
+                asPromise(pushedRef).catch(callback);
             });
 
             it("should order using 'value' and 'forEach'", (callback) => {

@@ -8,7 +8,7 @@ import * as json from "./json";
 import * as lodash from "./lodash";
 
 import { EventEmitter2 } from "eventemitter2";
-import { firebase, FirebasePromise } from "./firebase";
+import { firebase } from "./firebase";
 import { MockDatabase } from "./mock-database";
 import { MockDataSnapshot } from "./mock-data-snapshot";
 import { unsupported_ } from "./mock-error";
@@ -98,9 +98,14 @@ export class MockApp implements firebase.app.App {
         return this.database_;
     }
 
-    delete(): FirebasePromise<any> {
+    delete(): Promise<any> {
 
         return this.deleter_();
+    }
+
+    firestore(): firebase.firestore.Firestore {
+
+        throw unsupported_();
     }
 
     messaging(): firebase.messaging.Messaging {

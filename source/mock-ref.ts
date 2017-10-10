@@ -9,7 +9,7 @@ import * as lodash from "./lodash";
 
 import { EventEmitter2, Listener } from "eventemitter2";
 import { key } from "firebase-key";
-import { firebase, FirebasePromise, FirebaseThenable } from "./firebase";
+import { firebase } from "./firebase";
 import { MockDataSnapshot, MockPair } from "./mock-data-snapshot";
 import { error_, unsupported_ } from "./mock-error";
 
@@ -29,7 +29,7 @@ export interface MockRefOptions {
     database: { content: MockValue | null };
     emitters: MockEmitters;
     path: string | null;
-    promise?: FirebasePromise<any>;
+    promise?: Promise<any>;
     query?: MockQuery;
 }
 
@@ -46,7 +46,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     private key_: string | null;
     private parentPath_: string | null;
     private path_: string;
-    private promise_?: FirebasePromise<any>;
+    private promise_?: Promise<any>;
     private queue_: any[];
     private refEmitter_: EventEmitter2;
     private refEmitterBindings_: {
@@ -375,7 +375,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         successCallback?: (snapshot: firebase.database.DataSnapshot, prevKey?: string) => any,
         errorCallback?: Object | null,
         context?: Object | null
-    ): FirebasePromise<any> {
+    ): Promise<any> {
 
         if (errorCallback && (typeof errorCallback !== "function")) {
             context = errorCallback;
@@ -477,7 +477,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
     remove(
         callback?: (error: Error | null) => any
-    ): firebase.database.ThenableReference {
+    ): Promise<any> {
 
         if (this.queried_) {
             throw unsupported_("Queries do not support 'remove'.");
@@ -485,7 +485,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
         const previousContent = this.database_.content;
 
-        const promise = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
 
             this.enqueue_("remove", () => {
 
@@ -528,20 +528,12 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
                 }
             });
         });
-
-        return new MockRef({
-            app: this.app_,
-            database: this.database_,
-            emitters: this.emitters_,
-            path: this.path_,
-            promise: promise
-        });
     }
 
     set(
         value: any,
         callback?: (error: Error | null) => any
-    ): FirebasePromise<any> {
+    ): Promise<any> {
 
         if (this.queried_) {
             throw unsupported_("Queries do not support 'set'.");
@@ -604,7 +596,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     setPriority(
         priority: string | number | null,
         callback?: (error: Error | null) => any
-    ): FirebasePromise<any> {
+    ): Promise<any> {
 
         throw unsupported_();
     }
@@ -613,7 +605,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         value: MockValue | null,
         priority: string | number | null,
         callback?: (error: Error | null) => any
-    ): FirebasePromise<any> {
+    ): Promise<any> {
 
         throw unsupported_();
     }
@@ -655,7 +647,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     then(
         resolver?: (snapshot: firebase.database.DataSnapshot) => any,
         rejector?: (error: Error) => any
-    ): FirebaseThenable<any> {
+    ): Promise<any> {
 
         if (this.promise_) {
             return this.promise_.then(resolver, rejector);
@@ -678,7 +670,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         updateCallback: (value: any) => any,
         completeCallback?: (error: Error | null, committed: boolean, snapshot: firebase.database.DataSnapshot | null) => any,
         applyLocally?: boolean
-    ): FirebasePromise<any> {
+    ): Promise<any> {
 
         if (this.queried_) {
             throw unsupported_("Queries do not support 'transaction'.");
@@ -743,7 +735,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     update(
         values: Object,
         callback?: (error: Error | null) => any
-    ): FirebasePromise<any> {
+    ): Promise<any> {
 
         if (this.queried_) {
             throw unsupported_("Queries do not support 'update'.");
