@@ -8,26 +8,26 @@
   dependencies:
     "@firebase/util" "^0.1.1"
 
-"@firebase/auth@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@firebase/auth/-/auth-0.1.1.tgz#ede30a449b487e79e8b25086a92a1037ef5e505c"
+"@firebase/auth@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@firebase/auth/-/auth-0.2.0.tgz#1d1c264285fba74013bb10a49baa2bb0598dad73"
 
-"@firebase/database@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@firebase/database/-/database-0.1.1.tgz#2e630c52654495c7c3ea0387a5087c04ba311800"
+"@firebase/database@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@firebase/database/-/database-0.1.2.tgz#de7992fdf7c34b9fee603317c6e89f8e62b76bdc"
   dependencies:
     "@firebase/util" "^0.1.1"
     faye-websocket "0.9.3"
 
-"@firebase/firestore@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-0.1.1.tgz#705a5c4e29dc600acc41cd8732e408c2de858a70"
+"@firebase/firestore@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-0.1.2.tgz#ebf53cab0bca8ca4d7caec3aa3f27a3cb7a940b6"
   dependencies:
     "@firebase/webchannel-wrapper" "^0.2.3"
 
-"@firebase/messaging@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@firebase/messaging/-/messaging-0.1.1.tgz#e72450c7a1399d441c1d542a22c3559cde6b2fab"
+"@firebase/messaging@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@firebase/messaging/-/messaging-0.1.2.tgz#4dfd73abe4fa962ccb015d71e214960559ad271e"
   dependencies:
     "@firebase/util" "^0.1.1"
 
@@ -1640,15 +1640,15 @@ firebase-key@^1.0.0:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/firebase-key/-/firebase-key-1.0.5.tgz#c169434920d97caf97dbaac2fba1d28d4b395008"
 
-firebase@~4.5.0:
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/firebase/-/firebase-4.5.2.tgz#a0856ab37d2ba52d853f6d9ac683b98ab1f8812b"
+firebase@~4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-4.6.0.tgz#59f68cda7085465b46210f816ffef4e94451d891"
   dependencies:
     "@firebase/app" "^0.1.1"
-    "@firebase/auth" "^0.1.1"
-    "@firebase/database" "^0.1.1"
-    "@firebase/firestore" "^0.1.1"
-    "@firebase/messaging" "^0.1.1"
+    "@firebase/auth" "^0.2.0"
+    "@firebase/database" "^0.1.2"
+    "@firebase/firestore" "^0.1.2"
+    "@firebase/messaging" "^0.1.2"
     "@firebase/polyfill" "^0.1.1"
     "@firebase/storage" "^0.1.1"
     dom-storage "^2.0.2"

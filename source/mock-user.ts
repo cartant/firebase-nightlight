@@ -19,6 +19,7 @@ export class MockUser implements firebase.User {
     public email: string | null;
     public emailVerified: boolean;
     public isAnonymous: boolean;
+    public metadata: firebase.auth.UserMetadata;
     public phoneNumber: string | null;
     public photoURL: string | null;
     public providerData: (firebase.UserInfo | null)[];
@@ -36,6 +37,7 @@ export class MockUser implements firebase.User {
         this.email = email;
         this.emailVerified = false;
         this.isAnonymous = false;
+        this.metadata = {};
         this.photoURL = null;
         this.providerData = [{
             displayName: email,
