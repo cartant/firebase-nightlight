@@ -1,3 +1,10 @@
+<a name="2.2.6"></a>
+## [2.2.6](https://github.com/cartant/firebase-nightlight/compare/v2.2.5...v2.2.6) (2017-10-20)
+
+### Build
+
+* Update to latest `firebase`. ([5aa9060](https://github.com/cartant/firebase-nightlight/commit/5aa9060))
+
 <a name="2.2.5"></a>
 ## [2.2.5](https://github.com/cartant/firebase-nightlight/compare/v2.2.4...v2.2.5) (2017-10-11)
 
