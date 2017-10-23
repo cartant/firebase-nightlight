@@ -37,7 +37,7 @@
     "tslint": "^5.2.0",
     "typescript": "~2.5.2",
     "uglify-js": "^3.0.10",
-    "yargs": "^9.0.0"
+    "yargs": "^10.0.3"
   },
   "homepage": "https://github.com/cartant/firebase-nightlight",
   "keywords": [
