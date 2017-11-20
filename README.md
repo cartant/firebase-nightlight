@@ -219,5 +219,3 @@ const mock = new Mock({
 ```
 
 All reads and writes on the `a/b` path will fail with the specified error. Any reads or writes on deeper paths - `a/b/c`, for example - will also fail with the specified error.
-
-<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/jZB4ja6SvwGUN4ibgYVgUVYV/cartant/firebase-nightlight'>  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/jZB4ja6SvwGUN4ibgYVgUVYV/cartant/firebase-nightlight.svg' /></a>
