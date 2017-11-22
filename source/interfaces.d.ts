@@ -23,6 +23,33 @@ declare namespace firebase {
     message: string;
     name: string;
     stack?: string;
+    toJSON(): Object;
+  }
+
+  type FirebaseArrayIndexError = {
+    index: number;
+    error: FirebaseError;
+  }
+
+  interface ServiceAccount {
+    projectId?: string;
+    clientEmail?: string;
+    privateKey?: string;
+  }
+
+  interface GoogleOAuthAccessToken {
+    access_token: string;
+    expires_in: number;
+  }
+
+  interface AppOptions {
+    apiKey?: string;
+    authDomain?: string;
+    credential?: admin.credential.Credential;
+    databaseAuthVariableOverride?: Object;
+    databaseURL?: string;
+    messagingSenderId?: string;
+    storageBucket?: string;
   }
 
   interface Observer<V, E> {
@@ -103,7 +130,7 @@ declare namespace firebase {
 
   function database(app?: firebase.app.App): firebase.database.Database;
 
-  function initializeApp(options: Object, name?: string): firebase.app.App;
+  function initializeApp(options: firebase.AppOptions, name?: string): firebase.app.App;
 
   function messaging(app?: firebase.app.App): firebase.messaging.Messaging;
 
@@ -119,7 +146,7 @@ declare namespace firebase.app {
     delete(): Promise<any>;
     messaging(): firebase.messaging.Messaging;
     name: string;
-    options: Object;
+    options: firebase.AppOptions;
     storage(url?: string): firebase.storage.Storage;
     firestore(): firebase.firestore.Firestore;
   }
@@ -156,14 +183,21 @@ declare namespace firebase.auth {
     applyActionCode(code: string): Promise<any>;
     checkActionCode(code: string): Promise<any>;
     confirmPasswordReset(code: string, newPassword: string): Promise<any>;
+    createCustomToken(uid: string, developerClaims?: Object): Promise<string>;
+    createUser(properties: admin.auth.CreateRequest): Promise<admin.auth.UserRecord>;
     createUserWithEmailAndPassword(
       email: string,
       password: string
     ): Promise<any>;
     currentUser: firebase.User | null;
+    deleteUser(uid: string): Promise<void>;
     fetchProvidersForEmail(email: string): Promise<any>;
     getRedirectResult(): Promise<any>;
+    getUser(uid: string): Promise<admin.auth.UserRecord>;
+    getUserByEmail(email: string): Promise<admin.auth.UserRecord>;
+    getUserByPhoneNumber(phoneNumber: string): Promise<admin.auth.UserRecord>;
     languageCode: string | null;
+    listUsers(maxResults?: number, pageToken?: string): Promise<admin.auth.ListUsersResult>;
     onAuthStateChanged(
       nextOrObserver:
         | firebase.Observer<any, any>
@@ -182,6 +216,7 @@ declare namespace firebase.auth {
       email: string,
       actionCodeSettings?: firebase.auth.ActionCodeSettings | null
     ): Promise<any>;
+    setCustomUserClaims(uid: string, customUserClaims: Object): Promise<void>;
     setPersistence(persistence: firebase.auth.Auth.Persistence): Promise<any>;
     signInAndRetrieveDataWithCredential(
       credential: firebase.auth.AuthCredential
@@ -199,7 +234,9 @@ declare namespace firebase.auth {
     signInWithPopup(provider: firebase.auth.AuthProvider): Promise<any>;
     signInWithRedirect(provider: firebase.auth.AuthProvider): Promise<any>;
     signOut(): Promise<any>;
+    updateUser(uid: string, properties: admin.auth.UpdateRequest): Promise<admin.auth.UserRecord>;
     useDeviceLanguage(): any;
+    verifyIdToken(idToken: string): Promise<admin.auth.DecodedIdToken>;
     verifyPasswordResetCode(code: string): Promise<any>;
   }
 
@@ -214,6 +251,28 @@ declare namespace firebase.auth {
   interface ConfirmationResult {
     confirm(verificationCode: string): Promise<any>;
     verificationId: string;
+  }
+
+  interface CreateRequest extends UpdateRequest {
+    uid?: string;
+  }
+
+  interface DecodedIdToken {
+    aud: string;
+    auth_time: number;
+    exp: number;
+    firebase: {
+      identities: {
+        [key: string]: any;
+      };
+      sign_in_provider: string;
+      [key: string]: any;
+    };
+    iat: number;
+    iss: string;
+    sub: string;
+    uid: string;
+    [key: string]: any;
   }
 
   class EmailAuthProvider extends EmailAuthProvider_Instance {
@@ -271,6 +330,11 @@ declare namespace firebase.auth {
     ): firebase.auth.AuthProvider;
   }
 
+  interface ListUsersResult {
+    users: admin.auth.UserRecord[];
+    pageToken?: string;
+  }
+
   class PhoneAuthProvider extends PhoneAuthProvider_Instance {
     static PROVIDER_ID: string;
     static credential(
@@ -315,6 +379,16 @@ declare namespace firebase.auth {
     ): firebase.auth.AuthProvider;
   }
 
+  interface UpdateRequest {
+    displayName?: string;
+    email?: string;
+    emailVerified?: boolean;
+    phoneNumber?: string;
+    photoURL?: string;
+    disabled?: boolean;
+    password?: string;
+  }
+
   type UserCredential = {
     additionalUserInfo?: firebase.auth.AdditionalUserInfo | null;
     credential: firebase.auth.AuthCredential | null;
@@ -322,9 +396,36 @@ declare namespace firebase.auth {
     user: firebase.User | null;
   };
 
+  interface UserInfo {
+    uid: string;
+    displayName: string;
+    email: string;
+    phoneNumber: string;
+    photoURL: string;
+    providerId: string;
+    toJSON(): Object;
+  }
+
   interface UserMetadata {
     creationTime?: string;
     lastSignInTime?: string;
+    toJSON(): Object;
+  }
+
+  interface UserRecord {
+    uid: string;
+    email: string;
+    emailVerified: boolean;
+    displayName: string;
+    phoneNumber: string;
+    photoURL: string;
+    disabled: boolean;
+    metadata: admin.auth.UserMetadata;
+    providerData: admin.auth.UserInfo[];
+    passwordHash?: string;
+    passwordSalt?: string;
+    customClaims?: Object;
+    toJSON(): Object;
   }
 }
 
@@ -335,6 +436,16 @@ declare namespace firebase.auth.Auth {
     NONE: Persistence;
     SESSION: Persistence;
   };
+}
+
+declare namespace firebase.credential {
+  interface Credential {
+    getAccessToken(): Promise<firebase.GoogleOAuthAccessToken>;
+  }
+
+  function applicationDefault(): firebase.credential.Credential;
+  function cert(serviceAccountPathOrObject: string | firebase.ServiceAccount): firebase.credential.Credential;
+  function refreshToken(refreshTokenPathOrObject: string | Object): firebase.credential.Credential;
 }
 
 declare namespace firebase.database {
@@ -464,6 +575,76 @@ declare namespace firebase.database.ServerValue {
 }
 
 declare namespace firebase.messaging {
+  type DataMessagePayload = {
+    [key: string]: string;
+  };
+
+  type NotificationMessagePayload = {
+    tag?: string;
+    body?: string;
+    icon?: string;
+    badge?: string;
+    color?: string;
+    sound?: string;
+    title?: string;
+    bodyLocKey?: string;
+    bodyLocArgs?: string;
+    clickAction?: string;
+    titleLocKey?: string;
+    titleLocArgs?: string;
+    [key: string]: string | undefined;
+  };
+
+  type MessagingPayload = {
+    data?: admin.messaging.DataMessagePayload;
+    notification?: admin.messaging.NotificationMessagePayload;
+  };
+
+  type MessagingOptions = {
+    dryRun?: boolean;
+    priority?: string;
+    timeToLive?: number;
+    collapseKey?: string;
+    mutableContent?: boolean;
+    contentAvailable?: boolean;
+    restrictedPackageName?: string;
+    [key: string]: any | undefined;
+  };
+
+  type MessagingDeviceResult = {
+    error?: admin.FirebaseError;
+    messageId?: string;
+    canonicalRegistrationToken?: string;
+  };
+
+  type MessagingDevicesResponse = {
+    canonicalRegistrationTokenCount: number;
+    failureCount: number;
+    multicastId: number;
+    results: admin.messaging.MessagingDeviceResult[];
+    successCount: number;
+  };
+
+  type MessagingDeviceGroupResponse = {
+    successCount: number;
+    failureCount: number;
+    failedRegistrationTokens: string[];
+  };
+
+  type MessagingTopicResponse = {
+    messageId: number;
+  };
+
+  type MessagingConditionResponse = {
+    messageId: number;
+  };
+
+  type MessagingTopicManagementResponse = {
+    failureCount: number;
+    successCount: number;
+    errors: admin.FirebaseArrayIndexError[];
+  };
+
   interface Messaging {
     deleteToken(token: string): Promise<any> | null;
     getToken(): Promise<any> | null;
@@ -474,7 +655,43 @@ declare namespace firebase.messaging {
       nextOrObserver: firebase.Observer<any, any> | ((a: Object) => any)
     ): firebase.Unsubscribe;
     requestPermission(): Promise<any> | null;
+    sendToDevice(
+      registrationToken: string | string[],
+      payload: admin.messaging.MessagingPayload,
+      options?: admin.messaging.MessagingOptions
+    ): Promise<admin.messaging.MessagingDevicesResponse>;
+    sendToDeviceGroup(
+      notificationKey: string,
+      payload: admin.messaging.MessagingPayload,
+      options?: admin.messaging.MessagingOptions
+    ): Promise<admin.messaging.MessagingDeviceGroupResponse>;
+    sendToTopic(
+      topic: string,
+      payload: admin.messaging.MessagingPayload,
+      options?: admin.messaging.MessagingOptions
+    ): Promise<admin.messaging.MessagingTopicResponse>;
+    sendToCondition(
+      condition: string,
+      payload: admin.messaging.MessagingPayload,
+      options?: admin.messaging.MessagingOptions
+    ): Promise<admin.messaging.MessagingConditionResponse>;
+    subscribeToTopic(
+      registrationToken: string,
+      topic: string
+    ): Promise<admin.messaging.MessagingTopicManagementResponse>;
+    subscribeToTopic(
+      registrationTokens: string[],
+      topic: string
+    ): Promise<admin.messaging.MessagingTopicManagementResponse>;
     setBackgroundMessageHandler(callback: (a: Object) => any): any;
+    unsubscribeFromTopic(
+      registrationToken: string,
+      topic: string
+    ): Promise<admin.messaging.MessagingTopicManagementResponse>;
+    unsubscribeFromTopic(
+      registrationTokens: string[],
+      topic: string
+    ): Promise<admin.messaging.MessagingTopicManagementResponse>;
     useServiceWorker(registration: any): any;
   }
 }
@@ -531,6 +748,7 @@ declare namespace firebase.storage {
     app: firebase.app.App;
     maxOperationRetryTime: number;
     maxUploadRetryTime: number;
+    bucket(name?: string): any;
     ref(path?: string): firebase.storage.Reference;
     refFromURL(url: string): firebase.storage.Reference;
     setMaxOperationRetryTime(time: number): any;
