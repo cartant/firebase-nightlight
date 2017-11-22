@@ -28,7 +28,6 @@ describe("mock-app", () => {
         mockApp = mock.initializeApp(initializeOptions);
     });
 
-    /* @ifndef ADMIN */
     describe("auth", () => {
 
         it("should return the auth mock", () => {
@@ -36,7 +35,6 @@ describe("mock-app", () => {
             expect(mockApp.auth()).to.exist;
         });
     });
-    /* @endif */
 
     describe("database", () => {
 
@@ -78,11 +76,9 @@ describe("mock-app", () => {
         });
     });
 
-    /* @ifndef ADMIN */
     describe.skip("messaging", () => {
     });
 
     describe.skip("storage", () => {
     });
-    /* @endif */
 });

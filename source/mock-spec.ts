@@ -59,7 +59,6 @@ describe("mock", () => {
         });
     });
 
-    /* @ifndef ADMIN */
     describe("auth", () => {
 
         it("should return an auth mock", () => {
@@ -71,7 +70,6 @@ describe("mock", () => {
             expect(mock.auth()).to.exist;
         });
     });
-    /* @endif */
 
     describe("database", () => {
 
@@ -101,7 +99,6 @@ describe("mock", () => {
         });
     });
 
-    /* @ifndef ADMIN */
     describe("messaging", () => {
 
         it("should return a messaging mock", () => {
@@ -125,5 +122,4 @@ describe("mock", () => {
             expect(mock.storage()).to.exist;
         });
     });
-    /* @endif */
 });

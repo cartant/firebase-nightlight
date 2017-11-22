@@ -50,7 +50,75 @@ export class MockMessaging implements firebase.messaging.Messaging {
         throw unsupported_();
     }
 
+    sendToDevice(
+        registrationToken: string | string[],
+        payload: firebase.messaging.MessagingPayload,
+        options?: firebase.messaging.MessagingOptions
+    ): Promise<firebase.messaging.MessagingDevicesResponse> {
+
+        throw unsupported_();
+    }
+
+    sendToDeviceGroup(
+        notificationKey: string,
+        payload: firebase.messaging.MessagingPayload,
+        options?: firebase.messaging.MessagingOptions
+    ): Promise<firebase.messaging.MessagingDeviceGroupResponse> {
+
+        throw unsupported_();
+    }
+
+    sendToTopic(
+        topic: string,
+        payload: firebase.messaging.MessagingPayload,
+        options?: firebase.messaging.MessagingOptions
+    ): Promise<firebase.messaging.MessagingTopicResponse> {
+
+        throw unsupported_();
+    }
+
+    sendToCondition(
+        condition: string,
+        payload: firebase.messaging.MessagingPayload,
+        options?: firebase.messaging.MessagingOptions
+    ): Promise<firebase.messaging.MessagingConditionResponse> {
+
+        throw unsupported_();
+    }
+
     setBackgroundMessageHandler(callback: (a: Object) => any): any {
+
+        throw unsupported_();
+    }
+
+    subscribeToTopic(
+        registrationToken: string,
+        topic: string
+    ): Promise<firebase.messaging.MessagingTopicManagementResponse>;
+    subscribeToTopic(
+        registrationTokens: string[],
+        topic: string
+    ): Promise<firebase.messaging.MessagingTopicManagementResponse>;
+    subscribeToTopic(
+        registrationTokens: string | string[],
+        topic: string
+    ): Promise<firebase.messaging.MessagingTopicManagementResponse> {
+
+        throw unsupported_();
+    }
+
+    unsubscribeFromTopic(
+        registrationToken: string,
+        topic: string
+    ): Promise<firebase.messaging.MessagingTopicManagementResponse>;
+    unsubscribeFromTopic(
+        registrationTokens: string[],
+        topic: string
+    ): Promise<firebase.messaging.MessagingTopicManagementResponse>;
+    unsubscribeFromTopic(
+        registrationTokens: string | string[],
+        topic: string
+    ): Promise<firebase.messaging.MessagingTopicManagementResponse> {
 
         throw unsupported_();
     }

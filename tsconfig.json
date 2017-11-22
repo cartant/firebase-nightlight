@@ -18,6 +18,6 @@
   },
   "exclude": [],
   "include": [
-    "pre/**/*.ts"
+    "source/**/*.ts"
   ]
 }

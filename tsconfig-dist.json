@@ -4,7 +4,7 @@
     "outDir": "dist"
   },
   "exclude": [
-    "pre/**/*-spec.ts"
+    "source/**/*-spec.ts"
   ],
-  "extends": "./tsconfig-client.json"
+  "extends": "./tsconfig.json"
 }

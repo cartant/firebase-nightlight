@@ -9,17 +9,14 @@ import * as lodash from "./lodash";
 
 import { EventEmitter2 } from "eventemitter2";
 import { firebase } from "./firebase";
+import { MockAuth } from "./mock-auth";
 import { MockDatabase } from "./mock-database";
 import { MockDataSnapshot } from "./mock-data-snapshot";
 import { unsupported_ } from "./mock-error";
+import { MockMessaging } from "./mock-messaging";
 import { MockRef } from "./mock-ref";
 import { MockStorage } from "./mock-storage";
 import { MockEmitters, MockIdentity, MockValue } from "./mock-types";
-
-/* @ifndef ADMIN */
-import { MockAuth } from "./mock-auth";
-import { MockMessaging } from "./mock-messaging";
-/* @endif */
 
 export interface MockAppOptions {
     database: { content: MockValue | null };
@@ -32,16 +29,13 @@ export interface MockAppOptions {
 export class MockApp implements firebase.app.App {
 
     private app_: firebase.app.App;
+    private auth_: firebase.auth.Auth;
     private database_: firebase.database.Database;
     private deleter_: () => Promise<any>;
     private emitters_: MockEmitters;
     private initializeOptions_: Object;
-    private name_: string;
-
-    /* @ifndef ADMIN */
-    private auth_: firebase.auth.Auth;
     private messaging_: firebase.messaging.Messaging;
-    /* @endif */
+    private name_: string;
 
     constructor(options: MockAppOptions) {
 
@@ -55,22 +49,20 @@ export class MockApp implements firebase.app.App {
         };
         this.emitters_.root.onAny(this.rootListener_.bind(this));
 
+        this.auth_ = new MockAuth({
+            app: this,
+            identities: options.identities
+        });
+
         this.database_ = new MockDatabase({
             app: this,
             database: options.database,
             emitters: this.emitters_
         });
 
-        /* @ifndef ADMIN */
-        this.auth_ = new MockAuth({
-            app: this,
-            identities: options.identities
-        });
-
         this.messaging_ = new MockMessaging({
             app: this
         });
-        /* @endif */
     }
 
     get name(): string {
@@ -85,12 +77,7 @@ export class MockApp implements firebase.app.App {
 
     auth(): firebase.auth.Auth {
 
-        /* @ifndef ADMIN */
         return this.auth_;
-        /* @endif */
-        /* @ifdef ADMIN */
-        throw unsupported_();
-        /* @endif */
     }
 
     database(): firebase.database.Database {
@@ -110,12 +97,7 @@ export class MockApp implements firebase.app.App {
 
     messaging(): firebase.messaging.Messaging {
 
-        /* @ifndef ADMIN */
         return this.messaging_;
-        /* @endif */
-        /* @ifdef ADMIN */
-        throw unsupported_();
-        /* @endif */
     }
 
     storage(url?: string): firebase.storage.Storage {

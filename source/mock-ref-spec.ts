@@ -2134,7 +2134,7 @@ describe("mock-ref", () => {
             // relative path (for example, "name/first") from the current
             // location to the data to update.
 
-            const rootRef = mock.database().ref();
+            const rootRef: MockRef = mock.database().ref();
 
             return rootRef
                 .update({
@@ -2223,7 +2223,7 @@ describe("mock-ref", () => {
 
         it("should support relative path value removal", () => {
 
-            const rootRef = mock.database().ref();
+            const rootRef: MockRef = mock.database().ref();
 
             return rootRef
                 .update({

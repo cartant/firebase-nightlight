@@ -60,6 +60,16 @@ export class MockAuth implements firebase.auth.Auth {
         throw unsupported_();
     }
 
+    createCustomToken(uid: string, developerClaims?: Object): Promise<string> {
+
+        throw unsupported_();
+    }
+
+    createUser(properties: firebase.auth.CreateRequest): Promise<firebase.auth.UserRecord> {
+
+        throw unsupported_();
+    }
+
     createUserWithEmailAndPassword(email: string, password: string): Promise<any> {
 
         let identity = this.identities_.find((identity) => identity.email === email);
@@ -76,6 +86,11 @@ export class MockAuth implements firebase.auth.Auth {
         return Promise.resolve(this.currentUser_);
     }
 
+    deleteUser(uid: string): Promise<void> {
+
+        throw unsupported_();
+    }
+
     fetchProvidersForEmail(email: string): Promise<any> {
 
         throw unsupported_();
@@ -87,6 +102,26 @@ export class MockAuth implements firebase.auth.Auth {
             credential: null,
             user: null
         });
+    }
+
+    getUser(uid: string): Promise<firebase.auth.UserRecord> {
+
+        throw unsupported_();
+    }
+
+    getUserByEmail(email: string): Promise<firebase.auth.UserRecord> {
+
+        throw unsupported_();
+    }
+
+    getUserByPhoneNumber(phoneNumber: string): Promise<firebase.auth.UserRecord> {
+
+        throw unsupported_();
+    }
+
+    listUsers(maxResults?: number, pageToken?: string): Promise<firebase.auth.ListUsersResult> {
+
+        throw unsupported_();
     }
 
     onAuthStateChanged(
@@ -126,6 +161,11 @@ export class MockAuth implements firebase.auth.Auth {
     }
 
     sendPasswordResetEmail(email: string): Promise<any> {
+
+        throw unsupported_();
+    }
+
+    setCustomUserClaims(uid: string, customUserClaims: Object): Promise<void> {
 
         throw unsupported_();
     }
@@ -225,7 +265,17 @@ export class MockAuth implements firebase.auth.Auth {
         return Promise.resolve();
     }
 
+    updateUser(uid: string, properties: firebase.auth.UpdateRequest): Promise<firebase.auth.UserRecord> {
+
+        throw unsupported_();
+    }
+
     useDeviceLanguage(): any {
+
+        throw unsupported_();
+    }
+
+    verifyIdToken(idToken: string): Promise<firebase.auth.DecodedIdToken> {
 
         throw unsupported_();
     }

@@ -33,12 +33,12 @@ export class Mock {
         this.options_ = options || {};
     }
 
-    get apps(): (firebase.app.App | null)[] {
+    get apps(): any[] {
 
         return Object.keys(this.apps_).reduce((acc, key) => {
             acc.push(this.apps_[key]);
             return acc;
-        }, [] as (firebase.app.App | null)[]);
+        }, [] as any[]);
     }
 
     get SDK_VERSION(): string {
@@ -46,7 +46,7 @@ export class Mock {
         return "mock";
     }
 
-    app(name?: string): firebase.app.App {
+    app(name?: string): any {
 
         const app = this.apps_[name || defaultAppName];
         if (app) {
@@ -55,19 +55,17 @@ export class Mock {
         throw error_("app/invalid-name", "App not found.");
     }
 
-    /* @ifndef ADMIN */
-    auth(app?: firebase.app.App): firebase.auth.Auth {
+    auth(app?: any): any {
 
         return app ? app.auth() : this.app().auth();
     }
-    /* @endif*/
 
-    database(app?: firebase.app.App): firebase.database.Database {
+    database(app?: any): any {
 
         return app ? app.database() : this.app().database();
     }
 
-    initializeApp(options: Object, name?: string): firebase.app.App {
+    initializeApp(options: any, name?: string): any {
 
         const concreteName = name || defaultAppName;
 
@@ -100,15 +98,13 @@ export class Mock {
         return mockApp;
     }
 
-    /* @ifndef ADMIN */
-    messaging(app?: firebase.app.App): firebase.messaging.Messaging {
+    messaging(app?: any): any {
 
         return app ? app.messaging() : this.app().messaging();
     }
 
-    storage(app?: firebase.app.App): firebase.storage.Storage {
+    storage(app?: any): any {
 
         return app ? app.storage() : this.app().storage();
     }
-    /* @endif */
 }

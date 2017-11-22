@@ -5,7 +5,6 @@
  */
 
 import { EventEmitter2 } from "eventemitter2";
-import { firebase } from "./firebase";
 
 export type MockPrimitive = boolean | number | string;
 export type MockComposite = { [key: string]: MockPrimitive | MockComposite };
@@ -17,9 +16,7 @@ export interface MockEmitters {
 }
 
 export interface MockIdentity {
-    /* @ifndef ADMIN */
-    credential?: firebase.auth.AuthCredential;
-    /* @endif */
+    credential?: any;
     email: string;
     password?: string;
     token?: string;

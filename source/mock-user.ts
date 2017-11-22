@@ -37,7 +37,7 @@ export class MockUser implements firebase.User {
         this.email = email;
         this.emailVerified = false;
         this.isAnonymous = false;
-        this.metadata = {};
+        this.metadata = { toJSON(): string { return JSON.stringify(this); } };
         this.photoURL = null;
         this.providerData = [{
             displayName: email,

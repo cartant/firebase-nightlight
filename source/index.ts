@@ -5,4 +5,4 @@
  */
 
 export * from "./mock";
-export * from "./mock-types";
+export { MockComposite, MockIdentity, MockPrimitive, MockValue } from "./mock-types";

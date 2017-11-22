@@ -42,7 +42,7 @@ Each `Mock` instance implements mocked versions of the properties and methods th
     * `signInWithEmailAndPassword`, and
     * `signOut` are mocked.
     * Other methods are not mocked.
-* The `storage` and `messaging` APIs are not mocked.
+* The `firestore`, `messaging` and `storage` APIs are not mocked.
 
 ## Example
 
@@ -142,14 +142,6 @@ Or include the UMD bundle for use as a `script`:
 var mock = new firebaseNightlight.Mock();
 console.log(mock);
 </script>
-```
-
-The mock can be used with `firebase-admin` if the `admin` subdirectory is used:
-
-```js
-import { Mock } from "firebase-nightlight/admin";
-const mock = new Mock();
-console.log(mock);
 ```
 
 ## API

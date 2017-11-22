@@ -1,6 +1,0 @@
-{
-  "compilerOptions": {
-    "outDir": "build/admin"
-  },
-  "extends": "./tsconfig-client.json"
-}

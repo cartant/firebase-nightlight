@@ -26,7 +26,6 @@ export class MockStorage implements firebase.storage.Storage {
         return this.app_;
     }
 
-    /* @ifndef ADMIN */
     get maxOperationRetryTime(): number {
 
         throw unsupported_();
@@ -36,14 +35,12 @@ export class MockStorage implements firebase.storage.Storage {
 
         throw unsupported_();
     }
-    /* @endif */
 
     bucket(name?: string): any {
 
         throw unsupported_();
     }
 
-    /* @ifndef ADMIN */
     ref(path?: string): firebase.storage.Reference {
 
         throw unsupported_();
@@ -63,5 +60,4 @@ export class MockStorage implements firebase.storage.Storage {
 
         throw unsupported_();
     }
-    /* @endif */
 }

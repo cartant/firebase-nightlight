@@ -4,11 +4,6 @@
  * found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
-/* @ifndef ADMIN */
-import * as firebase from "firebase/app";
-/* @endif */
-/* @ifdef ADMIN */
-import * as firebase from "firebase-admin";
-/* @endif */
+import * as firebase from "./interfaces";
 
 export { firebase };

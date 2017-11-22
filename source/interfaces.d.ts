@@ -45,7 +45,7 @@ declare namespace firebase {
   interface AppOptions {
     apiKey?: string;
     authDomain?: string;
-    credential?: admin.credential.Credential;
+    credential?: firebase.credential.Credential;
     databaseAuthVariableOverride?: Object;
     databaseURL?: string;
     messagingSenderId?: string;
@@ -184,7 +184,7 @@ declare namespace firebase.auth {
     checkActionCode(code: string): Promise<any>;
     confirmPasswordReset(code: string, newPassword: string): Promise<any>;
     createCustomToken(uid: string, developerClaims?: Object): Promise<string>;
-    createUser(properties: admin.auth.CreateRequest): Promise<admin.auth.UserRecord>;
+    createUser(properties: firebase.auth.CreateRequest): Promise<firebase.auth.UserRecord>;
     createUserWithEmailAndPassword(
       email: string,
       password: string
@@ -193,11 +193,11 @@ declare namespace firebase.auth {
     deleteUser(uid: string): Promise<void>;
     fetchProvidersForEmail(email: string): Promise<any>;
     getRedirectResult(): Promise<any>;
-    getUser(uid: string): Promise<admin.auth.UserRecord>;
-    getUserByEmail(email: string): Promise<admin.auth.UserRecord>;
-    getUserByPhoneNumber(phoneNumber: string): Promise<admin.auth.UserRecord>;
+    getUser(uid: string): Promise<firebase.auth.UserRecord>;
+    getUserByEmail(email: string): Promise<firebase.auth.UserRecord>;
+    getUserByPhoneNumber(phoneNumber: string): Promise<firebase.auth.UserRecord>;
     languageCode: string | null;
-    listUsers(maxResults?: number, pageToken?: string): Promise<admin.auth.ListUsersResult>;
+    listUsers(maxResults?: number, pageToken?: string): Promise<firebase.auth.ListUsersResult>;
     onAuthStateChanged(
       nextOrObserver:
         | firebase.Observer<any, any>
@@ -234,9 +234,9 @@ declare namespace firebase.auth {
     signInWithPopup(provider: firebase.auth.AuthProvider): Promise<any>;
     signInWithRedirect(provider: firebase.auth.AuthProvider): Promise<any>;
     signOut(): Promise<any>;
-    updateUser(uid: string, properties: admin.auth.UpdateRequest): Promise<admin.auth.UserRecord>;
+    updateUser(uid: string, properties: firebase.auth.UpdateRequest): Promise<firebase.auth.UserRecord>;
     useDeviceLanguage(): any;
-    verifyIdToken(idToken: string): Promise<admin.auth.DecodedIdToken>;
+    verifyIdToken(idToken: string): Promise<firebase.auth.DecodedIdToken>;
     verifyPasswordResetCode(code: string): Promise<any>;
   }
 
@@ -331,7 +331,7 @@ declare namespace firebase.auth {
   }
 
   interface ListUsersResult {
-    users: admin.auth.UserRecord[];
+    users: firebase.auth.UserRecord[];
     pageToken?: string;
   }
 
@@ -420,8 +420,8 @@ declare namespace firebase.auth {
     phoneNumber: string;
     photoURL: string;
     disabled: boolean;
-    metadata: admin.auth.UserMetadata;
-    providerData: admin.auth.UserInfo[];
+    metadata: firebase.auth.UserMetadata;
+    providerData: firebase.auth.UserInfo[];
     passwordHash?: string;
     passwordSalt?: string;
     customClaims?: Object;
@@ -596,8 +596,8 @@ declare namespace firebase.messaging {
   };
 
   type MessagingPayload = {
-    data?: admin.messaging.DataMessagePayload;
-    notification?: admin.messaging.NotificationMessagePayload;
+    data?: firebase.messaging.DataMessagePayload;
+    notification?: firebase.messaging.NotificationMessagePayload;
   };
 
   type MessagingOptions = {
@@ -612,7 +612,7 @@ declare namespace firebase.messaging {
   };
 
   type MessagingDeviceResult = {
-    error?: admin.FirebaseError;
+    error?: firebase.FirebaseError;
     messageId?: string;
     canonicalRegistrationToken?: string;
   };
@@ -621,7 +621,7 @@ declare namespace firebase.messaging {
     canonicalRegistrationTokenCount: number;
     failureCount: number;
     multicastId: number;
-    results: admin.messaging.MessagingDeviceResult[];
+    results: firebase.messaging.MessagingDeviceResult[];
     successCount: number;
   };
 
@@ -642,7 +642,7 @@ declare namespace firebase.messaging {
   type MessagingTopicManagementResponse = {
     failureCount: number;
     successCount: number;
-    errors: admin.FirebaseArrayIndexError[];
+    errors: firebase.FirebaseArrayIndexError[];
   };
 
   interface Messaging {
@@ -657,41 +657,41 @@ declare namespace firebase.messaging {
     requestPermission(): Promise<any> | null;
     sendToDevice(
       registrationToken: string | string[],
-      payload: admin.messaging.MessagingPayload,
-      options?: admin.messaging.MessagingOptions
-    ): Promise<admin.messaging.MessagingDevicesResponse>;
+      payload: firebase.messaging.MessagingPayload,
+      options?: firebase.messaging.MessagingOptions
+    ): Promise<firebase.messaging.MessagingDevicesResponse>;
     sendToDeviceGroup(
       notificationKey: string,
-      payload: admin.messaging.MessagingPayload,
-      options?: admin.messaging.MessagingOptions
-    ): Promise<admin.messaging.MessagingDeviceGroupResponse>;
+      payload: firebase.messaging.MessagingPayload,
+      options?: firebase.messaging.MessagingOptions
+    ): Promise<firebase.messaging.MessagingDeviceGroupResponse>;
     sendToTopic(
       topic: string,
-      payload: admin.messaging.MessagingPayload,
-      options?: admin.messaging.MessagingOptions
-    ): Promise<admin.messaging.MessagingTopicResponse>;
+      payload: firebase.messaging.MessagingPayload,
+      options?: firebase.messaging.MessagingOptions
+    ): Promise<firebase.messaging.MessagingTopicResponse>;
     sendToCondition(
       condition: string,
-      payload: admin.messaging.MessagingPayload,
-      options?: admin.messaging.MessagingOptions
-    ): Promise<admin.messaging.MessagingConditionResponse>;
+      payload: firebase.messaging.MessagingPayload,
+      options?: firebase.messaging.MessagingOptions
+    ): Promise<firebase.messaging.MessagingConditionResponse>;
     subscribeToTopic(
       registrationToken: string,
       topic: string
-    ): Promise<admin.messaging.MessagingTopicManagementResponse>;
+    ): Promise<firebase.messaging.MessagingTopicManagementResponse>;
     subscribeToTopic(
       registrationTokens: string[],
       topic: string
-    ): Promise<admin.messaging.MessagingTopicManagementResponse>;
+    ): Promise<firebase.messaging.MessagingTopicManagementResponse>;
     setBackgroundMessageHandler(callback: (a: Object) => any): any;
     unsubscribeFromTopic(
       registrationToken: string,
       topic: string
-    ): Promise<admin.messaging.MessagingTopicManagementResponse>;
+    ): Promise<firebase.messaging.MessagingTopicManagementResponse>;
     unsubscribeFromTopic(
       registrationTokens: string[],
       topic: string
-    ): Promise<admin.messaging.MessagingTopicManagementResponse>;
+    ): Promise<firebase.messaging.MessagingTopicManagementResponse>;
     useServiceWorker(registration: any): any;
   }
 }
