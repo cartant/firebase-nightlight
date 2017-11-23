@@ -7,8 +7,8 @@
 
 import { expect } from "chai";
 import { firebase } from "./firebase";
-import { Mock } from "./mock";
 import { MockIdentity } from "./mock-types";
+import { MockUntyped as Mock } from "./mock-untyped";
 
 describe("mock-auth", () => {
 

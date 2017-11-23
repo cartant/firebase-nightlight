@@ -18,7 +18,7 @@ import "./mock-data-snapshot-spec";
 import "./mock-database-spec";
 import "./mock-messaging-spec";
 import "./mock-ref-spec";
-import "./mock-spec";
 import "./mock-storage-spec";
+import "./mock-untyped-spec";
 import "./mock-user-spec";
 import "./text-random-string-spec";

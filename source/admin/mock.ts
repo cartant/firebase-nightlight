@@ -4,8 +4,8 @@
  * found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
-import * as firebase from "firebase";
-import { MockOptions, MockUntyped } from "./mock-untyped";
+import * as admin from "firebase-admin";
+import { MockOptions, MockUntyped } from "../mock-untyped";
 
 export { MockOptions };
 
@@ -18,7 +18,7 @@ export class Mock {
         this.untyped_ = new MockUntyped(options);
     }
 
-    get apps(): (firebase.app.App | null)[] {
+    get apps(): (admin.app.App | null)[] {
 
         return this.untyped_.apps;
     }
@@ -28,32 +28,32 @@ export class Mock {
         return this.untyped_.SDK_VERSION;
     }
 
-    app(name?: string): firebase.app.App {
+    app(name?: string): admin.app.App {
 
         return name ? this.untyped_.app() : this.untyped_.app(name);
     }
 
-    auth(app?: firebase.app.App): firebase.auth.Auth {
+    auth(app?: admin.app.App): admin.auth.Auth {
 
         return name ? this.untyped_.auth() : this.untyped_.auth(app);
     }
 
-    database(app?: firebase.app.App): firebase.database.Database {
+    database(app?: admin.app.App): admin.database.Database {
 
         return name ? this.untyped_.database() : this.untyped_.database(app);
     }
 
-    initializeApp(options: any, name?: string): firebase.app.App {
+    initializeApp(options: any, name?: string): admin.app.App {
 
         return name ? this.untyped_.initializeApp(options) : this.untyped_.initializeApp(options, name);
     }
 
-    messaging(app?: firebase.app.App): firebase.messaging.Messaging {
+    messaging(app?: admin.app.App): admin.messaging.Messaging {
 
         return name ? this.untyped_.messaging() : this.untyped_.messaging(app);
     }
 
-    storage(app?: firebase.app.App): firebase.storage.Storage {
+    storage(app?: admin.app.App): admin.storage.Storage {
 
         return name ? this.untyped_.storage() : this.untyped_.storage(app);
     }

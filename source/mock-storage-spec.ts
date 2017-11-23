@@ -7,7 +7,7 @@
 
 import { expect } from "chai";
 import { firebase } from "./firebase";
-import { Mock } from "./mock";
+import { MockUntyped as Mock } from "./mock-untyped";
 
 describe("mock-storage", () => {
 });

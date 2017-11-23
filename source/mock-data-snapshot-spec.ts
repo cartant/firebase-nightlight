@@ -7,9 +7,9 @@
 
 import { expect } from "chai";
 import { firebase } from "./firebase";
-import { Mock } from "./mock";
 import { MockDataSnapshot } from "./mock-data-snapshot";
 import { MockComposite, MockValue } from "./mock-types";
+import { MockUntyped as Mock } from "./mock-untyped";
 
 describe("mock-data-snapshot", () => {
 
