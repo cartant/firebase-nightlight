@@ -1,3 +1,11 @@
+<a name="3.0.0"></a>
+## [3.0.0](https://github.com/cartant/firebase-nightlight/compare/v2.2.6...v3.0.0) (2017-11-23)
+
+### Changes
+
+* Removed preprocessing and removed the mocks internal dependency on the `firebase` and `firebase-admin` typings. Hopefully, any minor changes made to the Firebase typings will no longer break `firebase-nightlight`.
+* There should be no breaking changes, but the internal refactor was significant.
+
 <a name="2.2.6"></a>
 ## [2.2.6](https://github.com/cartant/firebase-nightlight/compare/v2.2.5...v2.2.6) (2017-10-20)
 
