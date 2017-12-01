@@ -4,7 +4,7 @@
     "url": "https://github.com/cartant/firebase-nightlight/issues"
   },
   "dependencies": {
-    "eventemitter2": "^4.1.0",
+    "eventemitter2": "^5.0.0",
     "firebase-key": "^1.0.0",
     "json-pointer": "^0.6.0",
     "lodash": "^4.17.4",
