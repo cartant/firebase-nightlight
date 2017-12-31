@@ -71,7 +71,7 @@
     "test:copy": "cpy source/lodash.* build/",
     "test:clean": "rimraf build && rimraf bundles/firebase-nightlight-test.* && mkdirp bundles"
   },
-  "typings": "./dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "unpkg": "./bundles/firebase-nightlight.min.umd.js",
   "version": "3.0.0"
 }
