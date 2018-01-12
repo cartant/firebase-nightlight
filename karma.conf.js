@@ -7,9 +7,15 @@ exports = module.exports = function (config) {
     config.set({
         autoWatch: false,
         basePath: "",
-        browsers: ["ChromeHeadless"],
+        browsers: ["ChromeHeadlessNoSandbox"],
         colors: true,
         concurrency: Infinity,
+        customLaunchers: {
+            ChromeHeadlessNoSandbox: {
+                base: "ChromeHeadless",
+                flags: ["--no-sandbox"]
+            }
+        },
         exclude: [],
         files: [
             "bundles/firebase-nightlight-test.umd.js"
