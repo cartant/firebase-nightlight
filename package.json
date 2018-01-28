@@ -5,7 +5,7 @@
   },
   "dependencies": {
     "eventemitter2": "^5.0.0",
-    "firebase-key": "^1.0.0",
+    "firebase-key": "^2.0.0",
     "json-pointer": "^0.6.0",
     "lodash": "^4.17.4",
     "tslib": "^1.6.1"
