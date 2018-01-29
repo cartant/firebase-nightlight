@@ -1,5 +1,6 @@
 # firebase-nightlight
 
+[![GitHub License](https://img.shields.io/badge/license-GPL%20v3-blue.svg)](https://github.com/cartant/firebase-nightlight/blob/master/LICENSE)
 [![NPM version](https://img.shields.io/npm/v/firebase-nightlight.svg)](https://www.npmjs.com/package/firebase-nightlight)
 [![Build status](https://img.shields.io/travis/cartant/firebase-nightlight.svg)](http://travis-ci.org/cartant/firebase-nightlight)
 [![dependency status](https://img.shields.io/david/cartant/firebase-nightlight.svg)](https://david-dm.org/cartant/firebase-nightlight)
