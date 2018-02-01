@@ -27,7 +27,6 @@ export interface MockAppOptions {
 
 export class MockApp implements firebase.app.App {
 
-    private app_: firebase.app.App;
     private auth_: firebase.auth.Auth;
     private database_: firebase.database.Database;
     private deleter_: () => Promise<any>;
