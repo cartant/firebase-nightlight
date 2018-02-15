@@ -1,3 +1,10 @@
+<a name="3.0.1"></a>
+## [3.0.1](https://github.com/cartant/firebase-nightlight/compare/v3.0.0...v3.0.1) (2018-02-16)
+
+### Bug Fixes
+
+* Corrected the handling of the optional `name` parameter in `initializeApp`. ([06bb983](https://github.com/cartant/firebase-nightlight/commit/06bb983))
+
 <a name="3.0.0"></a>
 ## [3.0.0](https://github.com/cartant/firebase-nightlight/compare/v2.2.6...v3.0.0) (2017-11-23)
 
