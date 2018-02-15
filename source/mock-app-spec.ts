@@ -66,7 +66,7 @@ describe("mock-app", () => {
         });
 
         it("should set the app name", () => {
-            let appName = 'app-name';
+            let appName = "app-name";
             let newMockApp = mock.initializeApp(initializeOptions, appName);
 
             expect(newMockApp).to.have.property("name", appName);

@@ -44,7 +44,7 @@ export class Mock {
 
     initializeApp(options: any, name?: string): firebase.app.App {
 
-        return name ? this.untyped_.initializeApp(options, name): this.untyped_.initializeApp(options);
+        return name ? this.untyped_.initializeApp(options, name) : this.untyped_.initializeApp(options);
     }
 
     messaging(app?: firebase.app.App): firebase.messaging.Messaging {
