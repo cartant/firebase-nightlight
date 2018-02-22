@@ -3,6 +3,6 @@
  * can be found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
-import * as firebase from "./interfaces";
+import * as firebase from "./firebase-interfaces";
 
 export { firebase };
