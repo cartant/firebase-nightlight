@@ -11,13 +11,14 @@ import * as chaiAsPromised from "chai-as-promised-transpiled";
 chai.use(chaiAsPromised);
 
 import "./json-spec";
-import "./mock-app-spec";
-import "./mock-auth-spec";
-import "./mock-data-snapshot-spec";
-import "./mock-database-spec";
-import "./mock-messaging-spec";
-import "./mock-ref-spec";
-import "./mock-storage-spec";
 import "./mock-untyped-spec";
-import "./mock-user-spec";
 import "./text-random-string-spec";
+
+import "./app/mock-app-spec";
+import "./auth/mock-auth-spec";
+import "./auth/mock-user-spec";
+import "./database/mock-data-snapshot-spec";
+import "./database/mock-database-spec";
+import "./database/mock-ref-spec";
+import "./messaging/mock-messaging-spec";
+import "./storage/mock-storage-spec";

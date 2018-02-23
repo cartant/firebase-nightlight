@@ -3,23 +3,22 @@
  * can be found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
-import * as json from "./json";
-import * as lodash from "./lodash";
-
 import { EventEmitter2, Listener } from "eventemitter2";
 import { key } from "firebase-key";
-import { firebase } from "./firebase";
+import { firebase } from "../firebase";
+import * as json from "../json";
+import * as lodash from "../lodash";
+import { error_, unsupported_ } from "../mock-error";
+import { MockEmitters } from "../mock-types";
 import { MockDataSnapshot, MockPair } from "./mock-data-snapshot";
-import { error_, unsupported_ } from "./mock-error";
 
 import {
-    MockEmitters,
     MockPrimitive,
     MockQuery,
     MockRefInternals,
     MockRefStats,
     MockValue
-} from "./mock-types";
+} from "./mock-database-types";
 
 let lastRefId = 0;
 

@@ -4,9 +4,9 @@
  */
 
 import { EventEmitter2, Listener } from "eventemitter2";
-import { firebase } from "./firebase";
-import { error_, unsupported_ } from "./mock-error";
-import { MockIdentity } from "./mock-types";
+import { firebase } from "../firebase";
+import { error_, unsupported_ } from "../mock-error";
+import { MockIdentity } from "./mock-auth-types";
 import { MockUser } from "./mock-user";
 
 export interface MockAuthOptions {

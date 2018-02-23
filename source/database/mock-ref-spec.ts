@@ -4,13 +4,12 @@
  */
 /*tslint:disable:no-unused-expression*/
 
-import * as json from "./json";
-
 import { expect } from "chai";
-import { firebase } from "./firebase";
+import * as json from "../json";
+import { firebase } from "../firebase";
+import { MockUntyped as Mock } from "../mock-untyped";
+import { MockValue } from "./mock-database-types";
 import { MockRef } from "./mock-ref";
-import { MockValue } from "./mock-types";
-import { MockUntyped as Mock } from "./mock-untyped";
 
 const waitMilliseconds = 40;
 

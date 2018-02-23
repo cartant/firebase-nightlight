@@ -3,19 +3,16 @@
  * can be found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
-import * as json from "./json";
-import * as lodash from "./lodash";
-
 import { EventEmitter2 } from "eventemitter2";
-import { firebase } from "./firebase";
-import { MockAuth } from "./mock-auth";
-import { MockDatabase } from "./mock-database";
-import { MockDataSnapshot } from "./mock-data-snapshot";
-import { unsupported_ } from "./mock-error";
-import { MockMessaging } from "./mock-messaging";
-import { MockRef } from "./mock-ref";
-import { MockStorage } from "./mock-storage";
-import { MockEmitters, MockIdentity, MockValue } from "./mock-types";
+import * as json from "../json";
+import * as lodash from "../lodash";
+import { MockAuth, MockIdentity } from "../auth";
+import { MockDatabase, MockDataSnapshot, MockRef, MockValue } from "../database";
+import { firebase } from "../firebase";
+import { MockMessaging } from "../messaging";
+import { unsupported_ } from "../mock-error";
+import { MockEmitters } from "../mock-types";
+import { MockStorage } from "../storage";
 
 export interface MockAppOptions {
     database: { content: MockValue | null };

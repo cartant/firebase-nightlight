@@ -4,10 +4,11 @@
  */
 
 import { EventEmitter2 } from "eventemitter2";
-import { firebase } from "./firebase";
-import { unsupported_ } from "./mock-error";
+import { firebase } from "../firebase";
+import { unsupported_ } from "../mock-error";
+import { MockEmitters } from "../mock-types";
+import { MockValue } from "./mock-database-types";
 import { MockRef } from "./mock-ref";
-import { MockEmitters, MockValue } from "./mock-types";
 
 export interface MockDatabaseOptions {
     app: any;

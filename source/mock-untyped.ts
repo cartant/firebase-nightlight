@@ -4,9 +4,10 @@
  */
 
 import { firebase } from "./firebase";
-import { MockApp } from "./mock-app";
+import { MockApp } from "./app";
+import { MockIdentity } from "./auth";
+import { MockValue } from "./database";
 import { error_ } from "./mock-error";
-import { MockIdentity, MockValue } from "./mock-types";
 
 const defaultAppName = "[DEFAULT]";
 

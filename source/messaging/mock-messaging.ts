@@ -3,8 +3,8 @@
  * can be found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
-import { firebase } from "./firebase";
-import { error_, unsupported_ } from "./mock-error";
+import { firebase } from "../firebase";
+import { error_, unsupported_ } from "../mock-error";
 
 export interface MockMessagingOptions {
     app: firebase.app.App;

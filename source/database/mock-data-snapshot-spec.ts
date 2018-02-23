@@ -5,10 +5,10 @@
 /*tslint:disable:no-unused-expression*/
 
 import { expect } from "chai";
-import { firebase } from "./firebase";
+import { firebase } from "../firebase";
+import { MockUntyped as Mock } from "../mock-untyped";
 import { MockDataSnapshot } from "./mock-data-snapshot";
-import { MockComposite, MockValue } from "./mock-types";
-import { MockUntyped as Mock } from "./mock-untyped";
+import { MockComposite, MockValue } from "./mock-database-types";
 
 describe("mock-data-snapshot", () => {
 

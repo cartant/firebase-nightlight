@@ -5,9 +5,9 @@
 /*tslint:disable:no-unused-expression*/
 
 import { expect } from "chai";
-import { firebase } from "./firebase";
-import { MockIdentity } from "./mock-types";
-import { MockUntyped as Mock } from "./mock-untyped";
+import { firebase } from "../firebase";
+import { MockIdentity } from "./mock-auth-types";
+import { MockUntyped as Mock } from "../mock-untyped";
 
 describe("mock-auth", () => {
 

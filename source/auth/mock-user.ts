@@ -3,9 +3,9 @@
  * can be found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
-import { firebase } from "./firebase";
-import { unsupported_ } from "./mock-error";
-import { randomString } from "./text-random-string";
+import { firebase } from "../firebase";
+import { unsupported_ } from "../mock-error";
+import { randomString } from "../text-random-string";
 
 export interface MockUserOptions {
     email?: string;
