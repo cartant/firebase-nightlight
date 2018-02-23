@@ -5,18 +5,29 @@
 
 import { firebase } from "../firebase";
 import { unsupported_ } from "../mock-error";
+import { MockEmitters } from "../mock-types";
+import { MockCollectionRef } from "./mock-collection-ref";
+import { MockDocumentRef } from "./mock-document-ref";
+import { MockCollection } from "./mock-firestore-types";
 
 export interface MockFirestoreOptions {
     app: any;
+    firestore: { content: MockCollection | null };
+    emitters: MockEmitters;
 }
 
 export class MockFirestore implements firebase.firestore.Firestore {
 
     private app_: firebase.app.App;
+    private emitters_: MockEmitters;
+    private firestore_: { content: MockCollection | null };
 
     constructor(options: MockFirestoreOptions) {
 
         this.app_ = options.app;
+        this.emitters_ = options.emitters;
+        this.firestore_ = options.firestore || {} as any;
+        this.firestore_.content = this.firestore_.content || {};
     }
 
     get app(): firebase.app.App {
@@ -36,12 +47,22 @@ export class MockFirestore implements firebase.firestore.Firestore {
 
     collection(collectionPath: string): firebase.firestore.CollectionReference {
 
-        throw unsupported_();
+        return new MockCollectionRef({
+            app: this.app_,
+            emitters: this.emitters_,
+            firestore: this.firestore_,
+            path: collectionPath
+        });
     }
 
     doc(documentPath: string): firebase.firestore.DocumentReference {
 
-        throw unsupported_();
+        return new MockDocumentRef({
+            app: this.app_,
+            emitters: this.emitters_,
+            firestore: this.firestore_,
+            path: documentPath
+        });
     }
 
     enablePersistence(): Promise<void> {
@@ -57,7 +78,5 @@ export class MockFirestore implements firebase.firestore.Firestore {
     }
 
     settings(settings: firebase.firestore.Settings): void {
-
-        throw unsupported_();
     }
 }

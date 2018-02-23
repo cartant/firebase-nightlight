@@ -5,8 +5,19 @@
 
 import { firebase } from "../firebase";
 import { unsupported_ } from "../mock-error";
+import { MockEmitters } from "../mock-types";
+import { MockCollection } from "./mock-firestore-types";
+
+export interface MockDocumentRefOptions {
+    app: firebase.app.App;
+    emitters: MockEmitters;
+    firestore: { content: MockCollection | null };
+    path: string | null;
+}
 
 export class MockDocumentRef implements firebase.firestore.DocumentReference {
+
+    constructor(options: MockDocumentRefOptions) {}
 
     public get firestore(): firebase.firestore.Firestore {
 

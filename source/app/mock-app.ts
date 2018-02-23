@@ -9,15 +9,16 @@ import * as lodash from "../lodash";
 import { MockAuth, MockIdentity } from "../auth";
 import { MockDatabase, MockDataSnapshot, MockRef, MockValue } from "../database";
 import { firebase } from "../firebase";
-import { MockFirestore } from "../firestore";
+import { MockCollection, MockFirestore } from "../firestore";
 import { MockMessaging } from "../messaging";
 import { unsupported_ } from "../mock-error";
 import { MockEmitters } from "../mock-types";
 import { MockStorage } from "../storage";
 
 export interface MockAppOptions {
-    database: { content: MockValue | null };
+    database?: { content: MockValue | null };
     deleter: () => Promise<any>;
+    firestore?: { content: MockCollection | null };
     identities: MockIdentity[];
     initializeOptions: Object;
     name: string;
@@ -26,9 +27,10 @@ export interface MockAppOptions {
 export class MockApp implements firebase.app.App {
 
     private auth_: firebase.auth.Auth;
+    private databaseEmitters_: MockEmitters;
     private database_: firebase.database.Database;
     private deleter_: () => Promise<any>;
-    private emitters_: MockEmitters;
+    private firestoreEmitters_: MockEmitters;
     private firestore_: MockFirestore;
     private initializeOptions_: Object;
     private messaging_: firebase.messaging.Messaging;
@@ -40,25 +42,31 @@ export class MockApp implements firebase.app.App {
         this.initializeOptions_ = options.initializeOptions;
         this.name_ = options.name;
 
-        this.emitters_ = {
-            root: new EventEmitter2({ wildcard: true }),
-            shared: {}
-        };
-        this.emitters_.root.onAny(this.rootListener_.bind(this));
-
         this.auth_ = new MockAuth({
             app: this,
             identities: options.identities
         });
 
+        this.databaseEmitters_ = {
+            root: new EventEmitter2({ wildcard: true }),
+            shared: {}
+        };
+        this.databaseEmitters_.root.onAny(this.databaseRootListener_.bind(this));
         this.database_ = new MockDatabase({
             app: this,
-            database: options.database,
-            emitters: this.emitters_
+            database: options.database || { content: null },
+            emitters: this.databaseEmitters_
         });
 
+        this.firestoreEmitters_ = {
+            root: new EventEmitter2({ wildcard: true }),
+            shared: {}
+        };
+        this.firestoreEmitters_.root.onAny(this.firestoreRootListener_.bind(this));
         this.firestore_ = new MockFirestore({
-            app: this
+            app: this,
+            emitters: this.firestoreEmitters_,
+            firestore: options.firestore || { content: null }
         });
 
         this.messaging_ = new MockMessaging({
@@ -109,12 +117,12 @@ export class MockApp implements firebase.app.App {
         });
     }
 
-    private rootListener_(
+    private databaseRootListener_(
         eventType: string,
         { content, previousContent }: { content: MockValue, previousContent: MockValue }
     ): void {
 
-        lodash.each(this.emitters_.shared, (sharedEmitter, sharedEmitterJsonPath: string) => {
+        lodash.each(this.databaseEmitters_.shared, (sharedEmitter, sharedEmitterJsonPath: string) => {
 
             const sharedEmitterRef = this.database().ref(lodash.trim(sharedEmitterJsonPath, "/")) as any as MockRef;
 
@@ -204,5 +212,11 @@ export class MockApp implements firebase.app.App {
                 });
             }
         });
+    }
+
+    private firestoreRootListener_(
+        eventType: string,
+        { content, previousContent }: { content: MockValue, previousContent: MockValue }
+    ): void {
     }
 }
