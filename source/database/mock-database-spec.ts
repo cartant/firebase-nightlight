@@ -21,6 +21,15 @@ describe("mock-database", () => {
         mockDatabase = mockApp.database();
     });
 
+    describe("app", () => {
+
+        it("should return a mock app", () => {
+
+            expect(mockDatabase).to.have.property("app");
+            expect(mockDatabase.app).to.exist;
+        });
+    });
+
     describe("goOffline", () => {
     });
 

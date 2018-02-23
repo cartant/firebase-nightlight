@@ -9,6 +9,7 @@ import * as lodash from "../lodash";
 import { MockAuth, MockIdentity } from "../auth";
 import { MockDatabase, MockDataSnapshot, MockRef, MockValue } from "../database";
 import { firebase } from "../firebase";
+import { MockFirestore } from "../firestore";
 import { MockMessaging } from "../messaging";
 import { unsupported_ } from "../mock-error";
 import { MockEmitters } from "../mock-types";
@@ -28,6 +29,7 @@ export class MockApp implements firebase.app.App {
     private database_: firebase.database.Database;
     private deleter_: () => Promise<any>;
     private emitters_: MockEmitters;
+    private firestore_: MockFirestore;
     private initializeOptions_: Object;
     private messaging_: firebase.messaging.Messaging;
     private name_: string;
@@ -53,6 +55,10 @@ export class MockApp implements firebase.app.App {
             app: this,
             database: options.database,
             emitters: this.emitters_
+        });
+
+        this.firestore_ = new MockFirestore({
+            app: this
         });
 
         this.messaging_ = new MockMessaging({
