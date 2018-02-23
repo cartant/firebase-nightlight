@@ -843,9 +843,7 @@ declare namespace firebase.firestore {
    * `Firestore` represents a Firestore Database and is the entry point for all
    * Firestore operations.
    */
-  export class Firestore {
-    private constructor();
-
+  export interface Firestore {
     /**
      * Specifies custom settings to be used to configure the `Firestore`
      * instance. Must be set before invoking any other methods.
@@ -932,14 +930,14 @@ declare namespace firebase.firestore {
    * Latitude values are in the range of [-90, 90].
    * Longitude values are in the range of [-180, 180].
    */
-  export class GeoPoint {
+  export interface GeoPoint {
     /**
      * Creates a new immutable GeoPoint object with the provided latitude and
      * longitude values.
      * @param latitude The latitude as number between -90 and 90.
      * @param longitude The longitude as number between -180 and 180.
      */
-    constructor(latitude: number, longitude: number);
+    new (latitude: number, longitude: number);
 
     readonly latitude: number;
     readonly longitude: number;
@@ -979,9 +977,7 @@ declare namespace firebase.firestore {
    * the methods to read and write data within the transaction context. See
    * `Firestore.runTransaction()`.
    */
-  export class Transaction {
-    private constructor();
-
+  export interface Transaction {
     /**
      * Reads the document referenced by the provided `DocumentReference.`
      *
@@ -1061,9 +1057,7 @@ declare namespace firebase.firestore {
    * Unlike transactions, write batches are persisted offline and therefore are
    * preferable when you don't need to condition your writes on read data.
    */
-  export class WriteBatch {
-    private constructor();
-
+  export interface WriteBatch {
     /**
      * Writes to the document referred to by the provided `DocumentReference`.
      * If the document does not exist yet, it will be created. If you pass
@@ -1165,9 +1159,7 @@ declare namespace firebase.firestore {
    * the referenced location may or may not exist. A `DocumentReference` can
    * also be used to create a `CollectionReference` to a subcollection.
    */
-  export class DocumentReference {
-    private constructor();
-
+  export interface DocumentReference {
     /** The identifier of the document within its collection. */
     readonly id: string;
 
@@ -1339,9 +1331,7 @@ declare namespace firebase.firestore {
    * database. The data can be extracted with `.data()` or `.get(<field>)` to
    * get a specific field.
    */
-  export class DocumentSnapshot {
-    private constructor();
-
+  export interface DocumentSnapshot {
     /** True if the document exists. */
     readonly exists: boolean;
     /** A `DocumentReference` to the document location. */
@@ -1408,9 +1398,7 @@ declare namespace firebase.firestore {
    * A `Query` refers to a Query which you can read or listen to. You can also
    * construct refined `Query` objects by adding filters and ordering.
    */
-  export class Query {
-    protected constructor();
-
+  export interface Query {
     /**
      * The `Firestore` for the Firestore database (useful for performing
      * transactions, etc.).
@@ -1609,9 +1597,7 @@ declare namespace firebase.firestore {
    * number of documents can be determined via the `empty` and `size`
    * properties.
    */
-  export class QuerySnapshot {
-    private constructor();
-
+  export interface QuerySnapshot {
     /**
      * The query on which you called `get` or `onSnapshot` in order to get this
      * `QuerySnapshot`.
@@ -1685,9 +1671,7 @@ declare namespace firebase.firestore {
    * document references, and querying for documents (using the methods
    * inherited from `Query`).
    */
-  export class CollectionReference extends Query {
-    private constructor();
-
+  export interface CollectionReference extends Query {
     /** The identifier of the collection. */
     readonly id: string;
 
