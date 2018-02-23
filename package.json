@@ -66,7 +66,7 @@
     "dist:uglify": "uglifyjs -c -m -o bundles/firebase-nightlight.min.umd.js bundles/firebase-nightlight.umd.js",
     "lint": "tslint --project tsconfig.json source/**/*.ts",
     "prepublishOnly": "yarn run test && yarn run dist",
-    "test": "yarn run lint && yarn run test:build && karma start && mocha build/**/*-spec.js --reporter spec",
+    "test": "yarn run lint && yarn run test:build && karma start && mocha build/index-spec.js --reporter spec",
     "test:build": "yarn run test:clean && yarn run test:copy && tsc -p tsconfig.json && browserify build/index-spec.js -s firebaseNightlightTest -o bundles/firebase-nightlight-test.umd.js",
     "test:copy": "cpy source/lodash.* build/",
     "test:clean": "rimraf build && rimraf bundles/firebase-nightlight-test.* && mkdirp bundles"
