@@ -12,6 +12,7 @@ exports.filter = require("lodash/filter");
 exports.findIndex = require("lodash/findIndex");
 exports.intersectionWith = require("lodash/intersectionWith");
 exports.isEmpty = require("lodash/isEmpty");
+exports.isEqual = require("lodash/isEqual");
 exports.isObject = require("lodash/isObject");
 exports.map = require("lodash/map");
 exports.trim = require("lodash/trim");

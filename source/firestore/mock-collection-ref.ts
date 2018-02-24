@@ -6,27 +6,31 @@
 import { key } from "firebase-key";
 import { firebase } from "../firebase";
 import * as json from "../json";
+import * as lodash from "../lodash";
 import { unsupported_ } from "../mock-error";
 import { MockEmitters } from "../mock-types";
 import { MockDocumentRef } from "./mock-document-ref";
 import { toJsonPath, toPath, validatePath } from "./mock-firestore-paths";
-import { MockFirestoreContent } from "./mock-firestore-types";
+import { MockFirestoreContent, MockFirestoreQuery } from "./mock-firestore-types";
 
 export interface MockCollectionRefOptions {
     app: firebase.app.App;
     emitters: MockEmitters;
     firestore: firebase.firestore.Firestore;
     path: string | null;
+    query?: MockFirestoreQuery;
     store: { content: MockFirestoreContent };
 }
 
 export class MockCollectionRef implements firebase.firestore.CollectionReference {
 
+    public readonly jsonPath_: string;
+    public readonly query_: MockFirestoreQuery;
+
     private app_: firebase.app.App;
     private emitters_: MockEmitters;
     private firestore_: firebase.firestore.Firestore;
     private id_: string;
-    private jsonPath_: string;
     private parentPath_: string;
     private path_: string;
     private store_: { content: MockFirestoreContent };
@@ -36,6 +40,7 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
         this.app_ = options.app;
         this.emitters_ = options.emitters;
         this.firestore_ = options.firestore;
+        this.query_ = options.query || {};
         this.store_ = options.store;
 
         this.path_ = toPath(options.path || "");
@@ -98,14 +103,34 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
     public endAt(...fieldValues: any[]): firebase.firestore.Query;
     public endAt(...args: any[]): firebase.firestore.Query {
 
-        throw unsupported_();
+        return new MockCollectionRef({
+            app: this.app_,
+            emitters: this.emitters_,
+            firestore: this.firestore_,
+            path: this.path_,
+            query: {
+                ...this.query_,
+                endAt: args
+            },
+            store: this.store_
+        });
     }
 
     public endBefore(snapshot: firebase.firestore.DocumentSnapshot): firebase.firestore.Query;
     public endBefore(...fieldValues: any[]): firebase.firestore.Query;
     public endBefore(...args: any[]): firebase.firestore.Query {
 
-        throw unsupported_();
+        return new MockCollectionRef({
+            app: this.app_,
+            emitters: this.emitters_,
+            firestore: this.firestore_,
+            path: this.path_,
+            query: {
+                ...this.query_,
+                endBefore: args
+            },
+            store: this.store_
+        });
     }
 
     public get(): Promise<firebase.firestore.QuerySnapshot> {
@@ -115,12 +140,23 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
 
     public isEqual(other: firebase.firestore.Query): boolean {
 
-        throw unsupported_();
+        const otherMock = other as MockCollectionRef;
+        return (this.jsonPath_ === otherMock.jsonPath_) && lodash.isEqual(this.query_, otherMock.query_);
     }
 
     public limit(limit: number): firebase.firestore.Query {
 
-        throw unsupported_();
+        return new MockCollectionRef({
+            app: this.app_,
+            emitters: this.emitters_,
+            firestore: this.firestore_,
+            path: this.path_,
+            query: {
+                ...this.query_,
+                limit
+            },
+            store: this.store_
+        });
     }
 
     public onSnapshot(observer: {
@@ -157,21 +193,56 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
         directionStr?: firebase.firestore.OrderByDirection
     ): firebase.firestore.Query {
 
-        throw unsupported_();
+        if (typeof fieldPath !== "string") {
+            throw unsupported_();
+        }
+
+        return new MockCollectionRef({
+            app: this.app_,
+            emitters: this.emitters_,
+            firestore: this.firestore_,
+            path: this.path_,
+            query: {
+                ...this.query_,
+                orderByDirection: directionStr,
+                orderByField: fieldPath
+            },
+            store: this.store_
+        });
     }
 
     public startAfter(snapshot: firebase.firestore.DocumentSnapshot): firebase.firestore.Query;
     public startAfter(...fieldValues: any[]): firebase.firestore.Query;
     public startAfter(...args: any[]): firebase.firestore.Query {
 
-        throw unsupported_();
+        return new MockCollectionRef({
+            app: this.app_,
+            emitters: this.emitters_,
+            firestore: this.firestore_,
+            path: this.path_,
+            query: {
+                ...this.query_,
+                startAfter: args
+            },
+            store: this.store_
+        });
     }
 
     public startAt(snapshot: firebase.firestore.DocumentSnapshot): firebase.firestore.Query;
     public startAt(...fieldValues: any[]): firebase.firestore.Query;
     public startAt(...args: any[]): firebase.firestore.Query {
 
-        throw unsupported_();
+        return new MockCollectionRef({
+            app: this.app_,
+            emitters: this.emitters_,
+            firestore: this.firestore_,
+            path: this.path_,
+            query: {
+                ...this.query_,
+                startAt: args
+            },
+            store: this.store_
+        });
     }
 
     public where(
@@ -180,6 +251,22 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
         value: any
     ): firebase.firestore.Query {
 
-        throw unsupported_();
+        if (typeof fieldPath !== "string") {
+            throw unsupported_();
+        }
+
+        return new MockCollectionRef({
+            app: this.app_,
+            emitters: this.emitters_,
+            firestore: this.firestore_,
+            path: this.path_,
+            query: {
+                ...this.query_,
+                whereField: fieldPath,
+                whereOperator: opStr,
+                whereValue: value
+            },
+            store: this.store_
+        });
     }
 }

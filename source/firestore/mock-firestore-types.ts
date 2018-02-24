@@ -13,4 +13,17 @@ export type MockDocument = {
     data: MockDocumentComposite
 };
 
+export interface MockFirestoreQuery {
+    endAt?: any[];
+    endBefore?: any[];
+    limit?: number;
+    orderByDirection?: firebase.firestore.OrderByDirection;
+    orderByField?: string;
+    startAfter?: any[];
+    startAt?: any[];
+    whereField?: string;
+    whereOperator?: firebase.firestore.WhereFilterOp;
+    whereValue?: any;
+}
+
 export type MockFirestoreContent = { [id: string]: MockCollection } | null;

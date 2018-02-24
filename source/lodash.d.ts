@@ -11,6 +11,7 @@ import {
     findIndex as _findIndex,
     intersectionWith as _intersectionWith,
     isEmpty as _isEmpty,
+    isEqual as _isEqual,
     isObject as _isObject,
     map as _map,
     trim as _trim,
@@ -25,6 +26,7 @@ declare module "./lodash" {
     let findIndex: typeof _findIndex;
     let intersectionWith: typeof _intersectionWith;
     let isEmpty: typeof _isEmpty;
+    let isEqual: typeof _isEqual;
     let isObject: typeof _isObject;
     let map: typeof _map;
     let trim: typeof _trim;

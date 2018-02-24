@@ -46,6 +46,12 @@ describe("mock-collection-ref", () => {
         mockRef = mock.firestore().collection(path) as any;
     });
 
+    describe("add", () => {
+
+        it.skip("should be tested", () => {
+        });
+    });
+
     describe("doc", () => {
 
         it("should return the ref's child doc", () => {
@@ -58,11 +64,36 @@ describe("mock-collection-ref", () => {
         });
     });
 
+    describe("get", () => {
+
+        it.skip("should be tested", () => {
+        });
+    });
+
     describe("id", () => {
 
         it("should be the ref's id", () => {
 
             expect(mockRef.id).to.equal("users");
+        });
+    });
+
+    describe("isEqual", () => {
+
+        it("should determine whether queries are equal", () => {
+
+            expect(mockRef.isEqual(mockRef)).to.be.true;
+
+            const limitedRef = mockRef.limit(100);
+
+            expect(mockRef.isEqual(limitedRef)).to.be.false;
+            expect(limitedRef.isEqual(mockRef)).to.be.false;
+            expect(limitedRef.isEqual(limitedRef)).to.be.true;
+        });
+
+        it("should consider ids as well as queries", () => {
+
+            expect(mockRef.isEqual(mock.firestore().collection("jobs"))).to.be.false;
         });
     });
 

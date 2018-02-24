@@ -21,11 +21,12 @@ export interface MockDocumentRefOptions {
 
 export class MockDocumentRef implements firebase.firestore.DocumentReference {
 
+    public readonly jsonPath_: string;
+
     private app_: firebase.app.App;
     private emitters_: MockEmitters;
     private firestore_: firebase.firestore.Firestore;
     private id_: string;
-    private jsonPath_: string;
     private parentPath_: string;
     private path_: string;
     private store_: { content: MockFirestoreContent };
