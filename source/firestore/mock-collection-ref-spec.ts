@@ -8,10 +8,12 @@ import { expect } from "chai";
 import { firebase } from "../firebase";
 import { MockUntyped as Mock } from "../mock-untyped";
 import { MockCollectionRef } from "./mock-collection-ref";
-import { MockFirestoreContent } from "./mock-firestore-types";
+import { content } from "./mock-content-spec";
+import { MockFieldValues, MockFirestoreContent } from "./mock-firestore-types";
 
 describe("mock-collection-ref", () => {
 
+    let fieldValues: MockFieldValues;
     let mock: Mock;
     let mockRef: MockCollectionRef;
     let path: string;
@@ -19,27 +21,16 @@ describe("mock-collection-ref", () => {
 
     beforeEach(() => {
 
-        store = {
-            content: {
-                users: {
-                    alice: {
-                        collections: {},
-                        data: {
-                            name: "alice"
-                        }
-                    },
-                    bob: {
-                        collections: {},
-                        data: {
-                            name: "bob"
-                        }
-                    }
-                }
-            }
-        };
+        fieldValues = { delete: {} } as any;
         path = "users";
+        store = { content };
 
-        mock = new Mock({ firestore: store });
+        mock = new Mock({
+            firestore: {
+                fieldValues,
+                ...store
+            }
+        });
         mock.initializeApp({
             databaseURL: "https://mocha-cartant.firebaseio.com"
         });
@@ -66,7 +57,16 @@ describe("mock-collection-ref", () => {
 
     describe("get", () => {
 
-        it.skip("should be tested", () => {
+        it("should get the snapshot", () => {
+
+            return mockRef.get().then(snapshot => {
+
+                expect(snapshot).to.exist;
+                expect(snapshot).to.be.an("object");
+                expect(snapshot).to.have.property("empty", false);
+                expect(snapshot).to.have.property("query", mockRef);
+                expect(snapshot).to.have.property("size", 3);
+            });
         });
     });
 
@@ -95,6 +95,9 @@ describe("mock-collection-ref", () => {
 
             expect(mockRef.isEqual(mock.firestore().collection("jobs"))).to.be.false;
         });
+    });
+
+    describe("onSnapshot", () => {
     });
 
     describe("parent", () => {

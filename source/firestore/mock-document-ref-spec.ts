@@ -7,11 +7,13 @@
 import { expect } from "chai";
 import { firebase } from "../firebase";
 import { MockUntyped as Mock } from "../mock-untyped";
+import { content } from "./mock-content-spec";
 import { MockDocumentRef } from "./mock-document-ref";
-import { MockFirestoreContent } from "./mock-firestore-types";
+import { MockFieldValues, MockFirestoreContent } from "./mock-firestore-types";
 
 describe("mock-document-ref", () => {
 
+    let fieldValues: MockFieldValues;
     let mock: Mock;
     let mockRef: MockDocumentRef;
     let path: string;
@@ -19,27 +21,16 @@ describe("mock-document-ref", () => {
 
     beforeEach(() => {
 
-        store = {
-            content: {
-                users: {
-                    alice: {
-                        collections: {},
-                        data: {
-                            name: "alice"
-                        }
-                    },
-                    bob: {
-                        collections: {},
-                        data: {
-                            name: "bob"
-                        }
-                    }
-                }
-            }
-        };
+        fieldValues = { delete: {} } as any;
         path = "users/alice";
+        store = { content };
 
-        mock = new Mock({ firestore: store });
+        mock = new Mock({
+            firestore: {
+                fieldValues,
+                ...store
+            }
+        });
         mock.initializeApp({
             databaseURL: "https://mocha-cartant.firebaseio.com"
         });
@@ -58,12 +49,45 @@ describe("mock-document-ref", () => {
         });
     });
 
+    describe("delete", () => {
+
+        it.skip("should be tested", () => {
+        });
+    });
+
+    describe("get", () => {
+
+        it("should get the snapshot", () => {
+
+            return mockRef.get().then(snapshot => {
+
+                expect(snapshot).to.exist;
+                expect(snapshot).to.be.an("object");
+                expect(snapshot).to.have.property("id", "alice");
+                expect(snapshot).to.have.property("ref", mockRef);
+            });
+        });
+    });
+
     describe("id", () => {
 
         it("should be the ref's id", () => {
 
             expect(mockRef.id).to.equal("alice");
         });
+    });
+
+    describe("isEqual", () => {
+
+        it("should determine whether refs are equal", () => {
+
+            expect(mockRef.isEqual(mockRef)).to.be.true;
+            expect(mockRef.isEqual(mock.firestore().doc("users/alice"))).to.be.true;
+            expect(mockRef.isEqual(mock.firestore().doc("users/bob"))).to.be.false;
+        });
+    });
+
+    describe("onSnapshot", () => {
     });
 
     describe("parent", () => {
@@ -80,6 +104,18 @@ describe("mock-document-ref", () => {
         it("should be the ref's path", () => {
 
             expect(mockRef.path).to.equal("users/alice");
+        });
+    });
+
+    describe("set", () => {
+
+        it.skip("should be tested", () => {
+        });
+    });
+
+    describe("update", () => {
+
+        it.skip("should be tested", () => {
         });
     });
 });

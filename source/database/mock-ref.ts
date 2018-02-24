@@ -16,7 +16,6 @@ import { MockDatabaseContent } from "./mock-database-types";
 import {
     MockPrimitive,
     MockQuery,
-    MockRefInternals,
     MockRefStats,
     MockValue
 } from "./mock-database-types";
@@ -32,7 +31,7 @@ export interface MockRefOptions {
     query?: MockQuery;
 }
 
-export class MockRef implements firebase.database.ThenableReference, MockRefInternals {
+export class MockRef implements firebase.database.ThenableReference {
 
     public readonly jsonPath_: string;
     public readonly query_: MockQuery;
@@ -326,7 +325,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
                 if (this.refEmitter_.listeners("child_added").indexOf(boundSuccessCallback as Listener) !== -1) {
 
-                    const error = findError(this.jsonPath_, this.database_.content);
+                    const error = json.findError(this.jsonPath_, this.database_.content);
                     if (error) {
                         boundErrorCallback(error);
                     } else {
@@ -344,7 +343,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
                 if (this.refEmitter_.listeners("value").indexOf(boundSuccessCallback) !== -1) {
 
-                    const error = findError(this.jsonPath_, this.database_.content);
+                    const error = json.findError(this.jsonPath_, this.database_.content);
                     if (error) {
                         boundErrorCallback(error);
                     } else {
@@ -490,7 +489,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
 
                 try {
 
-                    const error = findError(this.jsonPath_, this.database_.content);
+                    const error = json.findError(this.jsonPath_, this.database_.content);
                     if (error) {
                         throw error;
                     }
@@ -553,7 +552,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
                     validateKeys(value as MockValue);
                     value = json.clone(value);
 
-                    const error = findError(this.jsonPath_, this.database_.content);
+                    const error = json.findError(this.jsonPath_, this.database_.content);
                     if (error) {
                         throw error;
                     }
@@ -753,7 +752,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
                     lodash.each(values, (value, key: string) => {
 
                         const jsonPath = toJsonPath(json.join(this.jsonPath_, key));
-                        const error = findError(jsonPath, this.database_.content);
+                        const error = json.findError(jsonPath, this.database_.content);
                         if (error) {
                             throw error;
                         }
@@ -889,7 +888,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
             return;
         }
 
-        const error = findError(this.jsonPath_, this.database_.content);
+        const error = json.findError(this.jsonPath_, this.database_.content);
         if (error) {
             this.refEmitter_.emit(`${eventType}_error`, error);
             return;
@@ -963,37 +962,6 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
                 }).child(addedPair.key), previousKey);
             });
         }
-    }
-}
-
-function findError(jsonPath: string, content: MockValue | null): Error | null {
-
-    if (content === null) {
-        return null;
-    }
-
-    const parts = jsonPath.split("/").filter(Boolean);
-
-    if (json.has(content, "/.error")) {
-        return toError(json.get(content, "/.error"));
-    }
-
-    for (let p = 0; p < parts.length; ++p) {
-        const path = `${json.join.apply(null, [...parts.slice(0, p + 1), ".error"])}`;
-        if (json.has(content, path)) {
-            return toError(json.get(content, path));
-        }
-    }
-    return null;
-
-    function toError(value: any): Error {
-
-        const error = new Error((typeof value === "string") ?
-            value :
-            value.message || "Unknown message."
-        );
-        error["code"] = value.code || "unknown/code";
-        return error;
     }
 }
 

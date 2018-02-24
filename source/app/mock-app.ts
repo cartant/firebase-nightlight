@@ -9,7 +9,7 @@ import * as lodash from "../lodash";
 import { MockAuth, MockIdentity } from "../auth";
 import { MockDatabase, MockDatabaseContent, MockDataSnapshot, MockRef, MockValue } from "../database";
 import { firebase } from "../firebase";
-import { MockCollection, MockFirestore, MockFirestoreContent } from "../firestore";
+import { MockCollection, MockFieldPaths, MockFieldValues, MockFirestore, MockFirestoreContent } from "../firestore";
 import { MockMessaging } from "../messaging";
 import { unsupported_ } from "../mock-error";
 import { MockEmitters } from "../mock-types";
@@ -18,7 +18,11 @@ import { MockStorage } from "../storage";
 export interface MockAppOptions {
     database?: { content: MockDatabaseContent };
     deleter: () => Promise<any>;
-    firestore?: { content: MockFirestoreContent };
+    firestore?: {
+        content: MockFirestoreContent;
+        fieldPaths?: MockFieldPaths;
+        fieldValues?: MockFieldValues;
+    };
     identities: MockIdentity[];
     initializeOptions: Object;
     name: string;
@@ -166,11 +170,11 @@ export class MockApp implements firebase.app.App {
                     sharedEmitter.emit("child_removed", {
                         previousSnapshot: new MockDataSnapshot({
                             content: previousContent,
-                            ref: sharedEmitterRef.child(removedKey)
+                            ref: sharedEmitterRef.child(removedKey) as MockRef
                         }),
                         snapshot: new MockDataSnapshot({
                             content,
-                            ref: sharedEmitterRef.child(removedKey)
+                            ref: sharedEmitterRef.child(removedKey) as MockRef
                         })
                     });
                 });
@@ -183,11 +187,11 @@ export class MockApp implements firebase.app.App {
                     sharedEmitter.emit("child_added", {
                         previousSnapshot: new MockDataSnapshot({
                             content: previousContent,
-                            ref: sharedEmitterRef.child(addedKey)
+                            ref: sharedEmitterRef.child(addedKey) as MockRef
                         }),
                         snapshot: new MockDataSnapshot({
                             content,
-                            ref: sharedEmitterRef.child(addedKey)
+                            ref: sharedEmitterRef.child(addedKey) as MockRef
                         })
                     });
                 });
@@ -201,11 +205,11 @@ export class MockApp implements firebase.app.App {
                         sharedEmitter.emit("child_changed", {
                             previousSnapshot: new MockDataSnapshot({
                                 content: previousContent,
-                                ref: sharedEmitterRef.child(changedKey)
+                                ref: sharedEmitterRef.child(changedKey) as MockRef
                             }),
                             snapshot: new MockDataSnapshot({
                                 content,
-                                ref: sharedEmitterRef.child(changedKey)
+                                ref: sharedEmitterRef.child(changedKey) as MockRef
                             })
                         });
                     }

@@ -7,7 +7,8 @@ import { firebase } from "../firebase";
 import * as json from "../json";
 import * as lodash from "../lodash";
 import { unsupported_ } from "../mock-error";
-import { MockDatabaseContent, MockPrimitive, MockQuery, MockRefInternals, MockValue } from "./mock-database-types";
+import { MockDatabaseContent, MockPrimitive, MockQuery, MockValue } from "./mock-database-types";
+import { MockRef } from "./mock-ref";
 
 export interface MockPair {
     key: string;
@@ -16,17 +17,14 @@ export interface MockPair {
 
 export interface MockDataSnapshotOptions {
     content?: MockDatabaseContent;
-    previousContent?: MockDatabaseContent;
-    ref: firebase.database.Reference;
+    ref: MockRef;
     snapshot?: MockDataSnapshot;
 }
 
 export class MockDataSnapshot implements firebase.database.DataSnapshot {
 
     private content_: MockDatabaseContent;
-    private previousContent_: MockDatabaseContent;
-    private ref_: firebase.database.Reference;
-    private refInternals_: MockRefInternals;
+    private ref_: MockRef;
 
     static pairKeyComparer(a: MockPair, b: MockPair): number {
 
@@ -52,14 +50,11 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
     constructor(options: MockDataSnapshotOptions) {
 
         this.ref_ = options.ref;
-        this.refInternals_ = options.ref as any;
 
         if (options.snapshot) {
             this.content_ = options.snapshot.content_;
-            this.previousContent_ = null;
         } else {
-            this.content_ = options.content || this.refInternals_.content_;
-            this.previousContent_ = options.previousContent || null;
+            this.content_ = options.content || this.ref_.content_;
         }
     }
 
@@ -80,13 +75,13 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
 
         return new MockDataSnapshot({
             content: this.content_,
-            ref: childRef
+            ref: childRef as MockRef
         });
     }
 
     exists(): boolean {
 
-        return json.has(this.content_, this.refInternals_.jsonPath_);
+        return json.has(this.content_, this.ref_.jsonPath_);
     }
 
     exportVal(): any {
@@ -115,7 +110,7 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
 
     hasChild(path: string): boolean {
 
-        return json.has(this.content_, json.join(this.refInternals_.jsonPath_, path));
+        return json.has(this.content_, json.join(this.ref_.jsonPath_, path));
     }
 
     hasChildren(): boolean {
@@ -132,7 +127,7 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
     pairs_(): MockPair[] {
 
         let pairs = lodash.map(this.val_() as any, toPair);
-        const query = this.refInternals_.query_;
+        const query = this.ref_.query_;
 
         if (query.orderByChild) {
             pairs.sort(pairChildComparer(query.orderByChild));
@@ -167,7 +162,7 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
 
         let value: MockValue | null;
 
-        if (this.refInternals_.queried_) {
+        if (this.ref_.queried_) {
             const result: MockValue = {};
             lodash.each(this.pairs_(), (pair) => { result[pair.key] = pair.value; });
             value = result;
@@ -180,7 +175,7 @@ export class MockDataSnapshot implements firebase.database.DataSnapshot {
     private val_(): MockValue | null {
 
         let value: MockValue| null = null;
-        const jsonPath = this.refInternals_.jsonPath_;
+        const jsonPath = this.ref_.jsonPath_;
 
         if (json.has(this.content_, jsonPath)) {
             value = json.get(this.content_, jsonPath);

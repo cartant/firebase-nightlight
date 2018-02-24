@@ -14,7 +14,18 @@ export class Mock {
 
     constructor(options?: MockOptions) {
 
-        this.untyped_ = new MockUntyped(options);
+        const firestore = (options && options.firestore) ? {
+            fieldValues: {
+                delete: firebase.firestore.FieldValue.delete(),
+                serverTimestamp: firebase.firestore.FieldValue.serverTimestamp()
+            },
+            ...options.firestore
+        } : {};
+
+        this.untyped_ = new MockUntyped({
+            ...options,
+            ...firestore
+        });
     }
 
     get apps(): (firebase.app.App | null)[] {
@@ -40,6 +51,11 @@ export class Mock {
     database(app?: firebase.app.App): firebase.database.Database {
 
         return name ? this.untyped_.database() : this.untyped_.database(app);
+    }
+
+    firestore(app?: firebase.app.App): firebase.firestore.Firestore {
+
+        return name ? this.untyped_.firestore() : this.untyped_.firestore(app);
     }
 
     initializeApp(options: any, name?: string): firebase.app.App {

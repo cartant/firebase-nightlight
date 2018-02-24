@@ -8,11 +8,15 @@ import { unsupported_ } from "../mock-error";
 import { MockEmitters } from "../mock-types";
 import { MockCollectionRef } from "./mock-collection-ref";
 import { MockDocumentRef } from "./mock-document-ref";
-import { MockCollection, MockFirestoreContent } from "./mock-firestore-types";
+import { MockCollection, MockFieldPaths, MockFieldValues, MockFirestoreContent } from "./mock-firestore-types";
 
 export interface MockFirestoreOptions {
     app: any;
-    firestore: { content: MockFirestoreContent };
+    firestore: {
+        content: MockFirestoreContent;
+        fieldPaths?: MockFieldPaths;
+        fieldValues?: MockFieldValues;
+    };
     emitters: MockEmitters;
 }
 
@@ -20,6 +24,8 @@ export class MockFirestore implements firebase.firestore.Firestore {
 
     private app_: firebase.app.App;
     private emitters_: MockEmitters;
+    private fieldPaths_: MockFieldPaths;
+    private fieldValues_: MockFieldValues;
     private store_: { content: MockFirestoreContent };
 
     constructor(options: MockFirestoreOptions) {
@@ -28,6 +34,14 @@ export class MockFirestore implements firebase.firestore.Firestore {
         this.emitters_ = options.emitters;
         this.store_ = options.firestore || {} as any;
         this.store_.content = this.store_.content || {};
+
+        if (options.firestore) {
+            this.fieldPaths_ = options.firestore.fieldPaths || {};
+            this.fieldValues_ = options.firestore.fieldValues || {};
+        } else {
+            this.fieldPaths_ = {};
+            this.fieldValues_ = {};
+        }
     }
 
     get app(): firebase.app.App {
@@ -37,7 +51,7 @@ export class MockFirestore implements firebase.firestore.Firestore {
 
     get INTERNAL(): { delete: () => Promise<void> } {
 
-        throw unsupported_();
+        return { delete: () => Promise.resolve() };
     }
 
     batch(): firebase.firestore.WriteBatch {
@@ -50,6 +64,7 @@ export class MockFirestore implements firebase.firestore.Firestore {
         return new MockCollectionRef({
             app: this.app_,
             emitters: this.emitters_,
+            fieldValues: this.fieldValues_,
             firestore: this,
             path: collectionPath,
             store: this.store_
@@ -61,6 +76,7 @@ export class MockFirestore implements firebase.firestore.Firestore {
         return new MockDocumentRef({
             app: this.app_,
             emitters: this.emitters_,
+            fieldValues: this.fieldValues_,
             firestore: this,
             path: documentPath,
             store: this.store_

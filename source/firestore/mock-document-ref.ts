@@ -3,19 +3,23 @@
  * can be found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
+import { EventEmitter2, Listener } from "eventemitter2";
 import { firebase } from "../firebase";
 import * as json from "../json";
+import * as lodash from "../lodash";
 import { unsupported_ } from "../mock-error";
 import { MockEmitters } from "../mock-types";
 import { MockCollectionRef } from "./mock-collection-ref";
-import { toJsonPath, toPath, validatePath } from "./mock-firestore-paths";
-import { MockFirestoreContent } from "./mock-firestore-types";
+import { MockDocumentSnapshot } from "./mock-document-snapshot";
+import { toJsonPath, toPath, toSlashPath, validateFields, validatePath } from "./mock-firestore-paths";
+import { MockFieldValues, MockFirestoreContent } from "./mock-firestore-types";
 
 export interface MockDocumentRefOptions {
     app: firebase.app.App;
     emitters: MockEmitters;
+    fieldValues: MockFieldValues;
     firestore: firebase.firestore.Firestore;
-    path: string | null;
+    path: string;
     store: { content: MockFirestoreContent };
 }
 
@@ -25,20 +29,24 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
 
     private app_: firebase.app.App;
     private emitters_: MockEmitters;
+    private fieldValues_: MockFieldValues;
     private firestore_: firebase.firestore.Firestore;
     private id_: string;
     private parentPath_: string;
     private path_: string;
+    private rootEmitter_: EventEmitter2;
     private store_: { content: MockFirestoreContent };
 
     constructor(options: MockDocumentRefOptions) {
 
         this.app_ = options.app;
         this.emitters_ = options.emitters;
+        this.fieldValues_ = options.fieldValues;
         this.firestore_ = options.firestore;
+        this.rootEmitter_ = this.emitters_.root;
         this.store_ = options.store;
 
-        this.path_ = toPath(options.path || "");
+        this.path_ = toPath(options.path);
         validatePath(this.path_);
         this.jsonPath_ = toJsonPath(this.path_);
 
@@ -62,6 +70,7 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
         return new MockCollectionRef({
             app: this.app_,
             emitters: this.emitters_,
+            fieldValues: this.fieldValues_,
             firestore: this.firestore_,
             path: this.parentPath_,
             store: this.store_
@@ -78,6 +87,7 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
         return new MockCollectionRef({
             app: this.app_,
             emitters: this.emitters_,
+            fieldValues: this.fieldValues_,
             firestore: this.firestore_,
             path: json.join(this.path_, collectionPath),
             store: this.store_
@@ -86,17 +96,38 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
 
     public delete(): Promise<void> {
 
-        throw unsupported_();
+        const previousContent = this.store_.content;
+
+        const error = json.findError(this.jsonPath_, this.store_.content);
+        if (error) {
+            return Promise.reject(error);
+        }
+
+        return Promise.resolve().then(() => {
+
+            this.store_.content = json.remove(
+                this.store_.content,
+                json.join(this.jsonPath_, "data")
+            );
+
+            this.rootEmitter_.emit("content", {
+                content: this.store_.content,
+                previousContent
+            });
+        });
     }
 
     public get(): Promise<firebase.firestore.DocumentSnapshot> {
 
-        throw unsupported_();
+        return Promise.resolve(new MockDocumentSnapshot({
+            content: this.store_.content,
+            ref: this
+        }));
     }
 
     public isEqual(other: firebase.firestore.DocumentReference): boolean {
 
-        throw unsupported_();
+        return this.path === other.path;
     }
 
     public onSnapshot(observer: {
@@ -133,7 +164,38 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
         options?: firebase.firestore.SetOptions
     ): Promise<void> {
 
-        throw unsupported_();
+        const previousContent = this.store_.content;
+
+        validateFields(data);
+        data = json.clone(data);
+
+        const error = json.findError(this.jsonPath_, this.store_.content);
+        if (error) {
+            return Promise.reject(error);
+        }
+
+        return Promise.resolve().then(() => {
+
+            if (options && options.merge) {
+                this.store_.content = mergeData(
+                    this.store_.content,
+                    json.join(this.jsonPath_, "data"),
+                    this.fieldValues_,
+                    data
+                );
+            } else {
+                this.store_.content = json.set(
+                    this.store_.content,
+                    json.join(this.jsonPath_, "data"),
+                    data
+                );
+            }
+
+            this.rootEmitter_.emit("content", {
+                content: this.store_.content,
+                previousContent
+            });
+        });
     }
 
     public update(data: firebase.firestore.UpdateData): Promise<void>;
@@ -144,6 +206,75 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
     ): Promise<void>;
     public update(...args: any[]): Promise<void> {
 
-        throw unsupported_();
+        const previousContent = this.store_.content;
+        let data: firebase.firestore.DocumentData;
+
+        if (args.length === 1) {
+            [data] = args;
+        } else {
+            data = {};
+            for (let a = 0; a < args.length; a += 2) {
+                if (typeof args[a] !== "string") {
+                    throw unsupported_();
+                }
+                data[args[a]] = args[a + 1];
+            }
+        }
+        validateFields(data);
+        data = json.clone(data);
+
+        const error = json.findError(this.jsonPath_, this.store_.content);
+        if (error) {
+            return Promise.reject(error);
+        }
+
+        return Promise.resolve().then(() => {
+
+            this.store_.content = mergeData(
+                this.store_.content,
+                json.join(this.jsonPath_, "data"),
+                this.fieldValues_,
+                args
+            );
+
+            this.rootEmitter_.emit("content", {
+                content: this.store_.content,
+                previousContent
+            });
+        });
     }
+}
+
+function mergeData(
+    content: any,
+    path: string,
+    fieldValues: MockFieldValues,
+    data: firebase.firestore.DocumentData
+): any {
+
+    const deleteFieldValue = fieldValues["delete"];
+
+    lodash.each(data, (value, key: string) => {
+
+        const slashPath = toSlashPath(key);
+        const jsonPath = toJsonPath(json.join(path, slashPath));
+        const error = json.findError(jsonPath, content);
+        if (error) {
+            throw error;
+        }
+
+        if (value === deleteFieldValue) {
+            content = json.remove(
+                content,
+                jsonPath
+            );
+            json.prune(content, jsonPath);
+        } else {
+            content = json.set(
+                content,
+                jsonPath,
+                json.clone(value)
+            );
+        }
+    });
 }

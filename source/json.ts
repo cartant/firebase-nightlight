@@ -16,6 +16,37 @@ export function delete_(entity: any, path: string): void {
     jsonPointer.remove(entity, path);
 }
 
+export function findError(jsonPath: string, content: any): Error | null {
+
+    if (content === null) {
+        return null;
+    }
+
+    const parts = jsonPath.split("/").filter(Boolean);
+
+    if (has(content, "/.error")) {
+        return toError(get(content, "/.error"));
+    }
+
+    for (let p = 0; p < parts.length; ++p) {
+        const path = `${join.apply(null, [...parts.slice(0, p + 1), ".error"])}`;
+        if (has(content, path)) {
+            return toError(get(content, path));
+        }
+    }
+    return null;
+
+    function toError(value: any): Error {
+
+        const error = new Error((typeof value === "string") ?
+            value :
+            value.message || "Unknown message."
+        );
+        error["code"] = value.code || "unknown/code";
+        return error;
+    }
+}
+
 export function get(entity: any, path: string): any {
 
     return jsonPointer.get(entity, path);

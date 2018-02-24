@@ -32,11 +32,3 @@ export interface MockRefStats {
         value: number;
     };
 }
-
-export interface MockRefInternals {
-    readonly content_: MockDatabaseContent;
-    readonly jsonPath_: string;
-    readonly queried_: boolean;
-    readonly query_: MockQuery;
-    stats_(): MockRefStats;
-}

@@ -16,6 +16,14 @@ export function toPath(path: string): string {
     return lodash.trim(path || "", "/");
 }
 
+export function toSlashPath(path: string): string {
+
+    return path.replace(/\./g, "/");
+}
+
+export function validateFields(data: { [field: string]: any }): void {
+}
+
 export function validatePath(path: string): void {
 
     // https://firebase.google.com/docs/firestore/quotas#collections_documents_and_fields

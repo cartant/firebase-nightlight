@@ -7,7 +7,7 @@ import { firebase } from "./firebase";
 import { MockApp } from "./app";
 import { MockIdentity } from "./auth";
 import { MockValue, MockDatabaseContent } from "./database";
-import { MockCollection, MockFirestoreContent } from "./firestore";
+import { MockCollection, MockFieldValues, MockFirestoreContent } from "./firestore";
 import { error_ } from "./mock-error";
 
 const defaultAppName = "[DEFAULT]";
@@ -16,12 +16,20 @@ export interface MockOptions {
     apps?: {
         [key: string]: {
             database?: { content: MockDatabaseContent };
-            firestore?: { content: MockFirestoreContent };
+            firestore?: {
+                content: MockFirestoreContent;
+                fieldPaths?: any;
+                fieldValues?: any;
+            };
             identities?: MockIdentity[];
         }
     };
     database?: { content: MockDatabaseContent };
-    firestore?: { content: MockFirestoreContent };
+    firestore?: {
+        content: MockFirestoreContent;
+        fieldPaths?: any;
+        fieldValues?: any;
+    };
     identities?: MockIdentity[];
 }
 
@@ -87,17 +95,15 @@ export class MockUntyped {
         let mockApp: MockApp;
         if (this.options_.apps && this.options_.apps[concreteName]) {
             mockApp = new MockApp({
-                database: this.options_.apps[concreteName].database || { content: {} },
+                ...this.options_.apps[concreteName] as any,
                 deleter,
-                identities: this.options_.apps[concreteName].identities || [],
                 initializeOptions: options,
                 name: concreteName
             });
         } else {
             mockApp = new MockApp({
-                database: this.options_.database || { content: {} },
+                ...this.options_ as any,
                 deleter,
-                identities: this.options_.identities || [],
                 initializeOptions: options,
                 name: concreteName
             });

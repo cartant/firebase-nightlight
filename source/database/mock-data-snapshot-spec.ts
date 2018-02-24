@@ -9,6 +9,7 @@ import { firebase } from "../firebase";
 import { MockUntyped as Mock } from "../mock-untyped";
 import { MockDataSnapshot } from "./mock-data-snapshot";
 import { MockComposite, MockValue } from "./mock-database-types";
+import { MockRef } from "./mock-ref";
 
 describe("mock-data-snapshot", () => {
 
@@ -37,7 +38,7 @@ describe("mock-data-snapshot", () => {
         const mockApp = mock.initializeApp({});
         const mockDatabase = mockApp.database();
         mockRef = mock.database().ref(path);
-        mockSnapshot = new MockDataSnapshot({ ref: mockRef });
+        mockSnapshot = new MockDataSnapshot({ ref: mockRef as MockRef });
     });
 
     describe("child", () => {
