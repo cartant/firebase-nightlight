@@ -7,6 +7,8 @@ export type MockPrimitive = boolean | number | string;
 export type MockComposite = { [key: string]: MockPrimitive | MockComposite };
 export type MockValue = MockPrimitive | MockComposite;
 
+export type MockDatabaseContent = MockValue | null;
+
 export interface MockQuery {
     endAt?: MockPrimitive | null;
     equalTo?: MockPrimitive | null;
@@ -32,7 +34,7 @@ export interface MockRefStats {
 }
 
 export interface MockRefInternals {
-    readonly content_: MockValue | null;
+    readonly content_: MockDatabaseContent;
     readonly jsonPath_: string;
     readonly queried_: boolean;
     readonly query_: MockQuery;

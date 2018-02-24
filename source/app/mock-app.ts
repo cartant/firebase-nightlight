@@ -7,18 +7,18 @@ import { EventEmitter2 } from "eventemitter2";
 import * as json from "../json";
 import * as lodash from "../lodash";
 import { MockAuth, MockIdentity } from "../auth";
-import { MockDatabase, MockDataSnapshot, MockRef, MockValue } from "../database";
+import { MockDatabase, MockDatabaseContent, MockDataSnapshot, MockRef, MockValue } from "../database";
 import { firebase } from "../firebase";
-import { MockCollection, MockFirestore } from "../firestore";
+import { MockCollection, MockFirestore, MockFirestoreContent } from "../firestore";
 import { MockMessaging } from "../messaging";
 import { unsupported_ } from "../mock-error";
 import { MockEmitters } from "../mock-types";
 import { MockStorage } from "../storage";
 
 export interface MockAppOptions {
-    database?: { content: MockValue | null };
+    database?: { content: MockDatabaseContent };
     deleter: () => Promise<any>;
-    firestore?: { content: MockCollection | null };
+    firestore?: { content: MockFirestoreContent };
     identities: MockIdentity[];
     initializeOptions: Object;
     name: string;
@@ -101,7 +101,7 @@ export class MockApp implements firebase.app.App {
 
     firestore(): firebase.firestore.Firestore {
 
-        throw unsupported_();
+        return this.firestore_;
     }
 
     messaging(): firebase.messaging.Messaging {
@@ -119,7 +119,7 @@ export class MockApp implements firebase.app.App {
 
     private databaseRootListener_(
         eventType: string,
-        { content, previousContent }: { content: MockValue, previousContent: MockValue }
+        { content, previousContent }: { content: MockDatabaseContent, previousContent: MockDatabaseContent }
     ): void {
 
         lodash.each(this.databaseEmitters_.shared, (sharedEmitter, sharedEmitterJsonPath: string) => {
@@ -127,12 +127,12 @@ export class MockApp implements firebase.app.App {
             const sharedEmitterRef = this.database().ref(lodash.trim(sharedEmitterJsonPath, "/")) as any as MockRef;
 
             let value: MockValue | null = null;
-            if (json.has(content, sharedEmitterJsonPath)) {
+            if (content && json.has(content, sharedEmitterJsonPath)) {
                 value = json.get(content, sharedEmitterJsonPath);
             }
 
             let previousValue: MockValue | null = null;
-            if (json.has(previousContent, sharedEmitterJsonPath)) {
+            if (previousContent && json.has(previousContent, sharedEmitterJsonPath)) {
                 previousValue = json.get(previousContent, sharedEmitterJsonPath);
             }
 

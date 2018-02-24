@@ -7,19 +7,19 @@ import { EventEmitter2 } from "eventemitter2";
 import { firebase } from "../firebase";
 import { unsupported_ } from "../mock-error";
 import { MockEmitters } from "../mock-types";
-import { MockValue } from "./mock-database-types";
+import { MockDatabaseContent, MockValue } from "./mock-database-types";
 import { MockRef } from "./mock-ref";
 
 export interface MockDatabaseOptions {
     app: any;
-    database: { content: MockValue | null };
+    database: { content: MockDatabaseContent };
     emitters: MockEmitters;
 }
 
 export class MockDatabase implements firebase.database.Database {
 
     private app_: firebase.app.App;
-    private database_: { content: MockValue | null };
+    private database_: { content: MockDatabaseContent };
     private emitters_: MockEmitters;
 
     constructor(options: MockDatabaseOptions) {

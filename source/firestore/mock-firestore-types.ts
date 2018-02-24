@@ -12,3 +12,5 @@ export type MockDocument = {
     collections: { [id: string]: MockCollection },
     data: MockDocumentComposite
 };
+
+export type MockFirestoreContent = { [id: string]: MockCollection } | null;

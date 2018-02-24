@@ -18,7 +18,7 @@ describe("mock-firestore", () => {
         const mockApp = mock.initializeApp({
             databaseURL: "https://nightlight.firebaseio.com"
         });
-        mockFirestore = mockApp.database();
+        mockFirestore = mockApp.firestore();
     });
 
     describe("app", () => {
@@ -27,6 +27,42 @@ describe("mock-firestore", () => {
 
             expect(mockFirestore).to.have.property("app");
             expect(mockFirestore.app).to.exist;
+        });
+    });
+
+    describe("collection", () => {
+
+        it("should return a mock ref", () => {
+
+            expect(mockFirestore).to.respondTo("collection");
+
+            const mockRef = mockFirestore.collection("users");
+
+            expect(mockRef).to.exist;
+            expect(mockRef).to.have.property("id", "users");
+        });
+
+        it("should throw an error if the path contains illegal characters", () => {
+
+            expect(() => { mockFirestore.collection("__users__"); }).to.throw(/illegal/i);
+        });
+    });
+
+    describe("doc", () => {
+
+        it("should return a mock ref", () => {
+
+            expect(mockFirestore).to.respondTo("doc");
+
+            const mockRef = mockFirestore.doc("users/alice");
+
+            expect(mockRef).to.exist;
+            expect(mockRef).to.have.property("id", "alice");
+        });
+
+        it("should throw an error if the path contains illegal characters", () => {
+
+            expect(() => { mockFirestore.doc("__users__/__alice__"); }).to.throw(/illegal/i);
         });
     });
 });

@@ -7,7 +7,7 @@ import { firebase } from "../firebase";
 import * as json from "../json";
 import * as lodash from "../lodash";
 import { unsupported_ } from "../mock-error";
-import { MockPrimitive, MockQuery, MockRefInternals, MockValue } from "./mock-database-types";
+import { MockDatabaseContent, MockPrimitive, MockQuery, MockRefInternals, MockValue } from "./mock-database-types";
 
 export interface MockPair {
     key: string;
@@ -15,16 +15,16 @@ export interface MockPair {
 }
 
 export interface MockDataSnapshotOptions {
-    content?: MockValue | null;
-    previousContent?: MockValue | null;
+    content?: MockDatabaseContent;
+    previousContent?: MockDatabaseContent;
     ref: firebase.database.Reference;
     snapshot?: MockDataSnapshot;
 }
 
 export class MockDataSnapshot implements firebase.database.DataSnapshot {
 
-    private content_: MockValue | null;
-    private previousContent_: MockValue | null;
+    private content_: MockDatabaseContent;
+    private previousContent_: MockDatabaseContent;
     private ref_: firebase.database.Reference;
     private refInternals_: MockRefInternals;
 

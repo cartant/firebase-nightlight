@@ -11,6 +11,7 @@ import * as lodash from "../lodash";
 import { error_, unsupported_ } from "../mock-error";
 import { MockEmitters } from "../mock-types";
 import { MockDataSnapshot, MockPair } from "./mock-data-snapshot";
+import { MockDatabaseContent } from "./mock-database-types";
 
 import {
     MockPrimitive,
@@ -24,7 +25,7 @@ let lastRefId = 0;
 
 export interface MockRefOptions {
     app: firebase.app.App;
-    database: { content: MockValue | null };
+    database: { content: MockDatabaseContent };
     emitters: MockEmitters;
     path: string | null;
     promise?: Promise<any>;
@@ -38,7 +39,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
     public readonly [Symbol.toStringTag]: "Promise";
 
     private app_: firebase.app.App;
-    private database_: { content: MockValue | null };
+    private database_: { content: MockDatabaseContent };
     private emitters_: MockEmitters;
     private id_: number;
     private key_: string | null;
@@ -114,7 +115,7 @@ export class MockRef implements firebase.database.ThenableReference, MockRefInte
         }
     }
 
-    get content_(): MockValue | null {
+    get content_(): MockDatabaseContent {
 
         return this.database_.content;
     }

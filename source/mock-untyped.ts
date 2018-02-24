@@ -6,7 +6,8 @@
 import { firebase } from "./firebase";
 import { MockApp } from "./app";
 import { MockIdentity } from "./auth";
-import { MockValue } from "./database";
+import { MockValue, MockDatabaseContent } from "./database";
+import { MockCollection, MockFirestoreContent } from "./firestore";
 import { error_ } from "./mock-error";
 
 const defaultAppName = "[DEFAULT]";
@@ -14,11 +15,13 @@ const defaultAppName = "[DEFAULT]";
 export interface MockOptions {
     apps?: {
         [key: string]: {
-            database?: { content: MockValue | null };
+            database?: { content: MockDatabaseContent };
+            firestore?: { content: MockFirestoreContent };
             identities?: MockIdentity[];
         }
     };
-    database?: { content: MockValue | null };
+    database?: { content: MockDatabaseContent };
+    firestore?: { content: MockFirestoreContent };
     identities?: MockIdentity[];
 }
 
@@ -63,6 +66,11 @@ export class MockUntyped {
     database(app?: any): any {
 
         return app ? app.database() : this.app().database();
+    }
+
+    firestore(app?: any): any {
+
+        return app ? app.firestore() : this.app().firestore();
     }
 
     initializeApp(options: any, name?: string): any {

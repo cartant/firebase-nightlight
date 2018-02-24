@@ -8,11 +8,11 @@ import { unsupported_ } from "../mock-error";
 import { MockEmitters } from "../mock-types";
 import { MockCollectionRef } from "./mock-collection-ref";
 import { MockDocumentRef } from "./mock-document-ref";
-import { MockCollection } from "./mock-firestore-types";
+import { MockCollection, MockFirestoreContent } from "./mock-firestore-types";
 
 export interface MockFirestoreOptions {
     app: any;
-    firestore: { content: MockCollection | null };
+    firestore: { content: MockFirestoreContent };
     emitters: MockEmitters;
 }
 
@@ -20,14 +20,14 @@ export class MockFirestore implements firebase.firestore.Firestore {
 
     private app_: firebase.app.App;
     private emitters_: MockEmitters;
-    private firestore_: { content: MockCollection | null };
+    private store_: { content: MockFirestoreContent };
 
     constructor(options: MockFirestoreOptions) {
 
         this.app_ = options.app;
         this.emitters_ = options.emitters;
-        this.firestore_ = options.firestore || {} as any;
-        this.firestore_.content = this.firestore_.content || {};
+        this.store_ = options.firestore || {} as any;
+        this.store_.content = this.store_.content || {};
     }
 
     get app(): firebase.app.App {
@@ -50,8 +50,9 @@ export class MockFirestore implements firebase.firestore.Firestore {
         return new MockCollectionRef({
             app: this.app_,
             emitters: this.emitters_,
-            firestore: this.firestore_,
-            path: collectionPath
+            firestore: this,
+            path: collectionPath,
+            store: this.store_
         });
     }
 
@@ -60,8 +61,9 @@ export class MockFirestore implements firebase.firestore.Firestore {
         return new MockDocumentRef({
             app: this.app_,
             emitters: this.emitters_,
-            firestore: this.firestore_,
-            path: documentPath
+            firestore: this,
+            path: documentPath,
+            store: this.store_
         });
     }
 
