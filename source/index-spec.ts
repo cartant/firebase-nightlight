@@ -22,6 +22,8 @@ import "./database/mock-database-spec";
 import "./database/mock-ref-spec";
 import "./firestore/mock-collection-ref-spec";
 import "./firestore/mock-document-ref-spec";
+import "./firestore/mock-document-snapshot-spec";
 import "./firestore/mock-firestore-spec";
+import "./firestore/mock-query-snapshot-spec";
 import "./messaging/mock-messaging-spec";
 import "./storage/mock-storage-spec";

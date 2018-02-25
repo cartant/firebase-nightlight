@@ -36,7 +36,7 @@ export class MockQuerySnapshot implements firebase.firestore.QuerySnapshot {
 
     public get docChanges(): firebase.firestore.DocumentChange[] {
 
-        throw unsupported_();
+        return [];
     }
 
     public get docs(): firebase.firestore.DocumentSnapshot[] {
