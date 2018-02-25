@@ -7,7 +7,7 @@ import { firebase } from "./firebase";
 import { MockApp } from "./app";
 import { MockIdentity } from "./auth";
 import { MockValue, MockDatabaseContent } from "./database";
-import { MockCollection, MockFieldValues, MockFirestoreContent } from "./firestore";
+import { MockFirestoreContent } from "./firestore";
 import { error_ } from "./mock-error";
 
 const defaultAppName = "[DEFAULT]";
@@ -18,8 +18,8 @@ export interface MockOptions {
             database?: { content: MockDatabaseContent };
             firestore?: {
                 content: MockFirestoreContent;
-                fieldPaths?: any;
-                fieldValues?: any;
+                fieldPath?: any;
+                fieldValue?: any;
             };
             identities?: MockIdentity[];
         }
@@ -27,8 +27,8 @@ export interface MockOptions {
     database?: { content: MockDatabaseContent };
     firestore?: {
         content: MockFirestoreContent;
-        fieldPaths?: any;
-        fieldValues?: any;
+        fieldPath?: any;
+        fieldValue?: any;
     };
     identities?: MockIdentity[];
 }

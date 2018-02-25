@@ -15,7 +15,10 @@ export class Mock {
     constructor(options?: MockOptions) {
 
         const firestore = (options && options.firestore) ? {
-            fieldValues: {
+            fieldPath: {
+                documentId: admin.firestore.FieldPath.documentId()
+            },
+            fieldValue: {
                 delete: admin.firestore.FieldValue.delete(),
                 serverTimestamp: admin.firestore.FieldValue.serverTimestamp()
             },

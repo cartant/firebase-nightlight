@@ -9,11 +9,12 @@ import { firebase } from "../firebase";
 import { MockUntyped as Mock } from "../mock-untyped";
 import { content } from "./mock-content-spec";
 import { MockDocumentRef } from "./mock-document-ref";
-import { MockFieldValues, MockFirestoreContent } from "./mock-firestore-types";
+import { MockFieldPath, MockFieldValue, MockFirestoreContent } from "./mock-firestore-types";
 
 describe("mock-document-ref", () => {
 
-    let fieldValues: MockFieldValues;
+    let fieldPath: MockFieldPath;
+    let fieldValue: MockFieldValue;
     let mock: Mock;
     let mockRef: MockDocumentRef;
     let path: string;
@@ -21,13 +22,15 @@ describe("mock-document-ref", () => {
 
     beforeEach(() => {
 
-        fieldValues = { delete: {} } as any;
+        fieldPath = { documentId: {} } as any;
+        fieldValue = { delete: {} } as any;
         path = "users/alice";
         store = { content };
 
         mock = new Mock({
             firestore: {
-                fieldValues,
+                fieldPath,
+                fieldValue,
                 ...store
             }
         });

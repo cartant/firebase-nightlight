@@ -9,7 +9,7 @@ import * as lodash from "../lodash";
 import { MockAuth, MockIdentity } from "../auth";
 import { MockDatabase, MockDatabaseContent, MockDataSnapshot, MockRef, MockValue } from "../database";
 import { firebase } from "../firebase";
-import { MockCollection, MockFieldPaths, MockFieldValues, MockFirestore, MockFirestoreContent } from "../firestore";
+import { MockCollection, MockFieldPath, MockFieldValue, MockFirestore, MockFirestoreContent } from "../firestore";
 import { MockMessaging } from "../messaging";
 import { unsupported_ } from "../mock-error";
 import { MockEmitters } from "../mock-types";
@@ -20,8 +20,8 @@ export interface MockAppOptions {
     deleter: () => Promise<any>;
     firestore?: {
         content: MockFirestoreContent;
-        fieldPaths?: MockFieldPaths;
-        fieldValues?: MockFieldValues;
+        fieldPath: MockFieldPath;
+        fieldValue: MockFieldValue;
     };
     identities: MockIdentity[];
     initializeOptions: Object;
@@ -70,7 +70,11 @@ export class MockApp implements firebase.app.App {
         this.firestore_ = new MockFirestore({
             app: this,
             emitters: this.firestoreEmitters_,
-            firestore: options.firestore || { content: null }
+            firestore: options.firestore || {
+                content: null,
+                fieldPath: {},
+                fieldValue: {}
+            }
         });
 
         this.messaging_ = new MockMessaging({

@@ -12,12 +12,13 @@ import { MockEmitters } from "../mock-types";
 import { MockCollectionRef } from "./mock-collection-ref";
 import { MockDocumentSnapshot } from "./mock-document-snapshot";
 import { toJsonPath, toPath, toSlashPath, validateFields, validatePath } from "./mock-firestore-paths";
-import { MockFieldValues, MockFirestoreContent } from "./mock-firestore-types";
+import { MockFieldPath, MockFieldValue, MockFirestoreContent } from "./mock-firestore-types";
 
 export interface MockDocumentRefOptions {
     app: firebase.app.App;
     emitters: MockEmitters;
-    fieldValues: MockFieldValues;
+    fieldPath: MockFieldPath;
+    fieldValue: MockFieldValue;
     firestore: firebase.firestore.Firestore;
     path: string;
     store: { content: MockFirestoreContent };
@@ -29,7 +30,8 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
 
     private app_: firebase.app.App;
     private emitters_: MockEmitters;
-    private fieldValues_: MockFieldValues;
+    private fieldPath_: MockFieldPath;
+    private fieldValue_: MockFieldValue;
     private firestore_: firebase.firestore.Firestore;
     private id_: string;
     private parentPath_: string;
@@ -41,7 +43,8 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
 
         this.app_ = options.app;
         this.emitters_ = options.emitters;
-        this.fieldValues_ = options.fieldValues;
+        this.fieldPath_ = options.fieldPath;
+        this.fieldValue_ = options.fieldValue;
         this.firestore_ = options.firestore;
         this.rootEmitter_ = this.emitters_.root;
         this.store_ = options.store;
@@ -70,7 +73,8 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
         return new MockCollectionRef({
             app: this.app_,
             emitters: this.emitters_,
-            fieldValues: this.fieldValues_,
+            fieldPath: this.fieldPath_,
+            fieldValue: this.fieldValue_,
             firestore: this.firestore_,
             path: this.parentPath_,
             store: this.store_
@@ -87,7 +91,8 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
         return new MockCollectionRef({
             app: this.app_,
             emitters: this.emitters_,
-            fieldValues: this.fieldValues_,
+            fieldPath: this.fieldPath_,
+            fieldValue: this.fieldValue_,
             firestore: this.firestore_,
             path: json.join(this.path_, collectionPath),
             store: this.store_
@@ -180,7 +185,7 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
                 this.store_.content = mergeData(
                     this.store_.content,
                     json.join(this.jsonPath_, "data"),
-                    this.fieldValues_,
+                    this.fieldValue_,
                     data
                 );
             } else {
@@ -233,7 +238,7 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
             this.store_.content = mergeData(
                 this.store_.content,
                 json.join(this.jsonPath_, "data"),
-                this.fieldValues_,
+                this.fieldValue_,
                 args
             );
 
@@ -248,11 +253,11 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
 function mergeData(
     content: any,
     path: string,
-    fieldValues: MockFieldValues,
+    fieldValue: MockFieldValue,
     data: firebase.firestore.DocumentData
 ): any {
 
-    const deleteFieldValue = fieldValues["delete"];
+    const deleteFieldValue = fieldValue["delete"];
 
     lodash.each(data, (value, key: string) => {
 

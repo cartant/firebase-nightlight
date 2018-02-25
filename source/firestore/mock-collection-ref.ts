@@ -12,13 +12,14 @@ import { unsupported_ } from "../mock-error";
 import { MockEmitters } from "../mock-types";
 import { MockDocumentRef } from "./mock-document-ref";
 import { toJsonPath, toPath, validatePath } from "./mock-firestore-paths";
-import { MockFieldValues, MockFirestoreContent, MockFirestoreQuery } from "./mock-firestore-types";
+import { MockFieldPath, MockFieldValue, MockFirestoreContent, MockFirestoreQuery } from "./mock-firestore-types";
 import { MockQuerySnapshot } from "./mock-query-snapshot";
 
 export interface MockCollectionRefOptions {
     app: firebase.app.App;
     emitters: MockEmitters;
-    fieldValues: MockFieldValues;
+    fieldPath: MockFieldPath;
+    fieldValue: MockFieldValue;
     firestore: firebase.firestore.Firestore;
     path: string;
     query?: MockFirestoreQuery;
@@ -32,7 +33,8 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
 
     private app_: firebase.app.App;
     private emitters_: MockEmitters;
-    private fieldValues_: MockFieldValues;
+    private fieldPath_: MockFieldPath;
+    private fieldValue_: MockFieldValue;
     private firestore_: firebase.firestore.Firestore;
     private id_: string;
     private parentPath_: string;
@@ -44,7 +46,8 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
 
         this.app_ = options.app;
         this.emitters_ = options.emitters;
-        this.fieldValues_ = options.fieldValues;
+        this.fieldPath_ = options.fieldPath;
+        this.fieldValue_ = options.fieldValue;
         this.firestore_ = options.firestore;
         this.query_ = options.query || {};
         this.rootEmitter_ = this.emitters_.root;
@@ -80,7 +83,8 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
         return this.parentPath_ ? new MockDocumentRef({
             app: this.app_,
             emitters: this.emitters_,
-            fieldValues: this.fieldValues_,
+            fieldPath: this.fieldPath_,
+            fieldValue: this.fieldValue_,
             firestore: this.firestore_,
             path: this.parentPath_,
             store: this.store_
@@ -112,7 +116,8 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
         return new MockDocumentRef({
             app: this.app_,
             emitters: this.emitters_,
-            fieldValues: this.fieldValues_,
+            fieldPath: this.fieldPath_,
+            fieldValue: this.fieldValue_,
             firestore: this.firestore_,
             path: json.join(this.path_, documentPath || key()),
             store: this.store_
@@ -126,7 +131,8 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
         return new MockCollectionRef({
             app: this.app_,
             emitters: this.emitters_,
-            fieldValues: this.fieldValues_,
+            fieldPath: this.fieldPath_,
+            fieldValue: this.fieldValue_,
             firestore: this.firestore_,
             path: this.path_,
             query: {
@@ -144,7 +150,8 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
         return new MockCollectionRef({
             app: this.app_,
             emitters: this.emitters_,
-            fieldValues: this.fieldValues_,
+            fieldPath: this.fieldPath_,
+            fieldValue: this.fieldValue_,
             firestore: this.firestore_,
             path: this.path_,
             query: {
@@ -174,7 +181,8 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
         return new MockCollectionRef({
             app: this.app_,
             emitters: this.emitters_,
-            fieldValues: this.fieldValues_,
+            fieldPath: this.fieldPath_,
+            fieldValue: this.fieldValue_,
             firestore: this.firestore_,
             path: this.path_,
             query: {
@@ -226,7 +234,8 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
         return new MockCollectionRef({
             app: this.app_,
             emitters: this.emitters_,
-            fieldValues: this.fieldValues_,
+            fieldPath: this.fieldPath_,
+            fieldValue: this.fieldValue_,
             firestore: this.firestore_,
             path: this.path_,
             query: {
@@ -245,7 +254,8 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
         return new MockCollectionRef({
             app: this.app_,
             emitters: this.emitters_,
-            fieldValues: this.fieldValues_,
+            fieldPath: this.fieldPath_,
+            fieldValue: this.fieldValue_,
             firestore: this.firestore_,
             path: this.path_,
             query: {
@@ -263,7 +273,8 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
         return new MockCollectionRef({
             app: this.app_,
             emitters: this.emitters_,
-            fieldValues: this.fieldValues_,
+            fieldPath: this.fieldPath_,
+            fieldValue: this.fieldValue_,
             firestore: this.firestore_,
             path: this.path_,
             query: {
@@ -287,7 +298,8 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
         return new MockCollectionRef({
             app: this.app_,
             emitters: this.emitters_,
-            fieldValues: this.fieldValues_,
+            fieldPath: this.fieldPath_,
+            fieldValue: this.fieldValue_,
             firestore: this.firestore_,
             path: this.path_,
             query: {

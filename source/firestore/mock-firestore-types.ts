@@ -17,8 +17,8 @@ export type MockDocumentPair = {
     id: string;
 };
 
-export type MockFieldPaths = { [key: string]: firebase.firestore.FieldPath };
-export type MockFieldValues = { [key: string]: firebase.firestore.FieldValue };
+export type MockFieldPath = { [key: string]: firebase.firestore.FieldPath };
+export type MockFieldValue = { [key: string]: firebase.firestore.FieldValue };
 
 export interface MockFirestoreQuery {
     endAt?: any[];
