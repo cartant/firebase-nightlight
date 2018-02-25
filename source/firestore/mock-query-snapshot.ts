@@ -97,7 +97,7 @@ export class MockQuerySnapshot implements firebase.firestore.QuerySnapshot {
             pairs.sort(orderByIdComparer(query));
         }
 
-        if ((query.startAfter !== undefined) || (query.startAfter !== undefined)) {
+        if ((query.startAfter !== undefined) || (query.startAt !== undefined)) {
             pairs = lodash.filter(pairs, startPredicate(query));
             if (query.limit && (pairs.length > query.limit)) {
                 pairs = pairs.slice(0, query.limit);
@@ -171,6 +171,6 @@ function wherePredicate(query: MockFirestoreQuery): (pair: MockDocumentPair) => 
 
     return new Function(
         "pair",
-        `pair.doc.data[${query.whereField}] ${query.whereOperator} ${JSON.stringify(query.whereValue)}`
+        `return pair.doc.data["${query.whereField}"] ${query.whereOperator} ${JSON.stringify(query.whereValue)}`
     ) as any;
 }
