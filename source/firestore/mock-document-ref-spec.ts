@@ -54,7 +54,16 @@ describe("mock-document-ref", () => {
 
     describe("delete", () => {
 
-        it.skip("should be tested", () => {
+        it("should delete the doc", () => {
+
+            return mockRef.delete()
+                .then(() => mockRef.get())
+                .then(snapshot => {
+
+                    expect(snapshot).to.exist;
+                    expect(snapshot).to.be.an("object");
+                    expect(snapshot).to.have.property("exists", false);
+                });
         });
     });
 
@@ -91,6 +100,9 @@ describe("mock-document-ref", () => {
     });
 
     describe("onSnapshot", () => {
+
+        it.skip("should be tested", () => {
+        });
     });
 
     describe("parent", () => {
@@ -112,13 +124,52 @@ describe("mock-document-ref", () => {
 
     describe("set", () => {
 
-        it.skip("should be tested", () => {
+        it("should set the doc", () => {
+
+            return mockRef.set({ name: "alison" })
+                .then(() => mockRef.get())
+                .then(snapshot => {
+
+                    expect(snapshot).to.exist;
+                    expect(snapshot).to.be.an("object");
+                    expect(snapshot).to.have.property("exists", true);
+                    expect(snapshot).to.respondTo("data");
+                    expect(snapshot.data()).to.deep.equal({ name: "alison" });
+                });
+        });
+
+        it("should support merging", () => {
+
+            return mockRef.set({ age: 42 }, { merge: true })
+                .then(() => mockRef.get())
+                .then(snapshot => {
+
+                    expect(snapshot).to.exist;
+                    expect(snapshot).to.be.an("object");
+                    expect(snapshot).to.have.property("exists", true);
+                    expect(snapshot).to.respondTo("data");
+                    expect(snapshot.data()).to.deep.equal({ age: 42, name: "alice" });
+                });
         });
     });
 
     describe("update", () => {
 
-        it.skip("should be tested", () => {
+        it("should update the doc", () => {
+
+            return mockRef.update({ age: 42 })
+                .then(() => mockRef.get())
+                .then(snapshot => {
+
+                    expect(snapshot).to.exist;
+                    expect(snapshot).to.be.an("object");
+                    expect(snapshot).to.have.property("exists", true);
+                    expect(snapshot).to.respondTo("data");
+                    expect(snapshot.data()).to.deep.equal({ age: 42, name: "alice" });
+                });
+        });
+
+        it.skip("should error for docs that don't exist", () => {
         });
     });
 });

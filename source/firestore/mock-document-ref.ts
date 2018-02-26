@@ -239,7 +239,7 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
                 this.store_.content,
                 json.join(this.jsonPath_, "data"),
                 this.fieldValue_,
-                args
+                data
             );
 
             this.rootEmitter_.emit("content", {
@@ -282,4 +282,5 @@ function mergeData(
             );
         }
     });
+    return content;
 }

@@ -42,7 +42,21 @@ describe("mock-collection-ref", () => {
 
     describe("add", () => {
 
-        it.skip("should be tested", () => {
+        it("should add a new doc", () => {
+
+            mockRef.add({ name: "thomas" }).then(doc => {
+
+                expect(doc).to.be.an("object");
+                expect(doc).to.have.property("id");
+                expect(doc).to.have.property("parent", mockRef);
+                return mockRef.get();
+
+            }).then(snapshot => {
+
+                expect(snapshot).to.exist;
+                expect(snapshot).to.be.an("object");
+                expect(snapshot).to.have.property("size", 4);
+            });
         });
     });
 
@@ -227,6 +241,9 @@ describe("mock-collection-ref", () => {
     });
 
     describe("onSnapshot", () => {
+
+        it.skip("should be tested", () => {
+        });
     });
 
     describe("parent", () => {
