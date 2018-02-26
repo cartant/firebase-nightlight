@@ -9,6 +9,7 @@ import * as json from "../json";
 import * as lodash from "../lodash";
 import { unsupported_ } from "../mock-error";
 import { MockEmitters } from "../mock-types";
+import { toObserver } from "../observer";
 import { MockCollectionRef } from "./mock-collection-ref";
 import { MockDocumentSnapshot } from "./mock-document-snapshot";
 import { toJsonPath, toPath, toSlashPath, validateFields, validatePath } from "./mock-firestore-paths";
@@ -160,6 +161,17 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
         onCompletion?: () => void
     ): () => void;
     public onSnapshot(...args: any[]): () => void {
+
+        let options: firebase.firestore.DocumentListenOptions;
+        let observer = toObserver(args);
+
+        if (observer) {
+            options = {};
+        } else {
+            let rest: any[];
+            [options, ...rest] = args;
+            observer = toObserver(rest);
+        }
 
         throw unsupported_();
     }

@@ -10,6 +10,7 @@ import * as json from "../json";
 import * as lodash from "../lodash";
 import { unsupported_ } from "../mock-error";
 import { MockEmitters } from "../mock-types";
+import { toObserver } from "../observer";
 import { MockDocumentRef } from "./mock-document-ref";
 import { toJsonPath, toPath, validatePath } from "./mock-firestore-paths";
 import { MockFieldPath, MockFieldValue, MockFirestoreContent, MockFirestoreQuery } from "./mock-firestore-types";
@@ -218,6 +219,17 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
         onCompletion?: () => void
     ): () => void;
     public onSnapshot(...args: any[]): () => void {
+
+        let options: firebase.firestore.QueryListenOptions;
+        let observer = toObserver(args);
+
+        if (observer) {
+            options = {};
+        } else {
+            let rest: any[];
+            [options, ...rest] = args;
+            observer = toObserver(rest);
+        }
 
         throw unsupported_();
     }
