@@ -54,6 +54,9 @@
     "firebase-admin": "^5.0.0"
   },
   "private": false,
+  "publishConfig": {
+    "tag": "next"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/cartant/firebase-nightlight.git"
