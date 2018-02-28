@@ -37,18 +37,19 @@ describe("mock-collection-ref", () => {
         mock.initializeApp({
             databaseURL: "https://mocha-cartant.firebaseio.com"
         });
-        mockRef = mock.firestore().collection(path) as any;
+        mockRef = mock.firestore().collection(path) as MockCollectionRef;
     });
 
     describe("add", () => {
 
         it("should add a new doc", () => {
 
-            mockRef.add({ name: "thomas" }).then(doc => {
+            return mockRef.add({ name: "thomas" }).then(doc => {
 
                 expect(doc).to.be.an("object");
                 expect(doc).to.have.property("id");
-                expect(doc).to.have.property("parent", mockRef);
+                expect(doc).to.have.property("parent");
+                expect(doc.parent).to.have.property("id", "users");
                 return mockRef.get();
 
             }).then(snapshot => {
@@ -242,23 +243,51 @@ describe("mock-collection-ref", () => {
 
     describe("onSnapshot", () => {
 
-        it.skip("should be tested", () => {
+        it("should notify observers of an initial snapshot", (callback: any) => {
+
+            mockRef.onSnapshot({
+                next: snapshot => {
+                    expect(snapshot).to.be.an("object");
+                    expect(snapshot).to.have.property("docs");
+                    expect(snapshot.docs.map(doc => doc.id)).to.deep.equal(["alice", "bob", "mallory"]);
+                    callback();
+                }
+            });
         });
-    });
 
-    describe("parent", () => {
+        it("should notify observers of changes", (callback: any) => {
 
-        it("should be the ref's parent", () => {
+            let count = 0;
 
-            expect(mockRef.parent).to.be.null;
-        });
-    });
+            mockRef.onSnapshot({
+                next: snapshot => {
+                    switch (++count) {
+                    case 1:
+                        expect(snapshot).to.be.an("object");
+                        expect(snapshot).to.have.property("docs");
+                        expect(snapshot.docs.map(doc => doc.id)).to.deep.equal(["alice", "bob", "mallory"]);
+                        expect(snapshot.docs[0].data()).to.deep.equal({
+                            name: "alice"
+                        });
+                        break;
+                    case 2:
+                        expect(snapshot).to.be.an("object");
+                        expect(snapshot).to.have.property("docs");
+                        expect(snapshot.docs.map(doc => doc.id)).to.deep.equal(["alice", "bob", "mallory"]);
+                        expect(snapshot.docs[0].data()).to.deep.equal({
+                            age: 42,
+                            name: "alice"
+                        });
+                        callback();
+                        break;
+                    default:
+                        throw new Error("Unexpected notification");
+                    }
+                }
+            });
 
-    describe("path", () => {
-
-        it("should be the ref's path", () => {
-
-            expect(mockRef.path).to.equal("users");
+            const docRef = mockRef.doc("alice");
+            docRef.update({ age: 42 });
         });
     });
 
@@ -290,6 +319,22 @@ describe("mock-collection-ref", () => {
                     expect(snapshot.docs.map(doc => doc.id)).to.deep.equal(["mallory", "bob", "alice"]);
                 });
             });
+        });
+    });
+
+    describe("parent", () => {
+
+        it("should be the ref's parent", () => {
+
+            expect(mockRef.parent).to.be.null;
+        });
+    });
+
+    describe("path", () => {
+
+        it("should be the ref's path", () => {
+
+            expect(mockRef.path).to.equal("users");
         });
     });
 

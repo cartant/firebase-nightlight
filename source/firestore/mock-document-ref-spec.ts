@@ -37,7 +37,7 @@ describe("mock-document-ref", () => {
         mock.initializeApp({
             databaseURL: "https://mocha-cartant.firebaseio.com"
         });
-        mockRef = mock.firestore().doc(path) as any;
+        mockRef = mock.firestore().doc(path) as MockDocumentRef;
     });
 
     describe("collection", () => {
@@ -101,7 +101,83 @@ describe("mock-document-ref", () => {
 
     describe("onSnapshot", () => {
 
-        it.skip("should be tested", () => {
+        it("should notify observers of an initial snapshot", (callback: any) => {
+
+            mockRef.onSnapshot({
+                next: snapshot => {
+                    expect(snapshot).to.be.an("object");
+                    expect(snapshot).to.respondTo("data");
+                    expect(snapshot.data()).to.deep.equal({
+                        name: "alice"
+                    });
+                    callback();
+                }
+            });
+        });
+
+        it("should notify observers of changes", (callback: any) => {
+
+            let count = 0;
+
+            mockRef.onSnapshot({
+                next: snapshot => {
+                    switch (++count) {
+                    case 1:
+                        expect(snapshot).to.be.an("object");
+                        expect(snapshot).to.respondTo("data");
+                        expect(snapshot.data()).to.deep.equal({
+                            name: "alice"
+                        });
+                        break;
+                    case 2:
+                        expect(snapshot).to.be.an("object");
+                        expect(snapshot).to.respondTo("data");
+                        expect(snapshot.data()).to.deep.equal({
+                            age: 42,
+                            name: "alice"
+                        });
+                        callback();
+                        break;
+                    default:
+                        throw new Error("Unexpected notification");
+                    }
+                }
+            });
+
+            mockRef.update({ age: 42 });
+        });
+
+        it("should notify observers of other refs of changes", (callback: any) => {
+
+            let count = 0;
+
+            const otherRef = mock.firestore().doc(mockRef.path) as MockDocumentRef;
+            otherRef.onSnapshot({
+                next: snapshot => {
+                    switch (++count) {
+                        case 1:
+                        expect(snapshot).to.be.an("object");
+                        expect(snapshot).to.respondTo("data");
+                        expect(snapshot.data()).to.deep.equal({
+                            name: "alice"
+                        });
+                        break;
+                    case 2:
+                        expect(snapshot).to.be.an("object");
+                        expect(snapshot).to.respondTo("data");
+                        expect(snapshot.data()).to.deep.equal({
+                            age: 42,
+                            name: "alice"
+                        });
+                        callback();
+                        break;
+                    default:
+                        throw new Error("Unexpected notification");
+                    }
+                }
+            });
+
+            mockRef.update({ age: 42 });
         });
     });
 

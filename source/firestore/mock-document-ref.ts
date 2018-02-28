@@ -37,7 +37,9 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
     private id_: string;
     private parentPath_: string;
     private path_: string;
+    private refEmitter_: EventEmitter2;
     private rootEmitter_: EventEmitter2;
+    private sharedEmitter_: EventEmitter2;
     private store_: { content: MockFirestoreContent };
 
     constructor(options: MockDocumentRefOptions) {
@@ -47,7 +49,6 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
         this.fieldPath_ = options.fieldPath;
         this.fieldValue_ = options.fieldValue;
         this.firestore_ = options.firestore;
-        this.rootEmitter_ = this.emitters_.root;
         this.store_ = options.store;
 
         this.path_ = toPath(options.path);
@@ -57,6 +58,15 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
         const index = this.path_.lastIndexOf("/");
         this.id_ = this.path_.substring(index + 1);
         this.parentPath_ = this.path_.substring(0, index);
+
+        this.refEmitter_ = new EventEmitter2();
+        this.rootEmitter_ = this.emitters_.root;
+        this.sharedEmitter_ = this.emitters_.shared[this.jsonPath_];
+        if (!this.sharedEmitter_) {
+            this.sharedEmitter_ = new EventEmitter2({ wildcard: true });
+            this.emitters_.shared[this.jsonPath_] = this.sharedEmitter_;
+        }
+        this.sharedEmitter_.onAny(this.sharedListener_.bind(this));
     }
 
     public get firestore(): firebase.firestore.Firestore {
@@ -163,17 +173,30 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
     public onSnapshot(...args: any[]): () => void {
 
         let options: firebase.firestore.DocumentListenOptions;
-        let observer = toObserver(args);
+        let observer = toObserver(...args);
 
         if (observer) {
             options = {};
         } else {
             let rest: any[];
             [options, ...rest] = args;
-            observer = toObserver(rest);
+            observer = toObserver(...rest);
         }
 
-        throw unsupported_();
+        if (options.includeMetadataChanges) {
+            throw unsupported_();
+        }
+
+        Promise.resolve().then(() => observer.next(new MockDocumentSnapshot({
+            content: this.store_.content,
+            ref: this
+        })));
+
+        const listener = (snapshot: firebase.firestore.DocumentSnapshot) => {
+            observer.next(snapshot);
+        };
+        this.refEmitter_.on("snapshot", listener);
+        return () => this.refEmitter_.off("snapshot", listener);
     }
 
     public set(
@@ -259,6 +282,17 @@ export class MockDocumentRef implements firebase.firestore.DocumentReference {
                 previousContent
             });
         });
+    }
+
+    private sharedListener_(
+        eventType: string,
+        { content }: { content: MockFirestoreContent }
+    ): void {
+
+        this.refEmitter_.emit("snapshot", new MockDocumentSnapshot({
+            content,
+            ref: this
+        }));
     }
 }
 

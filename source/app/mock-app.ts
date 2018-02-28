@@ -224,7 +224,11 @@ export class MockApp implements firebase.app.App {
 
     private firestoreRootListener_(
         eventType: string,
-        { content, previousContent }: { content: MockValue, previousContent: MockValue }
+        { content, previousContent }: { content: MockFirestoreContent, previousContent: MockFirestoreContent }
     ): void {
+
+        lodash.each(this.firestoreEmitters_.shared, (sharedEmitter, sharedEmitterJsonPath: string) => {
+            sharedEmitter.emit("content", { content, previousContent });
+        });
     }
 }
