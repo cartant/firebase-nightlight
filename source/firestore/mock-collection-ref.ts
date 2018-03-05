@@ -52,7 +52,7 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
         this.fieldPath_ = options.fieldPath;
         this.fieldValue_ = options.fieldValue;
         this.firestore_ = options.firestore;
-        this.query_ = options.query || {};
+        this.query_ = options.query || { where: [] };
         this.store_ = options.store;
 
         this.path_ = toPath(options.path);
@@ -109,7 +109,7 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
 
     get queried_(): boolean {
 
-        return !lodash.isEmpty(this.query_);
+        return !lodash.isEqual(this.query_, { where: [] });
     }
 
     public add(data: firebase.firestore.DocumentData): Promise<firebase.firestore.DocumentReference> {
@@ -342,9 +342,11 @@ export class MockCollectionRef implements firebase.firestore.CollectionReference
             path: this.path_,
             query: {
                 ...this.query_,
-                whereField: fieldPath,
-                whereOperator: opStr,
-                whereValue: value
+                where: [...this.query_.where, {
+                    field: fieldPath,
+                    operator: opStr,
+                    value
+                }]
             },
             store: this.store_
         });

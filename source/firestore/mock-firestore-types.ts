@@ -28,9 +28,11 @@ export interface MockFirestoreQuery {
     orderByField?: string;
     startAfter?: any[];
     startAt?: any[];
-    whereField?: string;
-    whereOperator?: firebase.firestore.WhereFilterOp;
-    whereValue?: any;
+    where: {
+        field?: string;
+        operator?: firebase.firestore.WhereFilterOp;
+        value?: any;
+    }[];
 }
 
 export type MockFirestoreContent = { [id: string]: MockCollection } | null;

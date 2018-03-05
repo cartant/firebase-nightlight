@@ -87,7 +87,7 @@ export class MockQuerySnapshot implements firebase.firestore.QuerySnapshot {
         let pairs: MockDocumentPair[] = lodash.map(collection, toPair);
         pairs = lodash.filter(pairs, pair => Boolean(pair.doc.data));
 
-        if (query.whereField) {
+        if (query.where.length) {
             pairs = lodash.filter(pairs, wherePredicate(query));
         }
 
@@ -169,8 +169,9 @@ function toPair(doc: MockDocument, id: string): MockDocumentPair {
 
 function wherePredicate(query: MockFirestoreQuery): (pair: MockDocumentPair) => boolean {
 
-    return new Function(
+    const predicates = query.where.map(w => new Function(
         "pair",
-        `return pair.doc.data["${query.whereField}"] ${query.whereOperator} ${JSON.stringify(query.whereValue)}`
-    ) as any;
+        `return pair.doc.data["${w.field}"] ${w.operator} ${JSON.stringify(w.value)}`
+    ) as any);
+    return pair => predicates.every(p => p(pair));
 }
