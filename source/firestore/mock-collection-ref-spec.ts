@@ -675,7 +675,23 @@ describe("mock-collection-ref", () => {
             });
         });
 
-        it.skip("should start after the specified field value", () => {
+        it("should support multiple where clauses", () => {
+
+            return Promise.all([
+                mockRef.doc("alice").update({ age: 42 }),
+                mockRef.doc("bob").update({ age: 42 })
+            ])
+            .then(() => mockRef
+                .where("age", "==", 42)
+                .where("name", ">", "alice")
+                .get().then(snapshot => {
+
+                    expect(snapshot).to.exist;
+                    expect(snapshot).to.be.an("object");
+                    expect(snapshot).to.have.property("size", 1);
+                    expect(snapshot.docs.map(doc => doc.id)).to.deep.equal(["bob"]);
+                })
+            );
         });
     });
 });
