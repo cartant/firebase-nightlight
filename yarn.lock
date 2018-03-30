@@ -18,9 +18,9 @@
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@firebase/auth-types/-/auth-types-0.2.0.tgz#38f9ce77b7b513eafac7e2e8291f1fe97031895a"
 
-"@firebase/auth@0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@firebase/auth/-/auth-0.4.0.tgz#7e767b652247176bd07291bf1cb4155037623fa7"
+"@firebase/auth@0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@firebase/auth/-/auth-0.4.1.tgz#89adbff1cbd6beebf61dedac95d812f89092be09"
   dependencies:
     "@firebase/auth-types" "0.2.0"
 
@@ -42,13 +42,13 @@
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@firebase/firestore-types/-/firestore-types-0.2.2.tgz#e60b6c7a458538b1bf8ed89d9df981fa17a74871"
 
-"@firebase/firestore@0.3.6":
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-0.3.6.tgz#70eaf11929950d2a012c9f666b1522be62308054"
+"@firebase/firestore@0.3.7":
+  version "0.3.7"
+  resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-0.3.7.tgz#7160ebcd2574ca56521df847086bf291dd216ff0"
   dependencies:
     "@firebase/firestore-types" "0.2.2"
     "@firebase/logger" "0.1.0"
-    "@firebase/webchannel-wrapper" "0.2.6"
+    "@firebase/webchannel-wrapper" "0.2.7"
     grpc "^1.9.1"
     tslib "^1.9.0"
 
@@ -72,9 +72,9 @@
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@firebase/messaging-types/-/messaging-types-0.1.2.tgz#4975eeb31db0a16a9fcc7b9afb2ff60f79160c46"
 
-"@firebase/messaging@0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@firebase/messaging/-/messaging-0.2.2.tgz#4ff4d1a37fb3251b97f9c2614ac1604b55e2b994"
+"@firebase/messaging@0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@firebase/messaging/-/messaging-0.2.3.tgz#bad9e253dd7cba732d3dde67bde9286482d0968e"
   dependencies:
     "@firebase/messaging-types" "0.1.2"
     "@firebase/util" "0.1.10"
@@ -105,9 +105,9 @@
   dependencies:
     tslib "^1.9.0"
 
-"@firebase/webchannel-wrapper@0.2.6":
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.2.6.tgz#a4b81ca8cdeb1acbc7923289a4a514f61b59db86"
+"@firebase/webchannel-wrapper@0.2.7":
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.2.7.tgz#0495fd7294348d9887abb182aa27432cb8936488"
 
 "@google-cloud/common-grpc@^0.6.0":
   version "0.6.1"
@@ -287,12 +287,12 @@
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-5.0.0.tgz#a3014921991066193f6c8e47290d4d598dfd19e6"
 
 "@types/node@*", "@types/node@^9.3.0":
-  version "9.6.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-9.6.0.tgz#d3480ee666df9784b1001a1872a2f6ccefb6c2d7"
+  version "9.6.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-9.6.1.tgz#e2d374ef15b315b48e7efc308fa1a7cd51faa06c"
 
 "@types/node@^8.0.53", "@types/node@^8.9.4":
-  version "8.10.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.0.tgz#f5d649cc49af8ed6507d15dc6e9b43fe8b927540"
+  version "8.10.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.1.tgz#aac98b810c50568054486f2bb8c486d824713be8"
 
 JSONStream@^1.0.3:
   version "1.3.2"
@@ -1234,16 +1234,7 @@ combine-lists@^1.0.0:
   dependencies:
     lodash "^4.5.0"
 
-combine-source-map@~0.7.1:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/combine-source-map/-/combine-source-map-0.7.2.tgz#0870312856b307a87cc4ac486f3a9a62aeccc09e"
-  dependencies:
-    convert-source-map "~1.1.0"
-    inline-source-map "~0.6.0"
-    lodash.memoize "~3.0.3"
-    source-map "~0.5.3"
-
-combine-source-map@~0.8.0:
+combine-source-map@^0.8.0, combine-source-map@~0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/combine-source-map/-/combine-source-map-0.8.0.tgz#a58d0df042c186fcf822a8e8015f5450d2d79a8b"
   dependencies:
@@ -1608,7 +1599,7 @@ depd@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.1.tgz#5783b4e1c459f06fa5ca27f991f3d06e7a310359"
 
-depd@~1.1.1:
+depd@~1.1.1, depd@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
 
@@ -1690,8 +1681,8 @@ dom-serialize@^2.2.0:
     void-elements "^2.0.0"
 
 dom-storage@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/dom-storage/-/dom-storage-2.0.2.tgz#ed17cbf68abd10e0aef8182713e297c5e4b500b0"
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/dom-storage/-/dom-storage-2.1.0.tgz#00fb868bc9201357ea243c7bcfd3304c1e34ea39"
 
 domain-browser@^1.2.0:
   version "1.2.0"
@@ -2221,15 +2212,15 @@ firebase-key@^2.0.0:
   resolved "https://registry.yarnpkg.com/firebase-key/-/firebase-key-2.0.1.tgz#5f1fe462c011c7f944f2f0f489c838dd1ed162ef"
 
 firebase@^4.0.0:
-  version "4.12.0"
-  resolved "https://registry.yarnpkg.com/firebase/-/firebase-4.12.0.tgz#fdc7eaee1769b1ec72ae56fea56c120a13f54d76"
+  version "4.12.1"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-4.12.1.tgz#973776a6d74d5314a20d8413fe333412082fc919"
   dependencies:
     "@firebase/app" "0.1.10"
-    "@firebase/auth" "0.4.0"
+    "@firebase/auth" "0.4.1"
     "@firebase/database" "0.2.1"
-    "@firebase/firestore" "0.3.6"
+    "@firebase/firestore" "0.3.7"
     "@firebase/functions" "0.1.0"
-    "@firebase/messaging" "0.2.2"
+    "@firebase/messaging" "0.2.3"
     "@firebase/polyfill" "0.3.0"
     "@firebase/storage" "0.1.8"
     dom-storage "^2.0.2"
@@ -2596,12 +2587,12 @@ growl@1.10.3:
   resolved "https://registry.yarnpkg.com/growl/-/growl-1.10.3.tgz#1926ba90cf3edfe2adb4927f5880bc22c66c790f"
 
 grpc@^1.10.0, grpc@^1.9.1:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/grpc/-/grpc-1.10.0.tgz#a3bab7f7e6b37727c5a6eb8427fc58775823edce"
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/grpc/-/grpc-1.10.1.tgz#90691404aeb769a98784924d08e8fd07c920b2da"
   dependencies:
     lodash "^4.15.0"
-    nan "^2.0.0"
-    node-pre-gyp "^0.6.39"
+    nan "^2.10.0"
+    node-pre-gyp "0.7.0"
     protobufjs "^5.0.0"
 
 grpc@~1.9.1:
@@ -2794,7 +2785,7 @@ htmlescape@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/htmlescape/-/htmlescape-1.1.1.tgz#3a03edc2214bca3b66424a3e7959349509cb0351"
 
-http-errors@1.6.2, http-errors@~1.6.2:
+http-errors@1.6.2:
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/http-errors/-/http-errors-1.6.2.tgz#0a002cc85707192a7e7946ceedc11155f60ec736"
   dependencies:
@@ -2802,6 +2793,15 @@ http-errors@1.6.2, http-errors@~1.6.2:
     inherits "2.0.3"
     setprototypeof "1.0.3"
     statuses ">= 1.3.1 < 2"
+
+http-errors@~1.6.2:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/http-errors/-/http-errors-1.6.3.tgz#8b55680bb4be283a0b5bf4ea2e38580be1d9320d"
+  dependencies:
+    depd "~1.1.2"
+    inherits "2.0.3"
+    setprototypeof "1.1.0"
+    statuses ">= 1.4.0 < 2"
 
 http-parser-js@>=0.4.0:
   version "0.4.11"
@@ -2862,8 +2862,8 @@ https-proxy-agent@1:
     extend "3"
 
 https-proxy-agent@^2.1.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-2.2.0.tgz#7fbba856be8cd677986f42ebd3664f6317257887"
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-2.2.1.tgz#51552970fa04d723e04c56d04178c3f92592bbc0"
   dependencies:
     agent-base "^4.1.0"
     debug "^3.1.0"
@@ -2951,11 +2951,11 @@ inquirer@^3.0.6:
     through "^2.3.6"
 
 insert-module-globals@^7.0.0:
-  version "7.0.4"
-  resolved "https://registry.yarnpkg.com/insert-module-globals/-/insert-module-globals-7.0.4.tgz#1f144b807884507894bdbbb564c0d70075460251"
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/insert-module-globals/-/insert-module-globals-7.0.5.tgz#6d0a6f28d4a7e0eae171ad305e0f47bdfe0c258e"
   dependencies:
     JSONStream "^1.0.3"
-    combine-source-map "~0.7.1"
+    combine-source-map "^0.8.0"
     concat-stream "^1.6.1"
     is-buffer "^1.1.0"
     lexical-scope "^1.2.0"
@@ -3810,8 +3810,8 @@ module-deps@^4.0.8:
     xtend "^4.0.0"
 
 module-deps@^6.0.0:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/module-deps/-/module-deps-6.0.1.tgz#5c54ba9db023fffaf3cb06dad79e1fb6c170a83b"
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/module-deps/-/module-deps-6.0.2.tgz#660217d1602b863ac8d4d16951a3720dd9aa4c80"
   dependencies:
     JSONStream "^1.0.3"
     browser-resolve "^1.7.0"
@@ -3845,7 +3845,7 @@ mute-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
 
-nan@^2.0.0, nan@^2.3.0:
+nan@^2.0.0, nan@^2.10.0, nan@^2.3.0:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.10.0.tgz#96d0cd610ebd58d4b4de9cc0c6828cda99c7548f"
 
@@ -3898,6 +3898,21 @@ node-forge@0.7.1:
 node-forge@^0.7.4:
   version "0.7.4"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.7.4.tgz#8e6e9f563a1e32213aa7508cded22aa791dbf986"
+
+node-pre-gyp@0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.7.0.tgz#55aeffbaed93b50d0a4657d469198cd80ac9df36"
+  dependencies:
+    detect-libc "^1.0.2"
+    mkdirp "^0.5.1"
+    nopt "^4.0.1"
+    npmlog "^4.0.2"
+    rc "^1.1.7"
+    request "2.83.0"
+    rimraf "^2.6.1"
+    semver "^5.3.0"
+    tar "^2.2.1"
+    tar-pack "^3.4.0"
 
 node-pre-gyp@^0.6.39:
   version "0.6.39"
@@ -4804,6 +4819,33 @@ request@2.81.0:
     tunnel-agent "^0.6.0"
     uuid "^3.0.0"
 
+request@2.83.0:
+  version "2.83.0"
+  resolved "https://registry.yarnpkg.com/request/-/request-2.83.0.tgz#ca0b65da02ed62935887808e6f510381034e3356"
+  dependencies:
+    aws-sign2 "~0.7.0"
+    aws4 "^1.6.0"
+    caseless "~0.12.0"
+    combined-stream "~1.0.5"
+    extend "~3.0.1"
+    forever-agent "~0.6.1"
+    form-data "~2.3.1"
+    har-validator "~5.0.3"
+    hawk "~6.0.2"
+    http-signature "~1.2.0"
+    is-typedarray "~1.0.0"
+    isstream "~0.1.2"
+    json-stringify-safe "~5.0.1"
+    mime-types "~2.1.17"
+    oauth-sign "~0.8.2"
+    performance-now "^2.1.0"
+    qs "~6.5.1"
+    safe-buffer "^5.1.1"
+    stringstream "~0.0.5"
+    tough-cookie "~2.3.3"
+    tunnel-agent "^0.6.0"
+    uuid "^3.1.0"
+
 request@^2.0.0, request@^2.74.0, request@^2.79.0, request@^2.81.0, request@^2.83.0:
   version "2.85.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.85.0.tgz#5a03615a47c61420b3eb99b7dba204f83603e1fa"
@@ -4975,6 +5017,10 @@ set-value@^2.0.0:
 setprototypeof@1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.0.3.tgz#66567e37043eeb4f04d91bd658c0cbefb55b8e04"
+
+setprototypeof@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.1.0.tgz#d0bd85536887b6fe7c0d818cb962d9d91c54e656"
 
 sha.js@^2.4.0, sha.js@^2.4.8, sha.js@~2.4.4:
   version "2.4.11"
@@ -5228,7 +5274,7 @@ static-extend@^0.1.1:
     define-property "^0.2.5"
     object-copy "^0.1.0"
 
-"statuses@>= 1.3.1 < 2":
+"statuses@>= 1.3.1 < 2", "statuses@>= 1.4.0 < 2":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
 
@@ -5528,8 +5574,8 @@ tsscmp@~1.0.0:
   resolved "https://registry.yarnpkg.com/tsscmp/-/tsscmp-1.0.5.tgz#7dc4a33af71581ab4337da91d85ca5427ebd9a97"
 
 tsutils@^2.12.1:
-  version "2.24.0"
-  resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.24.0.tgz#a84134358e10c42039fed0a8f1548413f118aff7"
+  version "2.25.0"
+  resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.25.0.tgz#14d616ef59224a3c9fb7eb483e1c182b6665ae5e"
   dependencies:
     tslib "^1.8.1"
 

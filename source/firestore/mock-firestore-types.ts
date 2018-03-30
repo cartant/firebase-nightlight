@@ -3,6 +3,8 @@
  * can be found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
+import { firebase } from "../firebase";
+
 export type MockDocumentPrimitive = boolean | number | string;
 export type MockDocumentComposite = { [key: string]: MockDocumentPrimitive | MockDocumentComposite };
 export type MockDocumentValue = MockDocumentPrimitive | MockDocumentComposite;
