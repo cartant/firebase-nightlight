@@ -21,7 +21,7 @@
     "chai": "^4.0.0",
     "chai-as-promised-transpiled": "^7.0.0",
     "core-js": "^2.4.1",
-    "cpy-cli": "^1.0.1",
+    "cpy-cli": "^2.0.0",
     "eslint": "^4.0.0",
     "firebase": "^5.0.0",
     "firebase-admin": "^5.0.0",
