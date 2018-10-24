@@ -24,7 +24,7 @@
     "cpy-cli": "^2.0.0",
     "eslint": "^5.0.0",
     "firebase": "^5.0.0",
-    "firebase-admin": "^5.0.0",
+    "firebase-admin": "^6.0.0",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-mocha": "^1.3.0",
