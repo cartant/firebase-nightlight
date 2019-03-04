@@ -14,7 +14,7 @@
   "devDependencies": {
     "@types/chai": "^4.0.0",
     "@types/json-pointer": "^1.0.30",
-    "@types/lodash": "^4.14.63",
+    "@types/lodash": "^4.14.122",
     "@types/mocha": "^5.0.0",
     "@types/node": "^10.0.0",
     "browserify": "^16.0.0",
