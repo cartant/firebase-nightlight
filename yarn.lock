@@ -1203,9 +1203,14 @@ core-js@2.5.5:
   version "2.5.5"
   resolved "http://registry.npmjs.org/core-js/-/core-js-2.5.5.tgz#b14dde936c640c0579a6b50cabcc132dd6127e3b"
 
-core-js@^2.2.0, core-js@^2.4.1:
+core-js@^2.2.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.0.tgz#1e30793e9ee5782b307e37ffa22da0eacddd84d4"
+
+core-js@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.0.0.tgz#a8dbfa978d29bfc263bfb66c556d0ca924c28957"
+  integrity sha512-WBmxlgH2122EzEJ6GH8o9L/FeoUKxxxZ6q6VUxoTlsE4EvbTWKJb447eyVxTEuq0LpXjlq/kCB2qgBvsYRkLvQ==
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
