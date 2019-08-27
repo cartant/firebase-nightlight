@@ -1,3 +1,10 @@
+<a name="3.1.1"></a>
+## [3.1.1](https://github.com/cartant/firebase-nightlight/compare/v3.1.0...v3.1.1) (2019-08-27)
+
+### Changes
+
+* Update dependencies and extend the peer ranges.
+
 <a name="3.1.0"></a>
 ## [3.1.0](https://github.com/cartant/firebase-nightlight/compare/v3.0.1...v3.1.0) (2018-05-19)
 
