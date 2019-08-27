@@ -1,6 +1,10 @@
 <a name="3.1.1"></a>
 ## [3.1.1](https://github.com/cartant/firebase-nightlight/compare/v3.1.0...v3.1.1) (2019-08-27)
 
+### Bug Fixes
+
+* Added `firebase-interfaces.js` for build environments that don't like 'naked' `.d.ts` files. ([14cd9c6](https://github.com/cartant/firebase-nightlight/commit/14cd9c6))
+
 ### Changes
 
 * Update dependencies and extend the peer ranges.
