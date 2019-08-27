@@ -3,8 +3,6 @@
  * can be found in the LICENSE file at https://github.com/cartant/firebase-nightlight
  */
 
-import "./polyfills";
-
 import * as chai from "chai";
 import * as chaiAsPromised from "chai-as-promised-transpiled";
 
