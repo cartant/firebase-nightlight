@@ -12,6 +12,8 @@
   },
   "description": "An in-memory, JavaScript mock for the Firebase Web API",
   "devDependencies": {
+    "@cartant/tslint-config": "^2.0.0",
+    "@cartant/tslint-config-etc": "^2.0.0",
     "@types/chai": "^4.0.0",
     "@types/json-pointer": "^1.0.30",
     "@types/lodash": "^4.14.63",
@@ -32,6 +34,7 @@
     "puppeteer": "^1.0.0",
     "rimraf": "^3.0.0",
     "tslint": "^5.2.0",
+    "tslint-etc": "^1.7.0",
     "typescript": "~3.6.3",
     "uglify-js": "^3.0.10",
     "yargs": "^14.0.0"

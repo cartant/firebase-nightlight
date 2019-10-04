@@ -159,7 +159,8 @@ describe("mock-auth", () => {
 
                     expect(value).to.be.null;
                     unsubscribe();
-                    callback();}
+                    callback();
+                }
             });
             expect(unsubscribe).to.be.a("function");
         });
@@ -230,7 +231,8 @@ describe("mock-auth", () => {
 
                     expect(value).to.be.null;
                     unsubscribe();
-                    callback();}
+                    callback();
+                }
             });
             expect(unsubscribe).to.be.a("function");
         });

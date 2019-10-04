@@ -276,7 +276,7 @@ export class MockRef implements firebase.database.ThenableReference {
                     }
                 });
                 indices.reverse();
-                lodash.each(indices, (index) => this.refEmitterBindings_.splice(index, 1));
+                lodash.each(indices, (index) => { this.refEmitterBindings_.splice(index, 1); });
             }
         } else {
             this.refEmitter_.removeAllListeners();
