@@ -1,3 +1,14 @@
+<a name="3.1.2"></a>
+## [3.1.2](https://github.com/cartant/firebase-nightlight/compare/v3.1.1...v3.1.2) (2019-10-05)
+
+### Bug Fixes
+
+* Copy `firebase-interfaces.js` to `dist`. ([2c5c72b](https://github.com/cartant/firebase-nightlight/commit/2c5c72b))
+
+### Changes
+
+* Update dependencies and extend the peer ranges.
+
 <a name="3.1.1"></a>
 ## [3.1.1](https://github.com/cartant/firebase-nightlight/compare/v3.1.0...v3.1.1) (2019-08-27)
 
